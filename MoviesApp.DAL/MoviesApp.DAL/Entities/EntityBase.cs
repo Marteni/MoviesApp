@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MoviesApp.DAL
+namespace MoviesApp.DAL.Entities
 {
     public abstract class EntityBase : IEntity
     {
