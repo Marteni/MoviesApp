@@ -2,7 +2,7 @@
 
 namespace MoviesApp.DAL.Entities
 {
-    public class DirectedEntity : EntityBase
+    public class MoviesPersonDirectorEntity : EntityBase
     {
         public Guid DirectorId { get; set; }
         public Guid MovieId { get; set; }
