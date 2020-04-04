@@ -13,14 +13,15 @@ namespace MoviesApp.DAL
         public MoviesAppDbContext CreateDbContext(string[] args)
         {
 
-            var configuration = new ConfigurationBuilder()
-           .SetBasePath(Directory.GetCurrentDirectory())
-           .AddJsonFile("appsettings.json")
-           .Build();
-            var connectionString = configuration.GetValue<string>("connectionString");
+            // var configuration = new ConfigurationBuilder()
+            //.SetBasePath(Directory.GetCurrentDirectory())
+            //.AddJsonFile("appsettings.json")
+            //.Build();
+            // var connectionString = configuration.GetValue<string>("connectionString");
+            //var connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog = TasksDB;MultipleActiveResultSets = True;Integrated Security = True; ";
 
             var optionsBuilder = new DbContextOptionsBuilder<MoviesAppDbContext>();
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog = MoviesAppDb;MultipleActiveResultSets = True;Integrated Security = True; ");
             return new MoviesAppDbContext(optionsBuilder.Options);
         }
     }

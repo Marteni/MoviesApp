@@ -10,7 +10,7 @@ using MoviesApp.DAL;
 namespace MoviesApp.DAL.Migrations
 {
     [DbContext(typeof(MoviesAppDbContext))]
-    [Migration("20200404203501_InitialCreate")]
+    [Migration("20200404230757_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

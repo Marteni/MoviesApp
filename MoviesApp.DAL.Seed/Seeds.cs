@@ -18,6 +18,25 @@ namespace MoviesApp.DAL.Seed
 
         private static void SeedData(MoviesAppDbContext dbContext)
         {
+            var rating1 = new RatingEntity()
+            {
+                Id = new Guid("595FE374-060A-4E06-9201-56C1D61D30A2"),
+                RatedMovieId = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129"),
+                Nick = "SithJedi54",
+                NumericEvaluation = 10,
+                Review = "Twas AMAZING!"
+            };
+            dbContext.Ratings.Add(rating1);
+
+            var rating2 = new RatingEntity()
+            {
+                Id = new Guid("059A7713-0629-4B53-8CFD-A14B0EFB9968"),
+                RatedMovieId = new Guid("5866E0F7-DED9-4C71-9638-68EFDBEB958C"),
+                Nick = "Trekkie1705",
+                NumericEvaluation = 5,
+                Review = "It was alright."
+            };
+            dbContext.Ratings.Add(rating2);
 
             var georgeLucas = new PersonEntity()
             {
@@ -44,13 +63,13 @@ namespace MoviesApp.DAL.Seed
             };
             dbContext.People.Add(georgeLucas);
 
-            var ewanMcGregor = new PersonEntity()
+            var markHamill = new PersonEntity()
             {
                 Id = new Guid("ED74BA50-F208-49CA-A71A-7BFDCA3E1469"),
-                Name = "Ewan",
-                Surname = "McGregor",
-                Age = 49,
-                PictureUrl = "https://img.csfd.cz/files/images/creator/photos/163/724/163724153_d6d3e3.jpg?w100h132crop",
+                Name = "Mark",
+                Surname = "Hamill",
+                Age = 68,
+                PictureUrl = "https://img.csfd.cz/files/images/creator/photos/163/523/163523956_9edcf8.jpg?w100h132crop",
                 ActedInMovies = 
                 {
                     new MoviesPersonActorEntity()
@@ -58,21 +77,41 @@ namespace MoviesApp.DAL.Seed
                         Id = new Guid("12E1CE4D-2C8C-4BCE-B610-129A784EB03B"),
                         ActorId = new Guid("ED74BA50-F208-49CA-A71A-7BFDCA3E1469"),
                         MovieId = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129")
+                    },
+                    new MoviesPersonActorEntity()
+                    {
+                        Id = new Guid("A4525787-679A-4AFC-86C3-2E0BC0E3518B"),
+                        ActorId = new Guid("ED74BA50-F208-49CA-A71A-7BFDCA3E1469"),
+                        MovieId = new Guid("5866E0F7-DED9-4C71-9638-68EFDBEB958C")
                     }
                 }
             };
-            dbContext.People.Add(ewanMcGregor);
+            dbContext.People.Add(markHamill);
 
-            var rating1 = new RatingEntity()
+            var carrieFisher = new PersonEntity()
             {
-                Id = new Guid("595FE374-060A-4E06-9201-56C1D61D30A2"),
-                RatedMovieId = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129"),
-                Nick = "SithJedi54",
-                NumericEvaluation = 10,
-                Review = "Twas AMAZING!"
+                Id = new Guid("CAB2CA13-0F8B-4839-A10D-BBEDEAB84565"),
+                Name = "Carrie",
+                Surname = "Fisher",
+                Age = 60,
+                PictureUrl = "https://img.csfd.cz/files/images/creator/photos/164/132/164132451_95e211.jpg?w100h132crop",
+                ActedInMovies =
+                {
+                    new MoviesPersonActorEntity()
+                    {
+                        Id = new Guid("7648EBFA-9E58-4835-A237-E9E7B6387262"),
+                        ActorId = new Guid("CAB2CA13-0F8B-4839-A10D-BBEDEAB84565"),
+                        MovieId = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129")
+                    },
+                    new MoviesPersonActorEntity()
+                    {
+                        Id = new Guid("B65AE050-EAD0-4E04-BA65-828A65A613DA"),
+                        ActorId = new Guid("CAB2CA13-0F8B-4839-A10D-BBEDEAB84565"),
+                        MovieId = new Guid("5866E0F7-DED9-4C71-9638-68EFDBEB958C")
+                    }
+                }
             };
-            dbContext.Ratings.Add(rating1);
-
+            dbContext.People.Add(carrieFisher);
 
             dbContext.Movies.Add(
                 new MovieEntity()
@@ -85,14 +124,33 @@ namespace MoviesApp.DAL.Seed
                     CountryOfOrigin = "USA",
                     Length = TimeSpan.FromMinutes(121),
                     Description = "Rytíři Jedi byli vyhlazeni a Impérium vládne galaxii pevnou rukou. Malá skupina povstalců se odváží vzdorovat a ukradne plány k nejmocnější zbrani Impéria, Hvězdě smrti. Imperátorův nejvěrnější služebník, Darth Vader, musí najít plány a skrytou základnu povstalců. Zpráva o princezně Lei a vůdci rebelů se dostane až k obyčejnému farmáři, Lukovi Skywalkerovi. Ten se řídí svým osudem, zachraňuje princeznu a pomáhá povstalcům svrhnout Impérium společně s takovými nezapomenutelnými spojenci jako: Obi-Wan Kenobi, domýšlivý Han Solo, loajální Chewbacca a droidové R2-D2 a C3PO.",
+                    Actors =
+                    {
+                        new MoviesPersonActorEntity()
+                        {
+                            Id = new Guid("12E1CE4D-2C8C-4BCE-B610-129A784EB03B"),
+                            ActorId = new Guid("ED74BA50-F208-49CA-A71A-7BFDCA3E1469"),
+                            MovieId = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129"),
+                            Actor = markHamill
+                        },    
+                        new MoviesPersonActorEntity()
+                        {
+                            Id = new Guid("7648EBFA-9E58-4835-A237-E9E7B6387262"),
+                            ActorId = new Guid("CAB2CA13-0F8B-4839-A10D-BBEDEAB84565"),
+                            MovieId = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129"),
+                            Actor = carrieFisher
+                        }
+                    },
                     Directors =
                     {
                         new MoviesPersonDirectorEntity()
                         {
                             DirectorId = new Guid("14858480-C954-4424-A549-16E2B0302397"),
-                            MovieId = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129")
+                            MovieId = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129"),
+                            Director = georgeLucas
                         }
-                    }
+                    },
+                    Ratings = { rating1 }
                 }
             );
 
@@ -108,17 +166,35 @@ namespace MoviesApp.DAL.Seed
                     Length = TimeSpan.FromMinutes(124),
                     Description =
                         "Nastaly temné časy pro Povstání. I přes to, že 'Hvězda smrti' byla zničena, imperiální jednotky vyhnaly Rebely z jejich tajné základny a pronásledovaly je po celé Galaxii. Aby se vyhnula střetu s hrůzostrašnou Imperiální flotilou, skupina svobodných pilotů vedená Lukem Skywalkerem vybudovala novou tajnou základnu na opuštěné ledové planetě Hothu. Imperátorův pobočník Darth Vader, posedlý hledáním mladého Skywalkera, však vyslal tisíce sond do všech koutů vesmíru...",
+                    Actors =
+                    {
+                        new MoviesPersonActorEntity()
+                        {
+                            Id = new Guid("A4525787-679A-4AFC-86C3-2E0BC0E3518B"),
+                            ActorId = new Guid("ED74BA50-F208-49CA-A71A-7BFDCA3E1469"),
+                            MovieId = new Guid("5866E0F7-DED9-4C71-9638-68EFDBEB958C"),
+                            Actor = markHamill
+                        },
+                        new MoviesPersonActorEntity()
+                        {
+                            Id = new Guid("B65AE050-EAD0-4E04-BA65-828A65A613DA"),
+                            ActorId = new Guid("CAB2CA13-0F8B-4839-A10D-BBEDEAB84565"),
+                            MovieId = new Guid("5866E0F7-DED9-4C71-9638-68EFDBEB958C"),
+                            Actor = carrieFisher
+                        }
+                    },
                     Directors =
                     {
                         new MoviesPersonDirectorEntity()
                         {
                             DirectorId = new Guid("14858480-C954-4424-A549-16E2B0302397"),
-                            MovieId = new Guid("5866E0F7-DED9-4C71-9638-68EFDBEB958C")
+                            MovieId = new Guid("5866E0F7-DED9-4C71-9638-68EFDBEB958C"),
+                            Director = georgeLucas
                         }
-                    }
+                    },
+                    Ratings = { rating2 }
                 }
             );
-            
 
             dbContext.SaveChanges();
         }
@@ -136,7 +212,7 @@ namespace MoviesApp.DAL.Seed
         private static MoviesAppDbContext CreateDbContext()
         {
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<MoviesAppDbContext>();
-            dbContextOptionsBuilder.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog = TasksDB;MultipleActiveResultSets = True;Integrated Security = True; ");
+            dbContextOptionsBuilder.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog = MoviesAppDb;MultipleActiveResultSets = True;Integrated Security = True; ");
             return new MoviesAppDbContext(dbContextOptionsBuilder.Options);
         }
     }
