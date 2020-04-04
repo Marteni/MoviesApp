@@ -8,6 +8,10 @@ namespace MoviesApp.DAL
 {
     public  class MoviesAppDbContext: DbContext
     {
+        public MoviesAppDbContext()
+        {
+
+        }
         public MoviesAppDbContext(DbContextOptions options):base(options)
         {
         }
@@ -17,6 +21,8 @@ namespace MoviesApp.DAL
         public DbSet<PersonEntity> People { get; set; }
         public DbSet<MoviesPersonActorEntity> Actors { get; set; }
         public DbSet<MoviesPersonDirectorEntity> Directors { get; set; }
+
+
     }
 }
  
