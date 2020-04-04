@@ -31,12 +31,13 @@ namespace MoviesApp.DAL.Tests
         {
             var movie = new MovieEntity()
             {
+                Id = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129"),
                 OriginalTitle = "Star Wars: Episode III - Revenge of the Sith",
                 CzechTitle = "Star Wars: Epizoda III - Pomsta Sithù",
                 Genre = GenreType.ScienceFiction,
                 PosterImageUrl = "https://img.csfd.cz/files/images/film/posters/000/005/5671_445cb1.jpg?h180",
                 CountryOfOrigin = "USA",
-                Length = new TimeSpan(2, 20,0),
+                Length = TimeSpan.FromMinutes(140),
                 Description = "V tøetí epizodì ságy Star Wars zuøí Klonové války, které prohloubily rozpory mezi kancléøem Palpatinem a Radou Jediù. Mladý rytíø Jedi Anakin Skywalker se musí rozhodnout, na èí stranì bude stát. Podlehne slibùm moci a pokušení Temné strany, vstoupí do služeb zlého Darth Sidiouse a stane se z nìj Darth Vader. Sithští lordové se chtìjí spoleènì pomstít a prvním krokem jejich plánu je likvidace Jediù. Pouze Yoda a Obi-Wan pøežijí a musejí se Sithùm postavit, což vede k dramatickému souboji svìtelnými meèi mezi Anakinem a Obi-Wanem, který rozhodne o osudu galaxie.",
                 Actors = new List<MoviesPersonActorEntity>(),
                 Directors = new List<MoviesPersonDirectorEntity>(),
@@ -56,6 +57,7 @@ namespace MoviesApp.DAL.Tests
         {
             var person = new PersonEntity()
             {
+                Id = new Guid("14858480-C954-4424-A549-16E2B0302397"),
                 Name = "George",
                 Surname = "Lucas",
                 Age = 75,
@@ -77,6 +79,7 @@ namespace MoviesApp.DAL.Tests
         {
             var rating = new RatingEntity()
             {
+                Id = new Guid("595FE374-060A-4E06-9201-56C1D61D30A2"),
                 Nick = "SithJedi54",
                 NumericEvaluation = 10,
                 Review = "Twas AMAZING!"

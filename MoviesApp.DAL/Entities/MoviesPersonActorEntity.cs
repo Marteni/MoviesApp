@@ -7,8 +7,8 @@ namespace MoviesApp.DAL.Entities
     {
         public Guid ActorId { get; set; }
         public Guid MovieId { get; set; }
-        public PersonEntity Actor { get; set; } 
-        public MovieEntity ActedInMovie { get; set; }
+        public virtual PersonEntity Actor { get; set; } 
+        public virtual MovieEntity ActedInMovie { get; set; }
 
         private sealed class MoviesPersonActorEntityEqualityComparer : IEqualityComparer<MoviesPersonActorEntity>
         {
