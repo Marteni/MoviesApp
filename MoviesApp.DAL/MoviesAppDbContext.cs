@@ -8,6 +8,10 @@ namespace MoviesApp.DAL
 {
     public  class MoviesAppDbContext: DbContext
     {
+        public MoviesAppDbContext(DbContextOptions options):base(options)
+        {
+        }
+
         public DbSet<MovieEntity> Movies { get; set; }
         public DbSet<RatingEntity> Ratings { get; set; }
         public DbSet<PersonEntity> People { get; set; }
