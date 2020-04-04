@@ -90,14 +90,14 @@ namespace MoviesApp.DAL.Tests
             Assert.Equal(rating, ratingFromDb, RatingEntity.RatingComparer);
         }
 
-        [Fact]
-        public void AddNew_Director_Persistent()
-        {
-            var director = new MoviesPersonDirectorEntity()
-            {
+        //[Fact]
+        //public void AddNew_Director_Persistent()
+        //{
+        //    var director = new MoviesPersonDirectorEntity()
+        //    {
 
-            }
-        }
+        //    }
+        //}
 
         public void Dispose() => _moviesAppDbContext?.Dispose();
     }
