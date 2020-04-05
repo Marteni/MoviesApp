@@ -8,6 +8,5 @@ namespace MoviesApp.BL.Factories
     public interface IDbContextSqlFactory
     {
         MoviesAppDbContext CreateAppDbContext();
-
     }
 }

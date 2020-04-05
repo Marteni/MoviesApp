@@ -15,6 +15,5 @@ namespace MoviesApp.BL.Tests
             optionsBuilder.UseInMemoryDatabase("MoviesAppDB");
             return new MoviesAppDbContext(optionsBuilder.Options);
         }
-
     }
 }

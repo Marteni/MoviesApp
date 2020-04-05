@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MoviesApp.DAL.Tests;
-using MoviesApp.DAL.Factories;
-using MoviesApp.BL.Repositories;
+﻿using MoviesApp.BL.Repositories;
 
 namespace MoviesApp.BL.Tests
 {

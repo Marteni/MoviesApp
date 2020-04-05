@@ -31,7 +31,7 @@ namespace MoviesApp.DAL.Tests
         {
             var movie = new MovieEntity()
             {
-                Id = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129"),
+                Id = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB7712A"),
                 OriginalTitle = "Star Wars: Episode III - Revenge of the Sith",
                 CzechTitle = "Star Wars: Epizoda III - Pomsta Sithù",
                 Genre = GenreType.ScienceFiction,
@@ -57,7 +57,7 @@ namespace MoviesApp.DAL.Tests
         {
             var person = new PersonEntity()
             {
-                Id = new Guid("14858480-C954-4424-A549-16E2B0302397"),
+                Id = new Guid("14858480-C954-4424-A549-16E2B030239A"),
                 Name = "George",
                 Surname = "Lucas",
                 Age = 75,
@@ -79,7 +79,7 @@ namespace MoviesApp.DAL.Tests
         {
             var rating = new RatingEntity()
             {
-                Id = new Guid("595FE374-060A-4E06-9201-56C1D61D30A2"),
+                Id = new Guid("595FE374-060A-4E06-9201-56C1D61D30AA"),
                 Nick = "SithJedi54",
                 NumericEvaluation = 10,
                 Review = "Twas AMAZING!"
@@ -92,15 +92,6 @@ namespace MoviesApp.DAL.Tests
             var ratingFromDb = dbx.Ratings.Single(r => r.Id == rating.Id);
             Assert.Equal(rating, ratingFromDb, RatingEntity.RatingComparer);
         }
-
-        //[Fact]
-        //public void AddNew_Director_Persistent()
-        //{
-        //    var director = new MoviesPersonDirectorEntity()
-        //    {
-
-        //    }
-        //}
 
         public void Dispose() => _moviesAppDbContext?.Dispose();
     }

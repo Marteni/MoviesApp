@@ -1,14 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using MoviesApp.DAL.Entities;
 
 namespace MoviesApp.DAL
 {
     public  class MoviesAppDbContext: DbContext
     {
-  
         public MoviesAppDbContext(DbContextOptions options):base(options)
         {
         }
@@ -39,7 +35,6 @@ namespace MoviesApp.DAL
             modelBuilder.SeedActors();
             modelBuilder.SeedDirectors();
         }
-
     }
 }
  

@@ -1,12 +1,9 @@
 ﻿using MoviesApp.BL.Models;
 using MoviesApp.DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MoviesApp.BL.Mappers
 {
-    public class PersonMapper
+    public static class PersonMapper
     {
         public static PersonListModel MapPersonEntityToListModel(PersonEntity entity)
         {
@@ -14,8 +11,6 @@ namespace MoviesApp.BL.Mappers
             {
                 Id = entity.Id,
                 Name = entity.Name
-
-
             };
         }
 
@@ -28,7 +23,6 @@ namespace MoviesApp.BL.Mappers
                 Surname = entity.Surname,
                 Age = entity.Age,
                 PictureUrl = entity.PictureUrl
-
             };
         }
 

@@ -3,7 +3,7 @@ using MoviesApp.DAL.Factories;
 
 namespace MoviesApp.DAL.Tests
 {
-    public class DbContextInMemoryFactory : IDbContextFactory//<MoviesAppDbContext>
+    public class DbContextInMemoryFactory : IDbContextFactory
     {
         private readonly string _databaseName;
 

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using MoviesApp.DAL.Entities;
 using MoviesApp.DAL.Enums;
 
 namespace MoviesApp.BL.Models

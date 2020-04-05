@@ -8,7 +8,7 @@ using System.Text;
 
 namespace MoviesApp.BL.Mappers
 {
-    internal static class MovieMapper
+    public static class MovieMapper
     {
         public static MovieListModel MapMovieEntityToListModel(MovieEntity entity)
         {

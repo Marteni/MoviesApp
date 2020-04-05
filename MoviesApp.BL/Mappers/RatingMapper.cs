@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using MoviesApp.BL.Models;
 using MoviesApp.DAL.Entities;
 
@@ -13,9 +10,7 @@ namespace MoviesApp.BL.Mappers
             return new RatingListModel
             {
                 Id = entity.Id,
-                Nick = entity.Nick,
-               
-            };
+                Nick = entity.Nick            };
         }
 
         public static RatingDetailModel MapRatingEntityToDetailModel(RatingEntity enity)

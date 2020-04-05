@@ -1,41 +1,74 @@
-using System;
-using MoviesApp.BL.Repositories;
-using MoviesApp.DAL.Enums;
+using MoviesApp.BL.Mappers;
+using MoviesApp.BL.Models;
 using Xunit;
 
 namespace MoviesApp.BL.Tests
 {
-    public class MovieRepositoryTests : IClassFixture<MovieRepositoryTestsFixture>
+    public class MovieRepositoryTests : IClassFixture<MovieRepositoryTestFixture>
     {
-        private readonly MovieRepositoryTestsFixture _movieRepositoryTestsFixture;
-
-        private MovieRepository RepositoryMovies => _movieRepositoryTestsFixture.Repository;
+        private readonly MovieRepositoryTestFixture _movieRepositoryTestsFixture;
 
         //Constructor
-        public MovieRepositoryTests(MovieRepositoryTestsFixture movieRepositoryTestsFixture)
+        public MovieRepositoryTests(MovieRepositoryTestFixture movieRepositoryTestFixture)
         {
-            this._movieRepositoryTestsFixture = movieRepositoryTestsFixture;
+            this._movieRepositoryTestsFixture = movieRepositoryTestFixture;
         }
 
         [Fact]
-        public void Create_MovieWithoutNavigationals_DoesNotThrowAndEqualsCreated()
+        public void Create_WithNonExistingItem_DoesNotThrow()
         {
-            var movieModel = new MovieModel
-            {
-                OriginalTitle = "Star Wars: Episode IV - New Hope",
-                CzechTitle = "Star Wars: Epizoda IV - Nová nadìje",
-                Genre = GenreType.ScienceFiction,
-                PosterImageUrl = "https://img.csfd.cz/files/images/film/posters/162/398/162398464_ac2bec.jpg?h180",
-                CountryOfOrigin = "USA",
-                Length = TimeSpan.FromMinutes(121),
-                Description =
-                    "Rytíøi Jedi byli vyhlazeni a Impérium vládne galaxii pevnou rukou. Malá skupina povstalcù se odváží vzdorovat a ukradne plány k nejmocnìjší zbrani Impéria, Hvìzdì smrti. Imperátorùv nejvìrnìjší služebník, Darth Vader, musí najít plány a skrytou základnu povstalcù. Zpráva o princeznì Lei a vùdci rebelù se dostane až k obyèejnému farmáøi, Lukovi Skywalkerovi. Ten se øídí svým osudem, zachraòuje princeznu a pomáhá povstalcùm svrhnout Impérium spoleènì s takovými nezapomenutelnými spojenci jako: Obi-Wan Kenobi, domýšlivý Han Solo, loajální Chewbacca a droidové R2-D2 a C3PO.",
-            };
+            var detailModel = MovieMapper.MapMovieEntityToDetailModel(DAL.Seed.StarWars);
+            var returnedModel = _movieRepositoryTestsFixture.Repository.Create(detailModel);
 
-            var returnedModel = RepositoryMovies.InsertOrUpdate(movieModel);
+            Assert.NotNull(returnedModel);
 
-            Assert.Equal(movieModel, returnedModel, MovieModel.MovieModelEqualityComparer);
+            Assert.Equal(detailModel, returnedModel, MovieDetailModel.MovieDetailModelComparer);
+
+            _movieRepositoryTestsFixture.Repository.Delete(returnedModel.Id);
         }
 
+        [Fact]
+        public void GetById_FromSeeded_DoesNotThrowAndEqualsSeeded()
+        {
+            var detailModel = MovieMapper.MapMovieEntityToDetailModel(DAL.Seed.StarWars);
+            _movieRepositoryTestsFixture.Repository.Create(detailModel);
+
+            var returnedModel = _movieRepositoryTestsFixture.Repository.GetById(DAL.Seed.StarWars.Id);
+
+            Assert.Equal(detailModel, returnedModel, MovieDetailModel.MovieDetailModelComparer);
+            _movieRepositoryTestsFixture.Repository.Delete(returnedModel.Id);
+        }
+
+        [Fact]
+        public void Update_Name_FromSeeded_CheckUpdated()
+        {
+            var detailModel = MovieMapper.MapMovieEntityToDetailModel(DAL.Seed.StarWars);
+            _movieRepositoryTestsFixture.Repository.Create(detailModel);
+
+            detailModel.OriginalTitle = "This is (not) gonna leave a mark";
+            _movieRepositoryTestsFixture.Repository.Update(detailModel);
+
+            var returnedModel = _movieRepositoryTestsFixture.Repository.GetById(DAL.Seed.StarWars.Id);
+            Assert.Equal(detailModel, returnedModel, MovieDetailModel.MovieDetailModelComparer);
+            _movieRepositoryTestsFixture.Repository.Delete(returnedModel.Id);
+        }
+
+        [Fact]
+        public void DeleteById_FromSeeded_DoesNotThrow()
+        {
+            var detailModel = MovieMapper.MapMovieEntityToDetailModel(DAL.Seed.StarWars);
+            _movieRepositoryTestsFixture.Repository.Create(detailModel);
+
+            var returnedModel = _movieRepositoryTestsFixture.Repository.GetById(DAL.Seed.StarWars.Id);
+            Assert.NotNull(returnedModel);
+
+            _movieRepositoryTestsFixture.Repository.Delete(returnedModel.Id);
+
+            try
+            {
+                _movieRepositoryTestsFixture.Repository.GetById(DAL.Seed.StarWars.Id);
+            }
+            catch (System.InvalidOperationException) { }
+        }
     }
 }
