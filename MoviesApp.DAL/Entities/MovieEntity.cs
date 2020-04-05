@@ -74,8 +74,7 @@ namespace MoviesApp.DAL.Entities
                        && x.PosterImageUrl == y.PosterImageUrl 
                        && x.CountryOfOrigin == y.CountryOfOrigin 
                        && x.Length.Equals(y.Length) 
-                       && x.Description == y.Description 
-                       && Equals(x.Ratings, y.Ratings);
+                       && x.Description == y.Description;
             }
 
             public int GetHashCode(MovieEntity obj)

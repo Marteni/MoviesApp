@@ -1,18 +1,21 @@
-﻿using MoviesApp.BL.Repositories;
-using MoviesApp.DAL.Factories;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using MoviesApp.DAL.Tests;
+using MoviesApp.DAL.Factories;
+using MoviesApp.BL.Repositories;
 
 namespace MoviesApp.BL.Tests
 {
-    public class MovieRepositoryTestsFixture : MoviesAppDbContextSetupFixture
+    public class MovieRepositoryTestsFixture
     {
-        public MovieRepositoryTestsFixture() : base(nameof(MovieRepositoryTestsFixture))
-        {
-            Repository = new MovieRepository(IDbContextFactory);
+        private readonly IMovieRepository repository;
 
-            PrepareDatabase();
+        public MovieRepositoryTestsFixture()
+        {
+            repository = new MovieRepository(new InMemoryDbContextFactory());
         }
 
-        public Repository { get; }
+        public IMovieRepository Repository => repository;
     }
 }

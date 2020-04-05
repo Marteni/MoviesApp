@@ -7,13 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoviesApp.DAL", "MoviesApp.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoviesApp.DAL.Tests", "MoviesApp.DAL.Tests\MoviesApp.DAL.Tests.csproj", "{D5433AED-E981-449E-B8CC-EC62A71777C1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoviesApp.DAL.Seed", "MoviesApp.DAL.Seed\MoviesApp.DAL.Seed.csproj", "{4BF75F3D-CE31-4DE7-B9BE-65B6B74E7814}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoviesApp.BL", "MoviesApp.BL\MoviesApp.BL.csproj", "{38081BDB-FE7C-4389-9607-8254271A2244}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0956C25D-F40F-48C6-B8EB-2D611523408D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviesApp.BL.Tests", "MoviesApp.BL.Tests\MoviesApp.BL.Tests.csproj", "{76D9DBBA-8E42-439A-BB38-1A2EE486AD0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoviesApp.BL.Tests", "MoviesApp.BL.Tests\MoviesApp.BL.Tests.csproj", "{76D9DBBA-8E42-439A-BB38-1A2EE486AD0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +27,6 @@ Global
 		{D5433AED-E981-449E-B8CC-EC62A71777C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5433AED-E981-449E-B8CC-EC62A71777C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5433AED-E981-449E-B8CC-EC62A71777C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4BF75F3D-CE31-4DE7-B9BE-65B6B74E7814}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4BF75F3D-CE31-4DE7-B9BE-65B6B74E7814}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4BF75F3D-CE31-4DE7-B9BE-65B6B74E7814}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4BF75F3D-CE31-4DE7-B9BE-65B6B74E7814}.Release|Any CPU.Build.0 = Release|Any CPU
 		{38081BDB-FE7C-4389-9607-8254271A2244}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{38081BDB-FE7C-4389-9607-8254271A2244}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38081BDB-FE7C-4389-9607-8254271A2244}.Release|Any CPU.ActiveCfg = Release|Any CPU

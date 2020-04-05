@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MoviesApp.BL.Models;
+using MoviesApp.DAL.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,5 +8,40 @@ namespace MoviesApp.BL.Mappers
 {
     public class PersonMapper
     {
+        public static PersonListModel MapPersonEntityToListModel(PersonEntity entity)
+        {
+            return new PersonListModel
+            {
+                Id = entity.Id,
+                Name = entity.Name
+
+
+            };
+        }
+
+        public static PersonDetailModel MapPersonEntityToDetailModel(PersonEntity entity)
+        {
+            return new PersonDetailModel
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Surname = entity.Surname,
+                Age = entity.Age,
+                PictureUrl = entity.PictureUrl
+
+            };
+        }
+
+        public static PersonEntity MapPersonDetailModelToEntity(PersonDetailModel model)
+        {
+            return new PersonEntity
+            {
+                Id = model.Id,
+                Name = model.Name,
+                Surname = model.Surname,
+                Age = model.Age,
+                PictureUrl = model.PictureUrl
+            };
+        }
     }
 }

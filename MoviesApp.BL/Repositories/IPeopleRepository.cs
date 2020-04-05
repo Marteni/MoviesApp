@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MoviesApp.BL.Repositories
 {
-    public interface IPersonRepository
+    public interface IPeopleRepository
     {
         IList<PersonListModel> GetAll();
         PersonDetailModel GetById(Guid id);

@@ -8,53 +8,53 @@ using MoviesApp.BL.Models;
 
 namespace MoviesApp.BL.Repositories
 {
-    public class MovieRepository : IMovieRepository
+    public class RatingRepository : IRatingRepository
     {
 
         private readonly IDbContextSqlFactory _dbContextSqlFactory;
 
-        public MovieRepository(IDbContextSqlFactory dbContextSqlFactory)
+        public RatingRepository(IDbContextSqlFactory dbContextSqlFactory)
         {
             this._dbContextSqlFactory = dbContextSqlFactory;
         }
 
-        public IList<MovieListModel> GetAll()
+        public IList<RatingListModel> GetAll()
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                return dbContext.Movies
-                    .Select(e => MovieMapper.MapMovieEntityToListModel(e))
+                return dbContext.Ratings
+                    .Select(e => RatingMapper.MapRatingEntityToListModel(e))
                     .ToList();
             }
         }
 
-        public MovieDetailModel GetById(Guid id)
+        public RatingDetailModel GetById(Guid id)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
                 //SELECT * FROM Ingredient WHERE Id = id;
-                var entity = dbContext.Movies.First(t => t.Id == id);
-                return MovieMapper.MapMovieEntityToDetailModel(entity);
+                var entity = dbContext.Ratings.First(t => t.Id == id);
+                return RatingMapper.MapRatingEntityToDetailModel(entity);
             }
         }
 
-        public MovieDetailModel Create(MovieDetailModel model)
+        public RatingDetailModel Create(RatingDetailModel model)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                var entity = MovieMapper.MapMovieDetailModelToEntity(model);
-                dbContext.Movies.Add(entity);
+                var entity = RatingMapper.MapRatingDetailModelToEntity(model);
+                dbContext.Ratings.Add(entity);
                 dbContext.SaveChanges();
-                return MovieMapper.MapMovieEntityToDetailModel(entity);
+                return RatingMapper.MapRatingEntityToDetailModel(entity);
             }
         }
 
-        public void Update(MovieDetailModel model)
+        public void Update(RatingDetailModel model)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                var entity = MovieMapper.MapMovieDetailModelToEntity(model);
-                dbContext.Movies.Update(entity);
+                var entity = RatingMapper.MapRatingDetailModelToEntity(model);
+                dbContext.Ratings.Update(entity);
                 dbContext.SaveChanges();
             }
         }
@@ -63,7 +63,7 @@ namespace MoviesApp.BL.Repositories
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                var entity = dbContext.Movies.First(t => t.Id == id);
+                var entity = dbContext.Ratings.First(t => t.Id == id);
                 dbContext.Remove(entity);
                 dbContext.SaveChanges();
             }

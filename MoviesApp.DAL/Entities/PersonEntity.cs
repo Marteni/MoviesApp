@@ -12,7 +12,7 @@ namespace MoviesApp.DAL.Entities
         public string PictureUrl { get; set; }
         public ICollection<MoviesPersonActorEntity> ActedInMovies { get; set; } = new List<MoviesPersonActorEntity>();
         public ICollection<MoviesPersonDirectorEntity> DirectedMovies { get; set; } = new List<MoviesPersonDirectorEntity>();
-        //public ICollection<RatingEntity> GivenRatings { get; set; } = new List<RatingEntity>();
+      
 
         private sealed class PersonEntityEqualityComparer : IEqualityComparer<PersonEntity>
         {

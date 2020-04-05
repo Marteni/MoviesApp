@@ -5,16 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Repositories\MovieRepository.cs" />
-    <Compile Remove="Repositories\PersonRepository.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Repositories\PersonRepository.cs" />
-    <None Include="Repositories\MovieRepository.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MoviesApp.DAL\MoviesApp.DAL.csproj" />
   </ItemGroup>
 

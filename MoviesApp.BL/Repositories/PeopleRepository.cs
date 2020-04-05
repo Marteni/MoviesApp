@@ -1,60 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using MoviesApp.BL.Factories;
 using MoviesApp.BL.Mappers;
 using MoviesApp.BL.Models;
+using MoviesApp.DAL.Factories;
+using System.Linq;
 
 namespace MoviesApp.BL.Repositories
 {
-    public class MovieRepository : IMovieRepository
+    public class PeopleRepository : IPeopleRepository
     {
 
+ 
         private readonly IDbContextSqlFactory _dbContextSqlFactory;
 
-        public MovieRepository(IDbContextSqlFactory dbContextSqlFactory)
+        public PeopleRepository(IDbContextSqlFactory dbContextSqlFactory)
         {
             this._dbContextSqlFactory = dbContextSqlFactory;
         }
 
-        public IList<MovieListModel> GetAll()
+        public IList<PersonListModel> GetAll()
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                return dbContext.Movies
-                    .Select(e => MovieMapper.MapMovieEntityToListModel(e))
+                return dbContext.People
+                    .Select(e => PersonMapper.MapPersonEntityToListModel(e))
                     .ToList();
             }
         }
 
-        public MovieDetailModel GetById(Guid id)
+        public PersonDetailModel GetById(Guid id)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
                 //SELECT * FROM Ingredient WHERE Id = id;
-                var entity = dbContext.Movies.First(t => t.Id == id);
-                return MovieMapper.MapMovieEntityToDetailModel(entity);
+                var entity = dbContext.People.First(t => t.Id == id);
+                return PersonMapper.MapPersonEntityToDetailModel(entity);
             }
         }
 
-        public MovieDetailModel Create(MovieDetailModel model)
+        public PersonDetailModel Create(PersonDetailModel model)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                var entity = MovieMapper.MapMovieDetailModelToEntity(model);
-                dbContext.Movies.Add(entity);
+                var entity = PersonMapper.MapPersonDetailModelToEntity(model);
+                dbContext.People.Add(entity);
                 dbContext.SaveChanges();
-                return MovieMapper.MapMovieEntityToDetailModel(entity);
+                return PersonMapper.MapPersonEntityToDetailModel(entity);
             }
         }
 
-        public void Update(MovieDetailModel model)
+        public void Update(PersonDetailModel model)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext =  _dbContextSqlFactory.CreateAppDbContext())
             {
-                var entity = MovieMapper.MapMovieDetailModelToEntity(model);
-                dbContext.Movies.Update(entity);
+                var entity = PersonMapper.MapPersonDetailModelToEntity(model);
+                dbContext.People.Update(entity);
                 dbContext.SaveChanges();
             }
         }
@@ -63,7 +65,7 @@ namespace MoviesApp.BL.Repositories
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                var entity = dbContext.Movies.First(t => t.Id == id);
+                var entity = dbContext.People.First(t => t.Id == id);
                 dbContext.Remove(entity);
                 dbContext.SaveChanges();
             }

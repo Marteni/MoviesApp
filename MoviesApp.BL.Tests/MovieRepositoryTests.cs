@@ -1,19 +1,20 @@
 using System;
+using MoviesApp.BL.Repositories;
+using MoviesApp.DAL.Enums;
 using Xunit;
 
 namespace MoviesApp.BL.Tests
 {
-    public class MovieRepositoryTests : IClassFixture<MovieRepositoryTestsFixture>, IDisposable
+    public class MovieRepositoryTests : IClassFixture<MovieRepositoryTestsFixture>
     {
         private readonly MovieRepositoryTestsFixture _movieRepositoryTestsFixture;
 
-        private MovieRepostiory RepositoryMovies => _movieRepositoryTestsFixture.Repository;
+        private MovieRepository RepositoryMovies => _movieRepositoryTestsFixture.Repository;
 
         //Constructor
         public MovieRepositoryTests(MovieRepositoryTestsFixture movieRepositoryTestsFixture)
         {
-            _movieRepositoryTestsFixture = movieRepositoryTestsFixture;
-            _movieRepositoryTestsFixture.PrepareDatabase(); 
+            this._movieRepositoryTestsFixture = movieRepositoryTestsFixture;
         }
 
         [Fact]
@@ -36,25 +37,5 @@ namespace MoviesApp.BL.Tests
             Assert.Equal(movieModel, returnedModel, MovieModel.MovieModelEqualityComparer);
         }
 
-        [Fact]
-        public void Create_RatingWithoutNavigationals_DoesNotThrowAndEqualsCreated()
-        {
-            var rating = new RatingModel
-            {
-                RatedMovieId = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129"),
-                Nick = "SithJedi54",
-                NumericEvaluation = 10,
-                Review = "Twas AMAZING!"
-            };
-
-            var returnedRating = RepositoryMovies.InsertOrUpdate(rating);
-
-            Assert.Equal(rating, returnedRating, RatingModel.RatingModelEqualityComparer);
-        }
-
-        public void Dispose()
-        {
-            _movieRepositoryTestsFixture.TearDownDatabase();
-        }
     }
 }
