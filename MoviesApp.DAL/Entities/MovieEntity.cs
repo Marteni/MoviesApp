@@ -14,9 +14,9 @@ namespace MoviesApp.DAL.Entities
         public string CountryOfOrigin { get; set; }
         public TimeSpan Length { get; set; }
         public string Description { get; set; }
+        public ICollection<RatingEntity> Ratings { get; set; } = new List<RatingEntity>();
         public ICollection<MoviesPersonActorEntity> Actors { get; set; } = new List<MoviesPersonActorEntity>();
         public ICollection<MoviesPersonDirectorEntity> Directors { get; set; } = new List<MoviesPersonDirectorEntity>();
-        public ICollection<RatingEntity> Ratings { get; set; } = new List<RatingEntity>();
 
         private sealed class MovieEntityEqualityComparer : IEqualityComparer<MovieEntity>
         {
