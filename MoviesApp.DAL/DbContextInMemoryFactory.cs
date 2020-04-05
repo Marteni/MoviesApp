@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MoviesApp.DAL.Factories;
 
-namespace MoviesApp.DAL.Tests
+namespace MoviesApp.DAL
 {
     public class DbContextInMemoryFactory : IDbContextFactory//<MoviesAppDbContext>
     {
