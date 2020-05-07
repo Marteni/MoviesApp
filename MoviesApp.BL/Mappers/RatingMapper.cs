@@ -1,18 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
 using MoviesApp.BL.Models;
 using MoviesApp.DAL.Entities;
 
 namespace MoviesApp.BL.Mappers
 {
-    internal static class RatingMapper
+    public static class RatingMapper
     {
-        public static RatingListModel MapRatingEntityToListModel(RatingEntity entity)
-        {
-            return new RatingListModel
-            {
-                Id = entity.Id,
-                Nick = entity.Nick            };
-        }
-
+      
         public static RatingDetailModel MapRatingEntityToDetailModel(RatingEntity enity)
         {
             return new RatingDetailModel

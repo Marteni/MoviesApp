@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using MoviesApp.DAL.Entities;
 using MoviesApp.DAL.Enums;
 
 namespace MoviesApp.BL.Models
@@ -14,7 +16,7 @@ namespace MoviesApp.BL.Models
         public string CountryOfOrigin { get; set; }
         public TimeSpan Length { get; set; }
         public string Description { get; set; }
-        public ICollection<RatingListModel> Ratings { get; set; } = new List<RatingListModel>();
+        public ICollection<RatingDetailModel> Ratings { get; set; } = new List<RatingDetailModel>();
         public ICollection<PersonActorDetailModel> Actors { get; set; } = new List<PersonActorDetailModel>();
         public ICollection<PersonDirectorDetailModel> Directors { get; set; } = new List<PersonDirectorDetailModel>();
 

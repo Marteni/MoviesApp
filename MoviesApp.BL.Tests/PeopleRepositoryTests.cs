@@ -12,6 +12,7 @@ namespace MoviesApp.BL.Tests
         public PeopleRepositoryTests(PeopleRepositoryTestFixture peopleRepositoryTestFixture)
         {
             this._peopleRepositoryTestFixture = peopleRepositoryTestFixture;
+
         }
 
         [Fact]
@@ -66,7 +67,7 @@ namespace MoviesApp.BL.Tests
 
             try 
             {
-                _peopleRepositoryTestFixture.Repository.GetById(returnedModel.Id);
+                returnedModel = _peopleRepositoryTestFixture.Repository.GetById(returnedModel.Id);
             }
             catch (System.InvalidOperationException e){}
         }

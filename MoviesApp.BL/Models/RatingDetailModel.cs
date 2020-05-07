@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using MoviesApp.DAL.Entities;
 
 namespace MoviesApp.BL.Models
@@ -10,7 +11,7 @@ namespace MoviesApp.BL.Models
         public string Nick { get; set; }
         public int NumericEvaluation { get; set; }
         public string Review { get; set; }
-        public MovieEntity RatedMovie { get; set; }
+    
 
         private sealed class RatingEntityEqualityComparer : IEqualityComparer<RatingEntity>
         {

@@ -1,9 +1,12 @@
-﻿using MoviesApp.BL.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using MoviesApp.BL.Models;
 using MoviesApp.DAL.Entities;
 
 namespace MoviesApp.BL.Mappers
 {
-    internal static class PersonActorMapper
+    public static class PersonActorMapper
     {
         public static PersonActorDetailModel MapMoviesPersonActorEntityToDetailModel(MoviesPersonActorEntity entity)
         {

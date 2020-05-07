@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MoviesApp.BL.Factories;
+using System.Text;
 using MoviesApp.BL.Mappers;
 using MoviesApp.BL.Models;
+using MoviesApp.DAL.Factories;
 
 namespace MoviesApp.BL.Repositories
 {
@@ -17,12 +18,12 @@ namespace MoviesApp.BL.Repositories
             this._dbContextSqlFactory = dbContextSqlFactory;
         }
 
-        public IList<RatingListModel> GetAll()
+        public IList<RatingDetailModel> GetAll()
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
                 return dbContext.Ratings
-                    .Select(e => RatingMapper.MapRatingEntityToListModel(e))
+                    .Select(e => RatingMapper.MapRatingEntityToDetailModel(e))
                     .ToList();
             }
         }
@@ -31,6 +32,7 @@ namespace MoviesApp.BL.Repositories
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
+                //SELECT * FROM Ingredient WHERE Id = id;
                 var entity = dbContext.Ratings.First(t => t.Id == id);
                 return RatingMapper.MapRatingEntityToDetailModel(entity);
             }

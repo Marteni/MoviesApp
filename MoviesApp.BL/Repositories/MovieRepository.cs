@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MoviesApp.BL.Factories;
+using System.Text;
 using MoviesApp.BL.Mappers;
 using MoviesApp.BL.Models;
+using MoviesApp.DAL.Factories;
 
 namespace MoviesApp.BL.Repositories
 {
@@ -31,6 +32,7 @@ namespace MoviesApp.BL.Repositories
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
+                //SELECT * FROM Ingredient WHERE Id = id;
                 var entity = dbContext.Movies.First(t => t.Id == id);
                 return MovieMapper.MapMovieEntityToDetailModel(entity);
             }

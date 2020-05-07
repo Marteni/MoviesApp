@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using MoviesApp.BL.Factories;
 using MoviesApp.DAL;
+using MoviesApp.DAL.Factories;
 
 namespace MoviesApp.BL.Tests
 {
@@ -15,5 +15,6 @@ namespace MoviesApp.BL.Tests
             optionsBuilder.UseInMemoryDatabase("MoviesAppDB");
             return new MoviesAppDbContext(optionsBuilder.Options);
         }
+
     }
 }
