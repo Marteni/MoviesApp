@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MoviesApp.APP"
         xmlns:viewModels="clr-namespace:MoviesApp.App.ViewModels"
+        xmlns:views="clr-namespace:MoviesApp.APP.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
@@ -16,20 +17,20 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150" />
             <ColumnDefinition Width="*"/>
-           
+
         </Grid.ColumnDefinitions>
 
         <TextBox Height="20" 
                  Grid.Column="0"/>
 
         <TabControl Grid.Column="1" 
-                    Grid.Row="1">
+                    Grid.Row="0">
 
             <TabItem Header="Movies" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        
+
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -37,16 +38,9 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="ahoj" Grid.Column="0"/>
-                    <ListBox ItemsSource="{Binding Movies}">
-
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Label Content="{Binding Name}" />
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-
-                    </ListBox>
+                   
+                    <views:MovieListView Grid.Column="0"/>
+                    <views:MovieDetailView Grid.Column="1"></views:MovieDetailView>
                 </Grid>
             </TabItem>
             <TabItem Header="Actors/Directors" >
@@ -55,12 +49,13 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="26*" />
+                        <ColumnDefinition Width="189*"/>
+                        <ColumnDefinition Width="215*"/>
+                        <ColumnDefinition Width="215*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="cau" Grid.Column="0"/>
+                    <TextBlock Text="cau" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,214,0"/>
                 </Grid>
 
             </TabItem>

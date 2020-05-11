@@ -11,10 +11,14 @@ namespace MoviesApp.APP.ViewModels
     {
 
 
-        private static MovieRepository _movieRepository = new MovieRepository(new DbContextSqlFactory());
+        private static readonly MovieRepository _movieRepository = new MovieRepository(new DbContextSqlFactory());
 
-        private static MainViewModel _mainViewModel = new MainViewModel(_movieRepository);
-        
+        private static readonly MainViewModel _mainViewModel = new MainViewModel();
+
+        private static readonly MovieListViewModel _movieListViewModel = new MovieListViewModel(_movieRepository);
+
+        private static readonly MovieDetailViewModel _movieDetailViewModel = new MovieDetailViewModel(_movieRepository);
+
 
         public static MainViewModel MainViewModel
         {
@@ -25,6 +29,24 @@ namespace MoviesApp.APP.ViewModels
             }
         }
 
-      
+        public static MovieListViewModel MovieListViewModel
+        {
+
+            get
+            {
+                return _movieListViewModel;
+            }
+        }
+
+        public static MovieDetailViewModel MovieDetailViewModel
+        {
+
+            get
+            {
+                return _movieDetailViewModel;
+            }
+        }
+
+
     }
 }
