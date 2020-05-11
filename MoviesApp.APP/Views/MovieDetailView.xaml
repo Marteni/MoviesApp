@@ -11,8 +11,8 @@
              d:DataContext="{d:DesignInstance viewModels1:MovieDetailViewModel}"
              DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=MovieDetailViewModel}">
 
-    <StackPanel Height="330" >
-        <Button Content="Close" ></Button>
+    <StackPanel Height="330" Visibility="{Binding Model, Converter={StaticResource NullToVisibilityConverter}}" >
+        <Button Content="Close" Command="{Binding CloseMovieDetailViewCommand}" ></Button>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
@@ -21,7 +21,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Content="Save" Grid.Column="0"></Button>
+            <Button Content="Save" Grid.Column="0" Command="{Binding MovieSaveCommand}"></Button>
             <Button Content="Delete" Grid.Column="1"></Button>
 
         </Grid>
@@ -29,8 +29,8 @@
         <TextBox ></TextBox>
         <Label>Czech Title</Label>
         <TextBox ></TextBox>
-        <TextBlock Text="{Binding Model, Mode=TwoWay}"></TextBlock>
-        <TextBlock Text="{Binding ahoj, Mode=TwoWay}"></TextBlock>
+        <TextBlock Text="{Binding Model, Mode=OneWay , UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+        <TextBlock Text="{Binding TestProperty, Mode=OneWay , UpdateSourceTrigger=PropertyChanged}"></TextBlock>
 
             
     </StackPanel>

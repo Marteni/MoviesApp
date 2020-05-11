@@ -40,7 +40,7 @@
 
                    
                     <views:MovieListView Grid.Column="0"/>
-                    <views:MovieDetailView Grid.Column="1"></views:MovieDetailView>
+                    <views:MovieDetailView  Grid.Column="1"></views:MovieDetailView>
                 </Grid>
             </TabItem>
             <TabItem Header="Actors/Directors" >

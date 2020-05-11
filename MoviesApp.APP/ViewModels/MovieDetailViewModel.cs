@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
+using System.Windows.Input;
+using MoviesApp.APP.Command;
 using MoviesApp.APP.Services;
 using MoviesApp.APP.Wrappers;
 using MoviesApp.BL.Repositories;
@@ -9,41 +12,39 @@ namespace MoviesApp.APP.ViewModels
 {
     public class MovieDetailViewModel : ViewModelBase
     {
-        private MovieAddNewWrapper _model;
-        private string _ahoj = "AHOJ";
         private IMovieRepository _movieRepository;
         public MovieDetailViewModel(IMovieRepository _movieRepository)
         {
+            MovieSaveCommand = new RelayCommand(SaveNewMovie, (canExecute) => true);
+            CloseMovieDetailViewCommand = new RelayCommand(CloseMovieDetailView, (canExecute) => true);
             Messenger.Default.Register<MovieAddNewWrapper>(this, OnMovieAddNewReceived);
         }
 
+      
+
+        public ICommand MovieSaveCommand { get; }
+        public ICommand CloseMovieDetailViewCommand { get; }
+
         private void OnMovieAddNewReceived(MovieAddNewWrapper obj)
         {
-            _model = obj;
-            _ahoj = "cau";
+            Model = obj;
+
         }
 
-        public string ahoj
+        private void SaveNewMovie(object x = null)
         {
-            get
-            { 
-                return _ahoj;
-            }
-            set
-            {
-                _ahoj = value;
-                OnPropertyChanged(nameof(ahoj));
-            }
+            TestProperty = "cau";
         }
 
-        public MovieAddNewWrapper Model
+        
+        private void CloseMovieDetailView(object x = null)
         {
-            get => _model;
-            set
-            {
-                _model = value;
-                OnPropertyChanged(nameof(Model));
-            }
+            Model = null;
         }
+
+
+        public string TestProperty { get; set; } = "ahoj";
+
+        public MovieAddNewWrapper Model { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace MoviesApp.App.ViewModels
 
      
 
-        public ObservableCollection<MovieListModel> Movies { get; } = new ObservableCollection<MovieListModel>();
+       
 
       
     }
