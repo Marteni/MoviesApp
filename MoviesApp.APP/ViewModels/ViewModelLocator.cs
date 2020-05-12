@@ -25,6 +25,6 @@ namespace MoviesApp.APP.ViewModels
 
         public static PersonListViewModel PersonListViewModel { get; } = new PersonListViewModel(_peopleRepository);
 
-        public static PersonDetailViewModel PersonDetailViewModel { get; } = new PersonDetailViewModel(_peopleRepository);
+        public static PersonDetailViewModel PersonDetailViewModel { get; } = new PersonDetailViewModel();
     }
 }

@@ -20,6 +20,9 @@ namespace MoviesApp.APP.ViewModels
 
             PersonDetailCommand = new RelayCommand(AddNewPerson, (canExecute) => true);
             PersonSelectedCommand = new RelayCommand<PersonListModel>(PersonSelected, (canExecute) => true);
+            Messenger.Default.Register<PersonDetailModel>(this, NewPersonReceived, PersonDetailViewModel.AddPersonToken);
+            Messenger.Default.Register<PersonDetailModel>(this, UpdatePersonReceived, PersonDetailViewModel.UpdatePersonToken);
+            Messenger.Default.Register<Guid>(this, DeletePersonGuidReceived, PersonDetailViewModel.DeletePersonToken);
         }
 
         public ObservableCollection<PersonListModel> People { get; } = new ObservableCollection<PersonListModel>();
@@ -29,12 +32,30 @@ namespace MoviesApp.APP.ViewModels
 
         private void AddNewPerson(object x = null)
         {
-            var newPersonWrapper = new PersonAddNewWrapper
+            var newPersonWrapper = new PersonDetailModel
             {
-                id = Guid.NewGuid()
+                Id = Guid.NewGuid()
             };
 
-            Messenger.Default.Send(newPersonWrapper);
+            Messenger.Default.Send(newPersonWrapper, AddNewPersonToken);
+        }
+
+        private void NewPersonReceived(PersonDetailModel personDetailModel)
+        {
+            _personRepository.Create(personDetailModel);
+            Load(_personRepository);
+        }
+
+        private void UpdatePersonReceived(PersonDetailModel personDetailModel)
+        {
+            _personRepository.Update(personDetailModel);
+            Load(_personRepository);
+        }
+
+        private void DeletePersonGuidReceived(Guid id)
+        {
+            _personRepository.Delete(id);
+            Load(_personRepository);
         }
 
         private void PersonSelected(PersonListModel personListModel)
@@ -63,6 +84,7 @@ namespace MoviesApp.APP.ViewModels
         }
 
 
+        public static readonly Guid AddNewPersonToken = Guid.Parse("057B5DF5-4480-47EF-8A5A-ED0159C15A93");
         public static readonly Guid PersonSelectedToken = Guid.Parse("788FC5E8-41FB-4D82-9A35-827AE67A6D2A");
     }
 }
