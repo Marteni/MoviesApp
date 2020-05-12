@@ -3,11 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:MoviesApp.APP.Views"
              xmlns:viewModels="clr-namespace:MoviesApp.App.ViewModels"
              xmlns:viewModels1="clr-namespace:MoviesApp.APP.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="380" d:DesignWidth="200"
+             d:DesignHeight="500" d:DesignWidth="200"
              d:DataContext="{d:DesignInstance viewModels1:MovieListViewModel}"
              DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=MovieListViewModel}">
     
@@ -17,8 +18,15 @@
         <Button Height="50" 
                 Content="Add new Movie"
                 Command="{Binding MovieDetailCommand}"></Button>
-        <ListBox Height="330" ItemsSource="{Binding Movies}">
-
+        <ListBox Height="330" 
+                 x:Name="MoviesListBox"
+                 ItemsSource="{Binding Movies}">
+            <interactions:Interaction.Triggers>
+                <interactions:EventTrigger EventName="SelectionChanged">
+                    <interactions:InvokeCommandAction Command="{Binding MovieSelectedCommand}"
+                                                      CommandParameter="{Binding ElementName=MoviesListBox, Path=SelectedItem}" />
+                </interactions:EventTrigger>
+            </interactions:Interaction.Triggers>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Label Content="{Binding Name}" />

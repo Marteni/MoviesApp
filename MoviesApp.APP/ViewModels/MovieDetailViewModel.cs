@@ -17,10 +17,11 @@ namespace MoviesApp.APP.ViewModels
         {
             MovieSaveCommand = new RelayCommand(SaveNewMovie, (canExecute) => true);
             CloseMovieDetailViewCommand = new RelayCommand(CloseMovieDetailView, (canExecute) => true);
-            Messenger.Default.Register<MovieAddNewWrapper>(this, OnMovieAddNewReceived);
-        }
+            Messenger.Default.Register<MovieAddNewWrapper>(this, OnMovieAddNewReceived,MovieListViewModel.MovieAddToken);
+            Messenger.Default.Register<MovieWrapper>(this, OnMovieSelectedReceived, MovieListViewModel.MovieSelectedToken);
 
-      
+        }
+     
 
         public ICommand MovieSaveCommand { get; }
         public ICommand CloseMovieDetailViewCommand { get; }
@@ -28,23 +29,43 @@ namespace MoviesApp.APP.ViewModels
         private void OnMovieAddNewReceived(MovieAddNewWrapper obj)
         {
             Model = obj;
+            if (MovieWrapperDetailModel == null)
+            {
+                MovieWrapperDetailModel = new MovieWrapper()
+                {
+                    Id = Model.id
+                };
+            }
 
         }
+
+        private void OnMovieSelectedReceived(MovieWrapper obj)
+        {
+            Model = new MovieAddNewWrapper();
+            MovieWrapperDetailModel = obj;
+        }
+
 
         private void SaveNewMovie(object x = null)
         {
-            TestProperty = "cau";
+            var movieWrapper = MovieWrapperDetailModel;
+            Messenger.Default.Send(movieWrapper, SaveMovieToken);
         }
 
-        
+
+
         private void CloseMovieDetailView(object x = null)
         {
             Model = null;
+            MovieWrapperDetailModel = null;
         }
 
-
-        public string TestProperty { get; set; } = "ahoj";
+       
 
         public MovieAddNewWrapper Model { get; set; }
+
+        public MovieWrapper MovieWrapperDetailModel { get; set; }
+
+        public static readonly Guid SaveMovieToken = Guid.Parse("9e8e69dc-7c4f-46c0-8e82-bedce9d9421f");
     }
 }

@@ -10,8 +10,8 @@ using MoviesApp.DAL;
 namespace MoviesApp.DAL.Migrations
 {
     [DbContext(typeof(MoviesAppDbContext))]
-    [Migration("20200405183604_AddTestData")]
-    partial class AddTestData
+    [Migration("20200511172618_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -88,20 +88,6 @@ namespace MoviesApp.DAL.Migrations
                     b.HasIndex("ActorId");
 
                     b.ToTable("Actors");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("12e1ce4d-2c8c-4bce-b610-129a784eb03b"),
-                            ActorId = new Guid("ed74ba50-f208-49ca-a71a-7bfdca3e1469"),
-                            MovieId = new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129")
-                        },
-                        new
-                        {
-                            Id = new Guid("7648ebfa-9e58-4835-a237-e9e7b6387262"),
-                            ActorId = new Guid("cab2ca13-0f8b-4839-a10d-bbedeab84565"),
-                            MovieId = new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129")
-                        });
                 });
 
             modelBuilder.Entity("MoviesApp.DAL.Entities.MoviesPersonDirectorEntity", b =>
@@ -126,14 +112,6 @@ namespace MoviesApp.DAL.Migrations
                     b.HasIndex("DirectorId");
 
                     b.ToTable("Directors");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("19e3745e-9259-471a-890b-f6db55d48f24"),
-                            DirectorId = new Guid("14858480-c954-4424-a549-16e2b0302397"),
-                            MovieId = new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129")
-                        });
                 });
 
             modelBuilder.Entity("MoviesApp.DAL.Entities.PersonEntity", b =>
