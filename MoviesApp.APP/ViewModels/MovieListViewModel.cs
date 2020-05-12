@@ -6,7 +6,6 @@ using System.Threading;
 using System.Windows.Input;
 using MoviesApp.APP.Command;
 using MoviesApp.APP.Services;
-using MoviesApp.APP.Wrappers;
 using MoviesApp.BL.Extensions;
 using MoviesApp.BL.Models;
 using MoviesApp.BL.Repositories;
@@ -22,10 +21,18 @@ namespace MoviesApp.APP.ViewModels
 
             MovieDetailCommand = new RelayCommand(AddNewMovieClicked, (canExecute) => true);
             MovieSelectedCommand = new RelayCommand<MovieListModel>(MovieSelected, (canExecute) => true);
-            Messenger.Default.Register<MovieWrapper>(this, OnMovieWrapperReceived, MovieDetailViewModel.SaveMovieToken);
+            Messenger.Default.Register<MovieDetailModel>(this, OnMovieWrapperNewReceived, MovieDetailViewModel.SaveNewMovieToken);
+            Messenger.Default.Register<MovieDetailModel>(this, OnMovieWrapperUpdatedReceived, MovieDetailViewModel.UpdateMovieToken);
+            Messenger.Default.Register<Guid>(this, OnGuidRecieved, MovieDetailViewModel.DeleteMovieToken);
         }
 
-        
+        private void OnMovieWrapperUpdatedReceived(MovieDetailModel movieDetailModelUpdated)
+        {
+
+            _movieRepository.Update(movieDetailModelUpdated);
+            Load(_movieRepository);
+        }
+
 
         public ObservableCollection<MovieListModel> Movies { get; } = new ObservableCollection<MovieListModel>();
 
@@ -36,60 +43,34 @@ namespace MoviesApp.APP.ViewModels
        
         private void AddNewMovieClicked(object x = null)
         {
-            var newMovieWrapper = new MovieAddNewWrapper
+            var newMovieModel = new MovieDetailModel()
             {
-                id = Guid.NewGuid()
+                Id = Guid.NewGuid()
+
             };
        
-            Messenger.Default.Send(newMovieWrapper, MovieAddToken);
+            Messenger.Default.Send(newMovieModel, MovieAddToken);
         }
 
         private void MovieSelected(MovieListModel movieListModel)
         {
             var movieDetailViewModel = _movieRepository.GetById(movieListModel.Id);
-            var movieSelectedWrapper = new MovieWrapper()
-            {
-               Id = movieDetailViewModel.Id,
-               OriginalTitle = movieDetailViewModel.OriginalTitle,
-               CzechTitle = movieDetailViewModel.CzechTitle,
-               Genre = movieDetailViewModel.Genre,
-               PosterImageUrl = movieDetailViewModel.PosterImageUrl,
-               CountryOfOrigin = movieDetailViewModel.CountryOfOrigin,
-               Length = movieDetailViewModel.Length,
-               Description = movieDetailViewModel.Description,
-               Ratings = movieDetailViewModel.Ratings,
-               Actors = movieDetailViewModel.Actors,
-               Directors = movieDetailViewModel.Directors
 
-
-            };
-
-            Messenger.Default.Send(movieSelectedWrapper,MovieSelectedToken);
+            Messenger.Default.Send(movieDetailViewModel, MovieSelectedToken);
 
         }
-        private void OnMovieWrapperReceived(MovieWrapper MovieWrapperInstance)
+        private void OnMovieWrapperNewReceived(MovieDetailModel movieDetailModel)
         {
-            var movieWrapperInstance = MovieWrapperInstance;
-            var movieDetailViewModel = new MovieDetailModel()
-            {
-                Id = movieWrapperInstance.Id,
-                OriginalTitle = movieWrapperInstance.OriginalTitle,
-                CzechTitle = movieWrapperInstance.CzechTitle,
-                Genre = movieWrapperInstance.Genre,
-                PosterImageUrl = movieWrapperInstance.PosterImageUrl,
-                CountryOfOrigin = movieWrapperInstance.CountryOfOrigin,
-                Length = movieWrapperInstance.Length,
-                Description = movieWrapperInstance.Description,
-                Ratings = movieWrapperInstance.Ratings,
-                Actors = movieWrapperInstance.Actors,
-                Directors = movieWrapperInstance.Directors
 
-            };
-
-            _movieRepository.Create(movieDetailViewModel);
+            _movieRepository.Create(movieDetailModel);
             Load(_movieRepository);
         }
 
+        private void OnGuidRecieved(Guid id)
+        {
+            _movieRepository.Delete(id);
+            Load(_movieRepository);
+        }
 
         private void Load(IMovieRepository movieRepository)
         {

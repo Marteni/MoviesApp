@@ -35,7 +35,9 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Content="Save" Grid.Column="0" Command="{Binding MovieSaveCommand}"></Button>
-                <Button Content="Delete" Grid.Column="1"></Button>
+                <Button Content="Delete" Grid.Column="1" 
+                        Command="{Binding DeleteMovieDetailCommand}"
+                        CommandParameter="{Binding MovieWrapperDetailModel.Id}"></Button>
 
             </Grid>
             <Label>Original Title</Label>

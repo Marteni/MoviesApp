@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using MoviesApp.APP.Services;
 using MoviesApp.APP.ViewModels;
-using MoviesApp.APP.Wrappers;
 using MoviesApp.BL.Extensions;
 using MoviesApp.BL.Models;
 using MoviesApp.BL.Repositories;
