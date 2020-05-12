@@ -7,7 +7,7 @@
         xmlns:viewModels="clr-namespace:MoviesApp.App.ViewModels"
         xmlns:views="clr-namespace:MoviesApp.APP.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="900"
+        Title="MainWindow" Height="700" Width="1000"
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
         DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=MainViewModel}">
     <Grid>
@@ -29,7 +29,7 @@
             <TabItem Header="Movies" >
                 <Grid >
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="600"/>
 
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -41,6 +41,7 @@
                    
                     <views:MovieListView Grid.Column="0"/>
                     <views:MovieDetailView  Grid.Column="1"></views:MovieDetailView>
+                    <views:MovieDetailEditView  Grid.Column="1"></views:MovieDetailEditView>
                 </Grid>
             </TabItem>
             <TabItem Header="Actors/Directors" >

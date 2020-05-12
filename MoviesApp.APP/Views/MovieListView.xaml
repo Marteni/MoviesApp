@@ -18,7 +18,7 @@
         <Button Height="50" 
                 Content="Add new Movie"
                 Command="{Binding MovieDetailCommand}"></Button>
-        <ListBox Height="330" 
+        <ListBox Height="500" 
                  x:Name="MoviesListBox"
                  ItemsSource="{Binding Movies}">
             <interactions:Interaction.Triggers>

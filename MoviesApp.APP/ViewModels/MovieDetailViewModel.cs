@@ -17,22 +17,30 @@ namespace MoviesApp.APP.ViewModels
         {
             MovieSaveCommand = new RelayCommand(SaveNewMovie, (canExecute) => true);
             CloseMovieDetailViewCommand = new RelayCommand(CloseMovieDetailView, (canExecute) => true);
+            EditMovieDetailCommand = new RelayCommand(EditMovieDetail, (canExecute) => true);
             DeleteMovieDetailCommand = new RelayCommand(DeleteMovieDetail, (canExecute) => CanDeleteFlag);
             Messenger.Default.Register<MovieDetailModel>(this, OnMovieAddNewReceived,MovieListViewModel.MovieAddToken);
             Messenger.Default.Register<MovieDetailModel>(this, OnMovieSelectedReceived, MovieListViewModel.MovieSelectedToken);
 
         }
 
-       
+        private void EditMovieDetail(object x = null)
+        {
+            ShowModel = null;
+            Model = new MovieDetailModel();
+        }
+
 
         public ICommand MovieSaveCommand { get; }
         public ICommand CloseMovieDetailViewCommand { get; }
         public ICommand DeleteMovieDetailCommand { get; }
+        public ICommand EditMovieDetailCommand { get; }
 
         private void OnMovieAddNewReceived(MovieDetailModel movieDetailModel)
         {
             CanSaveFlag = true;
             CanDeleteFlag = false;
+            ShowModel = null;
             Model = movieDetailModel;
     
             MovieWrapperDetailModel = new MovieDetailModel()
@@ -46,7 +54,7 @@ namespace MoviesApp.APP.ViewModels
         private void OnMovieSelectedReceived(MovieDetailModel movieWrapperDetailModel)
         {
             CanDeleteFlag = true;
-            Model = new MovieDetailModel();
+            ShowModel = new MovieDetailModel();
             MovieWrapperDetailModel = movieWrapperDetailModel;
         }
 
@@ -91,7 +99,12 @@ namespace MoviesApp.APP.ViewModels
         public bool CanSaveFlag { get; set; }
         public MovieDetailModel Model { get; set; }
 
+        public MovieDetailModel ShowModel { get; set; }
+
         public MovieDetailModel MovieWrapperDetailModel { get; set; }
+
+        
+       
 
         public static readonly Guid SaveNewMovieToken = Guid.Parse("9e8e69dc-7c4f-46c0-8e82-bedce9d9421f");
         public static readonly Guid DeleteMovieToken = Guid.Parse("c4ba749a-443e-4ea0-8016-e733cdba2275");
