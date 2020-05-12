@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MoviesApp.APP.Views"
              xmlns:viewModels="clr-namespace:MoviesApp.APP.ViewModels"
+             xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="380" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance viewModels:PersonDetailViewModel}"
@@ -12,7 +13,6 @@
     <Grid Visibility="{Binding personEditDetail, Converter={StaticResource NullToVisibilityConverter}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
-            <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -39,5 +39,48 @@
         <TextBox Text="{Binding personEditDetail.Age}" Margin="72,75,94,100" Grid.Row="0" Grid.Column="1"/>
         <TextBox Text="{Binding personEditDetail.PictureUrl}" Margin="10,178,42,0" Grid.Row="0" Grid.Column="0"/>
         <Button Content="Add" Margin="96,178,0,0" Grid.Row="0" Grid.Column="0"/>
+
+        <Grid Grid.Row="1" Margin="5,1,5,-145" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="Acted in" Grid.Column="0" HorizontalAlignment="Center"/>
+            <ListBox ItemsSource="{Binding Source={StaticResource mainViewModelLocator}, Path=MovieListViewModel.Movies}"
+                     Grid.Row="1" Grid.Column="0" Margin="0,0,5,0">
+                <interactions:Interaction.Triggers>
+                    <interactions:EventTrigger EventName="SelectionChanged">
+                        <interactions:InvokeCommandAction Command="{Binding Source={StaticResource mainViewModelLocator}, Path=MovieListViewModel.MovieSelectedCommand}"
+                                                          CommandParameter="{Binding ElementName=MoviesListBox, Path=SelectedItem}" />
+                    </interactions:EventTrigger>
+                </interactions:Interaction.Triggers>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding Name}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Label Content="Directed" Grid.Column="1" HorizontalAlignment="Center"/>
+            <ListBox ItemsSource="{Binding Source={StaticResource mainViewModelLocator}, Path=MovieListViewModel.Movies}"
+                     Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
+                <interactions:Interaction.Triggers>
+                    <interactions:EventTrigger EventName="SelectionChanged">
+                        <interactions:InvokeCommandAction Command="{Binding Source={StaticResource mainViewModelLocator}, Path=MovieListViewModel.MovieSelectedCommand}"
+                                                          CommandParameter="{Binding ElementName=MoviesListBox, Path=SelectedItem}" />
+                    </interactions:EventTrigger>
+                </interactions:Interaction.Triggers>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding Name}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
     </Grid>
 </UserControl>
