@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="MoviesApp.APP.Views.PersonDetailView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MoviesApp.APP.Views"
+             xmlns:viewModels="clr-namespace:MoviesApp.APP.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="380" d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance viewModels:PersonDetailViewModel}"
+             DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=PersonDetailViewModel}">
+    <Grid Visibility="{Binding personDetail, Converter={StaticResource NullToVisibilityConverter}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Button Height="30" Width="40"
+                Content="Edit"
+                Margin="217,25,10,145"
+                Grid.Row="0" Grid.Column="1"
+                Command="{Binding EditPersonViewCommand}"/>
+        <Image Source="{Binding personDetail.PictureUrl}" Height="150" Width="100" Grid.Row="0" Grid.Column="0"/>
+        <Label Content="Name:" Margin="0,25,200,150" Grid.Row="0" Grid.Column="1"/>
+        <Label Content="{Binding personDetail.Name}" Margin="72,25,94,150" Grid.Row="0" Grid.Column="1"/>
+        <Label Content="Surname:" Margin="0,50,200,125" Grid.Row="0" Grid.Column="1"/>
+        <Label Content="{Binding personDetail.Surname}" Margin="72,50,94,125" Grid.Row="0" Grid.Column="1"/>
+        <Label Content="Age:" Margin="0,75,200,97" Grid.Row="0" Grid.Column="1"/>
+        <Label Content="{Binding personDetail.Age}" Margin="72,75,94,100" Grid.Row="0" Grid.Column="1"/>
+    </Grid>
+</UserControl>

@@ -13,9 +13,9 @@ namespace MoviesApp.BL.Mappers
             return new PersonListModel
             {
                 Id = entity.Id,
-                Name = entity.Name
-
-
+                Name = entity.Name,
+                Surname = entity.Surname,
+                PictureURL = entity.PictureUrl
             };
         }
 
@@ -28,7 +28,6 @@ namespace MoviesApp.BL.Mappers
                 Surname = entity.Surname,
                 Age = entity.Age,
                 PictureUrl = entity.PictureUrl
-
             };
         }
 

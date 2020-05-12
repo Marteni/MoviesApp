@@ -21,5 +21,10 @@ namespace MoviesApp.APP.ViewModels
         public static MovieDetailViewModel MovieDetailViewModel { get; } = new MovieDetailViewModel(_movieRepository);
 
 
+        public static readonly PeopleRepository _peopleRepository = new PeopleRepository(new DbContextSqlFactory());
+
+        public static PersonListViewModel PersonListViewModel { get; } = new PersonListViewModel(_peopleRepository);
+
+        public static PersonDetailViewModel PersonDetailViewModel { get; } = new PersonDetailViewModel(_peopleRepository);
     }
 }

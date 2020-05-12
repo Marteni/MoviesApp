@@ -67,7 +67,7 @@ namespace MoviesApp.BL.Tests
 
             try 
             {
-                returnedModel = _peopleRepositoryTestFixture.Repository.GetById(returnedModel.Id);
+                var newModel = _peopleRepositoryTestFixture.Repository.GetById(returnedModel.Id);
             }
             catch (System.InvalidOperationException e){}
         }
