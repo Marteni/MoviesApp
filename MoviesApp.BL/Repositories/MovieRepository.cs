@@ -38,6 +38,16 @@ namespace MoviesApp.BL.Repositories
             }
         }
 
+        public MovieListModel GetByIdListModel(Guid id)
+        {
+            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            {
+                //SELECT * FROM Ingredient WHERE Id = id;
+                var entity = dbContext.Movies.First(t => t.Id == id);
+                return MovieMapper.MapMovieEntityToListModel(entity);
+            }
+        }
+
         public MovieDetailModel Create(MovieDetailModel model)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())

@@ -12,12 +12,9 @@ namespace MoviesApp.BL.Mappers
         {
             return new PersonActorDetailModel
             {
+                Id = entity.Id,
                 ActorId = entity.ActorId,
-                MovieId = entity.MovieId,
-                Name = entity.Actor.Name,
-                Surname = entity.Actor.Surname,
-                Age = entity.Actor.Age,
-                PictureUrl = entity.Actor.PictureUrl
+                MovieId = entity.MovieId
             };
         }
 

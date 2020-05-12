@@ -68,23 +68,24 @@ namespace MoviesApp.DAL.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     ActorId = table.Column<Guid>(nullable: false),
                     MovieId = table.Column<Guid>(nullable: false),
-                    ActedInMovieId = table.Column<Guid>(nullable: true)
+                    MovieEntityId = table.Column<Guid>(nullable: true),
+                    PersonEntityId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Actors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Actors_Movies_ActedInMovieId",
-                        column: x => x.ActedInMovieId,
+                        name: "FK_Actors_Movies_MovieEntityId",
+                        column: x => x.MovieEntityId,
                         principalTable: "Movies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Actors_People_ActorId",
-                        column: x => x.ActorId,
+                        name: "FK_Actors_People_PersonEntityId",
+                        column: x => x.PersonEntityId,
                         principalTable: "People",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -114,6 +115,15 @@ namespace MoviesApp.DAL.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Actors",
+                columns: new[] { "Id", "ActorId", "MovieEntityId", "MovieId", "PersonEntityId" },
+                values: new object[,]
+                {
+                    { new Guid("12e1ce4d-2c8c-4bce-b610-129a784eb03b"), new Guid("ed74ba50-f208-49ca-a71a-7bfdca3e1469"), null, new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129"), null },
+                    { new Guid("7648ebfa-9e58-4835-a237-e9e7b6387262"), new Guid("cab2ca13-0f8b-4839-a10d-bbedeab84565"), null, new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129"), null }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Movies",
                 columns: new[] { "Id", "CountryOfOrigin", "CzechTitle", "Description", "Genre", "Length", "OriginalTitle", "PosterImageUrl" },
                 values: new object[] { new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129"), "USA", "Star Wars: Epizoda IV - Nová naděje", "Rytíři Jedi byli vyhlazeni a Impérium vládne galaxii pevnou rukou. Malá skupina povstalců se odváží vzdorovat a ukradne plány k nejmocnější zbrani Impéria, Hvězdě smrti. Imperátorův nejvěrnější služebník, Darth Vader, musí najít plány a skrytou základnu povstalců. Zpráva o princezně Lei a vůdci rebelů se dostane až k obyčejnému farmáři, Lukovi Skywalkerovi. Ten se řídí svým osudem, zachraňuje princeznu a pomáhá povstalcům svrhnout Impérium společně s takovými nezapomenutelnými spojenci jako: Obi-Wan Kenobi, domýšlivý Han Solo, loajální Chewbacca a droidové R2-D2 a C3PO.", 14, new TimeSpan(0, 2, 1, 0, 0), "Star Wars: Episode IV - New Hope", "https://img.csfd.cz/files/images/film/posters/162/398/162398464_ac2bec.jpg?h180" });
@@ -129,19 +139,24 @@ namespace MoviesApp.DAL.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Directors",
+                columns: new[] { "Id", "DirectedMovieId", "DirectorId", "MovieId" },
+                values: new object[] { new Guid("19e3745e-9259-471a-890b-f6db55d48f24"), null, new Guid("14858480-c954-4424-a549-16e2b0302397"), new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129") });
+
+            migrationBuilder.InsertData(
                 table: "Ratings",
                 columns: new[] { "Id", "Nick", "NumericEvaluation", "RatedMovieId", "Review" },
                 values: new object[] { new Guid("595fe374-060a-4e06-9201-56c1d61d30a2"), "SithJedi54", 10, new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129"), "Twas AMAZING!" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Actors_ActedInMovieId",
+                name: "IX_Actors_MovieEntityId",
                 table: "Actors",
-                column: "ActedInMovieId");
+                column: "MovieEntityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Actors_ActorId",
+                name: "IX_Actors_PersonEntityId",
                 table: "Actors",
-                column: "ActorId");
+                column: "PersonEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Directors_DirectedMovieId",

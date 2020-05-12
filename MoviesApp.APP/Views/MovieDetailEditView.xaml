@@ -7,6 +7,7 @@
              xmlns:viewModels="clr-namespace:MoviesApp.APP.ViewModels"
              xmlns:extension="clr-namespace:MoviesApp.APP.Extension"
              xmlns:enums="clr-namespace:MoviesApp.DAL.Enums;assembly=MoviesApp.DAL"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance viewModels:MovieDetailViewModel}"
@@ -67,7 +68,29 @@
         </StackPanel>
         <StackPanel Grid.Column="1">
             <Label>Actors</Label>
-            <ListBox Height="200" ItemsSource="{Binding MovieWrapperDetailModel.Actors}"></ListBox>
+            <ListBox Height="330" x:Name="PeopleListBox" ItemsSource="{Binding People}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Label>
+                            <Label.Content>
+                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}">
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0} {1}">
+                                                <Binding Path="Name"/>
+                                                <Binding Path="Surname"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </CheckBox>
+                            </Label.Content>
+                        </Label>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <ListBox Height="100" >
+
+            </ListBox>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -8,6 +8,6 @@ namespace MoviesApp.BL.Models
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string PictureURL { get; set; }
+        public bool IsChecked { get; set; }
     }
 }

@@ -9,6 +9,7 @@ namespace MoviesApp.BL.Repositories
     {
         IList<PersonListModel> GetAll();
         PersonDetailModel GetById(Guid id);
+        PersonListModel GetByIdListModel(Guid id);
         PersonDetailModel Create(PersonDetailModel model);
         void Update(PersonDetailModel model);
         void Delete(Guid id);

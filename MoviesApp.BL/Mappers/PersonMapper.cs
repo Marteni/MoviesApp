@@ -14,8 +14,8 @@ namespace MoviesApp.BL.Mappers
             {
                 Id = entity.Id,
                 Name = entity.Name,
-                Surname = entity.Surname,
-                PictureURL = entity.PictureUrl
+                Surname = entity.Surname
+
             };
         }
 
