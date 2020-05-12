@@ -53,15 +53,15 @@
             <Label Content="Acted in" Grid.Column="0" HorizontalAlignment="Center"/>
             <ListBox ItemsSource="{Binding Source={StaticResource mainViewModelLocator}, Path=MovieListViewModel.Movies}"
                      Grid.Row="1" Grid.Column="0" Margin="0,0,5,0">
-                <interactions:Interaction.Triggers>
+                <!--<interactions:Interaction.Triggers>
                     <interactions:EventTrigger EventName="SelectionChanged">
                         <interactions:InvokeCommandAction Command="{Binding Source={StaticResource mainViewModelLocator}, Path=MovieListViewModel.MovieSelectedCommand}"
                                                           CommandParameter="{Binding ElementName=MoviesListBox, Path=SelectedItem}" />
                     </interactions:EventTrigger>
-                </interactions:Interaction.Triggers>
+                </interactions:Interaction.Triggers>-->
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Label Content="{Binding Name}" />
+                        <CheckBox Content="{Binding Name}" Tag="{Binding Id}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -69,15 +69,15 @@
             <Label Content="Directed" Grid.Column="1" HorizontalAlignment="Center"/>
             <ListBox ItemsSource="{Binding Source={StaticResource mainViewModelLocator}, Path=MovieListViewModel.Movies}"
                      Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
-                <interactions:Interaction.Triggers>
+                <!--<interactions:Interaction.Triggers>
                     <interactions:EventTrigger EventName="SelectionChanged">
                         <interactions:InvokeCommandAction Command="{Binding Source={StaticResource mainViewModelLocator}, Path=MovieListViewModel.MovieSelectedCommand}"
                                                           CommandParameter="{Binding ElementName=MoviesListBox, Path=SelectedItem}" />
                     </interactions:EventTrigger>
-                </interactions:Interaction.Triggers>
+                </interactions:Interaction.Triggers>-->
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Label Content="{Binding Name}" />
+                        <CheckBox Content="{Binding Name}" Tag="{Binding Id}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

@@ -18,6 +18,7 @@ namespace MoviesApp.APP.ViewModels
             SavePersonEditViewCommand = new RelayCommand(SavePerson, (canExecute) => true);
             DeletePersonEditViewCommand = new RelayCommand(DeletePerson, (canExecute) => true);
             EditPersonViewCommand = new RelayCommand(EditPerson, (canExecute) => true);
+
             Messenger.Default.Register<PersonDetailModel>(this, AddNewPerson, PersonListViewModel.AddNewPersonToken);
             Messenger.Default.Register<PersonDetailModel>(this, DisplayPerson, PersonListViewModel.PersonSelectedToken);
         }
@@ -87,8 +88,6 @@ namespace MoviesApp.APP.ViewModels
         public bool ExistingPersonFlag { get; set; } = false;
         public PersonDetailModel personDetail { get; set; }
         public PersonDetailModel personEditDetail { get; set; }
-
-        public PersonAddNewWrapper Model { get; set; }
 
         public static readonly Guid AddPersonToken = Guid.Parse("C2C51FFF-64B8-4EEA-9819-3F027C49BE5E");
         public static readonly Guid UpdatePersonToken = Guid.Parse("305EBDDE-72A8-4698-801F-DF49A5313F30");
