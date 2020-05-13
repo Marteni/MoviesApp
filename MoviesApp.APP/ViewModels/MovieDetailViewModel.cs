@@ -179,8 +179,7 @@ namespace MoviesApp.APP.ViewModels
                         DeleteActorInActorListById(person.Id);
                     }
                 }
-            }
-        }
+                LoadActors(_movieActorRepository);
 
         private void DeleteActorInActorListById(Guid id)
         {

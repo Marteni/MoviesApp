@@ -170,6 +170,7 @@ namespace MoviesApp.APP.ViewModels
                         DeleteMovieInMovieListById(movie.Id);
                     }
                 }
+                LoadActedMovies(movieActorRepository);
 
             }
 
