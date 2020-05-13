@@ -30,7 +30,6 @@ namespace MoviesApp.BL.Repositories
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                //SELECT * FROM Ingredient WHERE Movie.Id = id;
                 return dbContext.Actors
                     .Where(t => t.MovieId == id)
                     .Select(e => PersonActorMapper.MapMoviesPersonActorEntityToDetailModel(e))
@@ -43,7 +42,6 @@ namespace MoviesApp.BL.Repositories
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                //SELECT * FROM Ingredient WHERE Movie.Id = id;
                 return dbContext.Actors
                     .Where(t => t.ActorId == id)
                     .Select(e => PersonActorMapper.MapMoviesPersonActorEntityToDetailModel(e))
@@ -73,16 +71,25 @@ namespace MoviesApp.BL.Repositories
             }
         }
 
-        public void Delete(Guid id)
+        public void DeleteByActorId(Guid id)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                var entity = dbContext.Actors.First(t => t.Id == id);
+                var entity = dbContext.Actors.First(t => t.ActorId == id);
                 dbContext.Remove(entity);
                 dbContext.SaveChanges();
             }
         }
 
-        
+        public void DeleteByMovieId(Guid id)
+        {
+            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            {
+                var entity = dbContext.Actors.First(t => t.MovieId == id);
+                dbContext.Remove(entity);
+                dbContext.SaveChanges();
+            }
+        }
+
     }
 }
