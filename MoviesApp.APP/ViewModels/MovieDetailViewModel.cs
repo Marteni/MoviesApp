@@ -20,20 +20,18 @@ namespace MoviesApp.APP.ViewModels
         private IPeopleRepository _personRepository;
         private IMoviePersonActorRepository _movieActorRepository;
         private IMovieRepository _movieRepository;
-        private IMoviePersonDirectorRepository _directorRepository;
+        private IMoviePersonDirectorRepository _movieDirectorRepository;
         public MovieDetailViewModel(IPeopleRepository personRepository,
             IMoviePersonActorRepository movieActorRepository,
-            IMoviePersonDirectorRepository directorRepository,
+            IMoviePersonDirectorRepository movieDirectorRepository,
             IMovieRepository movieRepository
            )
         {
             _personRepository = personRepository;
             _movieActorRepository = movieActorRepository;
             _movieRepository = movieRepository;
-            _directorRepository = directorRepository;
+            _movieDirectorRepository = movieDirectorRepository;
 
-            
-            
 
             MovieSaveCommand = new RelayCommand(SaveNewMovie, (canExecute) => true);
             CloseMovieDetailViewCommand = new RelayCommand(CloseMovieDetailView, (canExecute) => true);
@@ -41,16 +39,12 @@ namespace MoviesApp.APP.ViewModels
             DeleteMovieDetailCommand = new RelayCommand(DeleteMovieDetail, (canExecute) => CanDeleteFlag);
             Messenger.Default.Register<MovieDetailModel>(this, OnMovieAddNewReceived,MovieListViewModel.MovieAddToken);
             Messenger.Default.Register<MovieDetailModel>(this, OnMovieSelectedReceived, MovieListViewModel.MovieSelectedToken);
-
-           
-
         }
 
-        public ObservableCollection<PersonListModel> People { get; } = new ObservableCollection<PersonListModel>();
+        public ObservableCollection<PersonListModel> ActorsEditList { get; } = new ObservableCollection<PersonListModel>();
+        public ObservableCollection<PersonListModel> DirectorsEditList { get; } = new ObservableCollection<PersonListModel>();
         public ObservableCollection<PersonListModel> Actors { get; } = new ObservableCollection<PersonListModel>();
-
-       
-       
+        public ObservableCollection<PersonListModel> Directors { get; } = new ObservableCollection<PersonListModel>();
 
 
         public ICommand MovieSaveCommand { get; }
@@ -60,7 +54,7 @@ namespace MoviesApp.APP.ViewModels
 
         private void OnMovieAddNewReceived(MovieDetailModel movieDetailModel)
         {
-            LoadPeople(_personRepository);
+            LoadPeople();
             CanSaveFlag = true;
             CanDeleteFlag = false;
             ShowModel = null;
@@ -70,9 +64,6 @@ namespace MoviesApp.APP.ViewModels
             {
                 Id = Model.Id
             };
-
-
-
         }
 
         private void OnMovieSelectedReceived(MovieDetailModel movieWrapperDetailModel)
@@ -81,9 +72,9 @@ namespace MoviesApp.APP.ViewModels
             ShowModel = new MovieDetailModel();
             Model = null;
             MovieWrapperDetailModel = movieWrapperDetailModel;
-            LoadPeople(_personRepository);
+            //LoadPeople();
             LoadActors(_movieActorRepository);
-
+            LoadDirectors();
         }
 
 
@@ -104,8 +95,6 @@ namespace MoviesApp.APP.ViewModels
             }
             
             CreateAndReloadMovieActors(_movieActorRepository);
-
-
         }
 
         private void EditMovieDetail(object x = null)
@@ -137,13 +126,15 @@ namespace MoviesApp.APP.ViewModels
 
 
 
-        private void LoadPeople(IPeopleRepository personRepository)
+        private void LoadPeople()
         {
-            People.Clear();
-            _personRepository = personRepository;
             var people = _personRepository.GetAll();
-            People.AddRange(people);
 
+            ActorsEditList.Clear();
+            ActorsEditList.AddRange(people);
+
+            DirectorsEditList.Clear();
+            DirectorsEditList.AddRange(people);
         }
 
         private void LoadActors(IMoviePersonActorRepository movieActorRepository)
@@ -161,7 +152,7 @@ namespace MoviesApp.APP.ViewModels
 
         private void CreateAndReloadMovieActors(IMoviePersonActorRepository movieActorRepository)
         {
-            foreach (var person in People)
+            foreach (var person in ActorsEditList)
             {
                 if (person.IsChecked)
                 {
@@ -177,7 +168,6 @@ namespace MoviesApp.APP.ViewModels
 
                         movieActorRepository.Create(movieActor);
                         Actors.Add(person);
-                        
                     }
                 }
                 else
@@ -189,9 +179,7 @@ namespace MoviesApp.APP.ViewModels
                         DeleteActorInActorListById(person.Id);
                     }
                 }
-
             }
-
         }
 
         private void DeleteActorInActorListById(Guid id)
@@ -208,14 +196,83 @@ namespace MoviesApp.APP.ViewModels
 
         private void UpdatePeopleListWithActors()
         {
-            foreach (var person in People)
+            foreach (var person in ActorsEditList)
             {
                 var actor = Actors.FirstOrDefault(x => x.Id == person.Id);
                 if (actor != null) person.IsChecked = true;
             }
 
-            CollectionViewSource.GetDefaultView(People).Refresh();
+            CollectionViewSource.GetDefaultView(ActorsEditList).Refresh();
         }
+
+        private void LoadDirectors()
+        {
+            Directors.Clear();
+            var directors = _movieDirectorRepository.GetAllMovieDirectorByMovieId(MovieWrapperDetailModel.Id);
+            foreach (var director in directors)
+            {
+                var personInCurrentMovie =_personRepository.GetByIdListModel(director.DirectorId);
+                if (personInCurrentMovie != null) Directors.Add(personInCurrentMovie);
+            }
+           
+        }
+
+        private void CreateAndReloadMovieDirectors(IMoviePersonActorRepository movieActorRepository)
+        {
+            foreach (var person in ActorsEditList)
+            {
+                if (person.IsChecked)
+                {
+                    var actor = Actors.FirstOrDefault(x => x.Id == person.Id);
+                    if (actor == null)
+                    {
+                        var movieActor = new PersonActorDetailModel()
+                        {
+                            Id = Guid.NewGuid(),
+                            MovieId = MovieWrapperDetailModel.Id,
+                            ActorId = person.Id
+                        };
+
+                        movieActorRepository.Create(movieActor);
+                        Actors.Add(person);
+                    }
+                }
+                else
+                {
+                    var actor = Actors.FirstOrDefault(x => x.Id == person.Id);
+                    if (actor != null)
+                    {
+                        movieActorRepository.TryDeleteByActorId(person.Id);
+                        DeleteActorInActorListById(person.Id);
+                    }
+                }
+            }
+        }
+
+        private void DeleteDirectorInDirectorListById(Guid id)
+        {
+            var item = Actors.FirstOrDefault(a => a.Id == id);
+            var index = Actors.IndexOf(item);
+
+            if (index != -1)
+            {
+                Actors.RemoveAt(index);
+               
+            }
+        }
+
+        private void UpdateDirectorListWithDirectorss()
+        {
+            foreach (var person in ActorsEditList)
+            {
+                var actor = Actors.FirstOrDefault(x => x.Id == person.Id);
+                if (actor != null) person.IsChecked = true;
+            }
+
+            CollectionViewSource.GetDefaultView(ActorsEditList).Refresh();
+        }
+
+
         public bool CanDeleteFlag { get; set; }
         public bool CanSaveFlag { get; set; }
         public MovieDetailModel Model { get; set; }
