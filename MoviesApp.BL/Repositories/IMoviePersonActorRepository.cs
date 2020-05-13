@@ -12,7 +12,7 @@ namespace MoviesApp.BL.Repositories
         IList<PersonActorDetailModel> GetAllMovieActorByActorId(Guid id);
         PersonActorDetailModel Create(PersonActorDetailModel model);
         void Update(PersonActorDetailModel model);
-        void DeleteByActorId(Guid id);
-        void DeleteByMovieId(Guid id);
+        void TryDeleteByActorId(Guid id);
+        void TryDeleteByMovieId(Guid id);
     }
 }

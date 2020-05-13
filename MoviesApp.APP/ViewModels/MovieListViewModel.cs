@@ -23,8 +23,8 @@ namespace MoviesApp.APP.ViewModels
 
             MovieDetailCommand = new RelayCommand(AddNewMovieClicked, (canExecute) => true);
             MovieSelectedCommand = new RelayCommand<MovieListModel>(MovieSelected, (canExecute) => true);
-            Messenger.Default.Register<MovieDetailModel>(this, OnMovieWrapperNewReceived, MovieDetailViewModel.SaveNewMovieToken);
-            Messenger.Default.Register<MovieDetailModel>(this, OnMovieWrapperUpdatedReceived, MovieDetailViewModel.UpdateMovieToken);
+            Messenger.Default.Register<MovieDetailModel>(this, NewMoveReceived, MovieDetailViewModel.SaveNewMovieToken);
+            Messenger.Default.Register<MovieDetailModel>(this, MovieUpdatedReceived, MovieDetailViewModel.UpdateMovieToken);
             Messenger.Default.Register<Guid>(this, OnGuidReceived, MovieDetailViewModel.DeleteMovieToken);
         }
 
@@ -36,12 +36,7 @@ namespace MoviesApp.APP.ViewModels
 
         public ICommand MovieSelectedCommand { get; }
 
-        private void OnMovieWrapperUpdatedReceived(MovieDetailModel movieDetailModelUpdated)
-        {
-            _movieRepository.Update(movieDetailModelUpdated);
-            UpdateMovieListWithExistingItem(movieDetailModelUpdated);
-        }
-
+        
         private void AddNewMovieClicked(object x = null)
         {
             var newMovieModel = new MovieDetailModel()
@@ -52,6 +47,11 @@ namespace MoviesApp.APP.ViewModels
        
             Messenger.Default.Send(newMovieModel, MovieAddToken);
         }
+        private void NewMoveReceived(MovieDetailModel movieDetailModel)
+        {
+            _movieRepository.Create(movieDetailModel);
+            UpdateMovieListViewWithNewItem(movieDetailModel);
+        }
 
         private void MovieSelected(MovieListModel movieListModel)
         {
@@ -60,19 +60,29 @@ namespace MoviesApp.APP.ViewModels
             Messenger.Default.Send(movieDetailViewModel, MovieSelectedToken);
 
         }
-        private void OnMovieWrapperNewReceived(MovieDetailModel movieDetailModel)
+
+        private void MovieUpdatedReceived(MovieDetailModel movieDetailModelUpdated)
         {
-            _movieRepository.Create(movieDetailModel);
-            UpdateMovieListViewWithNewItem(movieDetailModel);
+            _movieRepository.Update(movieDetailModelUpdated);
+            UpdateMovieListWithExistingItem(movieDetailModelUpdated);
         }
 
-       
 
         private void OnGuidReceived(Guid id)
         {
             _movieRepository.Delete(id);
             Movies.Remove(Movies.First(t => t.Id == id));
             
+        }
+
+        private void UpdateMovieListViewWithNewItem(MovieDetailModel movieDetailModel)
+        {
+            var movieListModel = new MovieListModel()
+            {
+                Id = movieDetailModel.Id,
+                Name = movieDetailModel.OriginalTitle
+            };
+            Movies.Add(movieListModel);
         }
 
         private void UpdateMovieListWithExistingItem(MovieDetailModel movieDetailModelUpdated)
@@ -85,16 +95,6 @@ namespace MoviesApp.APP.ViewModels
                 Movies[index].Name = movieDetailModelUpdated.OriginalTitle;
                 CollectionViewSource.GetDefaultView(Movies).Refresh();
             }
-        }
-
-        private void UpdateMovieListViewWithNewItem(MovieDetailModel movieDetailModel)
-        {
-            var movieListModel = new MovieListModel()
-            {
-                Id = movieDetailModel.Id,
-                Name = movieDetailModel.OriginalTitle
-            };
-            Movies.Add(movieListModel);
         }
 
         private void Load(IMovieRepository movieRepository)

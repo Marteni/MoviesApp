@@ -29,7 +29,7 @@ namespace MoviesApp.APP.ViewModels
             _movieRepository = movieRepository;
 
             
-            LoadPeople(_personRepository);
+            
 
             MovieSaveCommand = new RelayCommand(SaveNewMovie, (canExecute) => true);
             CloseMovieDetailViewCommand = new RelayCommand(CloseMovieDetailView, (canExecute) => true);
@@ -45,13 +45,7 @@ namespace MoviesApp.APP.ViewModels
         public ObservableCollection<PersonListModel> People { get; } = new ObservableCollection<PersonListModel>();
         public ObservableCollection<PersonListModel> Actors { get; } = new ObservableCollection<PersonListModel>();
 
-        private void EditMovieDetail(object x = null)
-        {
-            ShowModel = null;
-            Model = new MovieDetailModel();
-            UpdatePeopleListWithActors();
-        }
-
+       
        
 
 
@@ -62,6 +56,7 @@ namespace MoviesApp.APP.ViewModels
 
         private void OnMovieAddNewReceived(MovieDetailModel movieDetailModel)
         {
+            LoadPeople(_personRepository);
             CanSaveFlag = true;
             CanDeleteFlag = false;
             ShowModel = null;
@@ -82,6 +77,7 @@ namespace MoviesApp.APP.ViewModels
             ShowModel = new MovieDetailModel();
             Model = null;
             MovieWrapperDetailModel = movieWrapperDetailModel;
+            LoadPeople(_personRepository);
             LoadActors(_movieActorRepository);
 
         }
@@ -102,10 +98,18 @@ namespace MoviesApp.APP.ViewModels
                 Messenger.Default.Send(movieWrapper, SaveNewMovieToken);
                 Model = null;
             }
-
+            
             CreateAndReloadMovieActors(_movieActorRepository);
 
 
+        }
+
+        private void EditMovieDetail(object x = null)
+        {
+
+            ShowModel = null;
+            Model = new MovieDetailModel();
+            UpdatePeopleListWithActors();
         }
 
 
@@ -122,18 +126,11 @@ namespace MoviesApp.APP.ViewModels
             var id = Guid.Parse(obj.ToString());
 
             Messenger.Default.Send(id, DeleteMovieToken);
+            _movieActorRepository.TryDeleteByMovieId(id);
             Model = null; 
         }
 
 
-
-        public bool CanDeleteFlag { get; set; }
-        public bool CanSaveFlag { get; set; }
-        public MovieDetailModel Model { get; set; }
-
-        public MovieDetailModel ShowModel { get; set; }
-
-        public MovieDetailModel MovieWrapperDetailModel { get; set; }
 
 
         private void LoadPeople(IPeopleRepository personRepository)
@@ -184,7 +181,7 @@ namespace MoviesApp.APP.ViewModels
                     var actor = Actors.FirstOrDefault(x => x.Id == person.Id);
                     if (actor != null)
                     {
-                        movieActorRepository.DeleteByActorId(person.Id);
+                        movieActorRepository.TryDeleteByActorId(person.Id);
                         DeleteActorInActorListById(person.Id);
                     }
                 }
@@ -215,6 +212,13 @@ namespace MoviesApp.APP.ViewModels
 
             CollectionViewSource.GetDefaultView(People).Refresh();
         }
+        public bool CanDeleteFlag { get; set; }
+        public bool CanSaveFlag { get; set; }
+        public MovieDetailModel Model { get; set; }
+
+        public MovieDetailModel ShowModel { get; set; }
+
+        public MovieDetailModel MovieWrapperDetailModel { get; set; }
 
         public static readonly Guid SaveNewMovieToken = Guid.Parse("9e8e69dc-7c4f-46c0-8e82-bedce9d9421f");
         public static readonly Guid DeleteMovieToken = Guid.Parse("c4ba749a-443e-4ea0-8016-e733cdba2275");

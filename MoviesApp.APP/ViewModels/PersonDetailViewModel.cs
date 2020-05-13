@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
+using System.Windows.Data;
 using System.Windows.Input;
 using MoviesApp.APP.Command;
 using MoviesApp.APP.Services;
@@ -36,28 +38,33 @@ namespace MoviesApp.APP.ViewModels
 
         private void AddNewPerson(PersonDetailModel personDetailModel)
         {
+            LoadMovies(_movieRepository);
             ExistingPersonFlag = false;
-            if (personDetailModel == null)
-            {
-                personDetail = null;
-                return;
-            }
+            //if (personDetailModel == null)
+            //{
+            //    personDetail = null;
+            //    return;
+            //}
             personDetail = null;
-            personEditDetail = personDetailModel;
+            personEditDetail = new PersonDetailModel();
+            {
+                personEditDetail.Id = personDetailModel.Id;
+            }
 
             //TODO: Nulovanie kolekcii ActedIn a Directed
         }
 
         private void DisplayPerson(PersonDetailModel personDetailModel)
         {
-            if (personDetailModel == null)
-            {
-                personDetail = null;
-                return;
-            }
+            //if (personDetailModel == null)
+            //{
+            //    personDetail = null;
+            //    return;
+            //}
             ExistingPersonFlag = true;
             personEditDetail = null;
             personDetail = personDetailModel;
+            LoadMovies(_movieRepository);
             LoadActedMovies(_moviesActorRepository);
         }
 
@@ -74,28 +81,30 @@ namespace MoviesApp.APP.ViewModels
             personDetail = personEditDetail;
             personEditDetail = null;
             ExistingPersonFlag = false;
+            CreateAndReloadMovieActors(_moviesActorRepository);
         }
-
-        private void DeletePerson(object x = null)
-        {
-            if (ExistingPersonFlag)
-            {
-                Messenger.Default.Send(Guid.Parse(personEditDetail.Id.ToString()), DeletePersonToken);
-            }
-
-            personEditDetail = null;
-            ExistingPersonFlag = false;
-        }
-
         private void EditPerson(object x = null)
         {
             ExistingPersonFlag = true;
             personEditDetail = personDetail;
             personDetail = null;
-            LoadMovies(_movieRepository);
-
+            UpdateMovieListWithActedMovies();
 
         }
+        private void DeletePerson(object x)
+        {
+            var id = Guid.Parse(personEditDetail.Id.ToString());
+            _moviesActorRepository.TryDeleteByActorId(id);
+            if (ExistingPersonFlag)
+            {
+                Messenger.Default.Send(id, DeletePersonToken);
+            }
+           
+            personEditDetail = null;
+            ExistingPersonFlag = false;
+        }
+
+        
         private void LoadMovies(IMovieRepository movieRepository)
         {
             Movies.Clear();
@@ -113,6 +122,64 @@ namespace MoviesApp.APP.ViewModels
                 var actedMovie = _movieRepository.GetByIdListModel(movie.MovieId);
                 if (actedMovie != null) MoviesActed.Add(actedMovie);
             }
+        }
+
+        private void CreateAndReloadMovieActors(IMoviePersonActorRepository movieActorRepository)
+        {
+            foreach (var movie in Movies)
+            {
+                if (movie.IsChecked)
+                {
+                    var movieChecked = MoviesActed.FirstOrDefault(x => x.Id == movie.Id);
+                    if (movieChecked == null)
+                    {
+                        var movieActor = new PersonActorDetailModel()
+                        {
+                            Id = Guid.NewGuid(),
+                            MovieId = movie.Id,
+                            ActorId = personDetail.Id
+                        };
+
+                        movieActorRepository.Create(movieActor);
+                        MoviesActed.Add(movie);
+
+                    }
+                }
+                else
+                {
+                    var actor = MoviesActed.FirstOrDefault(x => x.Id == movie.Id);
+                    if (actor != null)
+                    {
+                        movieActorRepository.TryDeleteByMovieId(movie.Id);
+                        DeleteMovieInMovieListById(movie.Id);
+                    }
+                }
+
+            }
+
+        }
+
+        private void DeleteMovieInMovieListById(Guid id)
+        {
+            var item = MoviesActed.FirstOrDefault(a => a.Id == id);
+            var index = MoviesActed.IndexOf(item);
+
+            if (index != -1)
+            {
+                MoviesActed.RemoveAt(index);
+
+            }
+        }
+
+        private void UpdateMovieListWithActedMovies()
+        {
+            foreach (var movie in Movies)
+            {
+                var actor = MoviesActed.FirstOrDefault(x => x.Id == movie.Id);
+                if (actor != null) movie.IsChecked = true;
+            }
+
+            CollectionViewSource.GetDefaultView(Movies).Refresh();
         }
 
         public bool ExistingPersonFlag { get; set; } = false;

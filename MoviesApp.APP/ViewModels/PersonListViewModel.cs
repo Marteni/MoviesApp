@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Data;
 using System.Windows.Input;
 using MoviesApp.APP.Command;
 using MoviesApp.APP.Services;
@@ -43,36 +45,49 @@ namespace MoviesApp.APP.ViewModels
         private void NewPersonReceived(PersonDetailModel personDetailModel)
         {
             _personRepository.Create(personDetailModel);
-            Load(_personRepository);
-        }
-
-        private void UpdatePersonReceived(PersonDetailModel personDetailModel)
-        {
-            _personRepository.Update(personDetailModel);
-            Load(_personRepository);
-        }
-
-        private void DeletePersonGuidReceived(Guid id)
-        {
-            _personRepository.Delete(id);
-            Load(_personRepository);
+            UpdatePeopleListViewWithNewItem(personDetailModel);
         }
 
         private void PersonSelected(PersonListModel personListModel)
         {
             var personDetailViewModel = _personRepository.GetById(personListModel.Id);
-            var personSelectedDetailModel = new PersonDetailModel()
-            {
-                Id = personDetailViewModel.Id,
-                Name = personDetailViewModel.Name,
-                Surname = personDetailViewModel.Surname,
-                Age = personDetailViewModel.Age,
-                PictureUrl = personDetailViewModel.PictureUrl,
-                ActedInMovies = personDetailViewModel.ActedInMovies,
-                DirectedMovies = personDetailViewModel.DirectedMovies
-            };
+            Messenger.Default.Send(personDetailViewModel, PersonSelectedToken);
+        }
 
-            Messenger.Default.Send(personSelectedDetailModel, PersonSelectedToken);
+
+        private void UpdatePersonReceived(PersonDetailModel personDetailModel)
+        {
+            _personRepository.Update(personDetailModel);
+            UpdatePeopleListWithExistingItem(personDetailModel);
+        }
+
+        private void DeletePersonGuidReceived(Guid id)
+        {
+            _personRepository.Delete(id);
+            People.Remove(People.First(t => t.Id == id));
+        }
+
+        private void UpdatePeopleListViewWithNewItem(PersonDetailModel personDetailModel)
+        {
+            var movieListModel = new PersonListModel()
+            {
+                Id = personDetailModel.Id,
+                Name = personDetailModel.Name,
+                Surname = personDetailModel.Surname
+            };
+            People.Add(movieListModel);
+        }
+        private void UpdatePeopleListWithExistingItem(PersonDetailModel personDetailModelUpdated)
+        {
+            var item = People.FirstOrDefault(a => a.Id == personDetailModelUpdated.Id);
+            var index = People.IndexOf(item);
+
+            if (index != -1)
+            {
+                People[index].Name = personDetailModelUpdated.Name;
+                People[index].Surname = personDetailModelUpdated.Surname;
+                CollectionViewSource.GetDefaultView(People).Refresh();
+            }
         }
 
         private void Load(IPeopleRepository personRepository)

@@ -71,23 +71,32 @@ namespace MoviesApp.BL.Repositories
             }
         }
 
-        public void DeleteByActorId(Guid id)
+        public void TryDeleteByActorId(Guid id)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                var entity = dbContext.Actors.First(t => t.ActorId == id);
-                dbContext.Remove(entity);
-                dbContext.SaveChanges();
+                var entity = dbContext.Actors.FirstOrDefault(t => t.ActorId == id);
+                if (entity != null)
+                {
+                    dbContext.Remove(entity);
+                    dbContext.SaveChanges();
+                }
             }
         }
 
-        public void DeleteByMovieId(Guid id)
+        public void TryDeleteByMovieId(Guid id)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                var entity = dbContext.Actors.First(t => t.MovieId == id);
-                dbContext.Remove(entity);
-                dbContext.SaveChanges();
+              
+                    var entity = dbContext.Actors.FirstOrDefault(t => t.MovieId == id);
+                    if (entity != null)
+                    {
+                        dbContext.Remove(entity);
+                        dbContext.SaveChanges();
+                    }
+              
+                    
             }
         }
 
