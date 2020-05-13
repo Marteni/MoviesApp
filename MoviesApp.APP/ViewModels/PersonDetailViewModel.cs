@@ -18,10 +18,12 @@ namespace MoviesApp.APP.ViewModels
     {
         private IMovieRepository _movieRepository;
         private IMoviePersonActorRepository _moviesActorRepository;
-        public PersonDetailViewModel(IMovieRepository movieRepository, IMoviePersonActorRepository moviesActorRepository)
+        private IMoviePersonDirectorRepository _moviesDirectorRepository;
+        public PersonDetailViewModel(IMovieRepository movieRepository, IMoviePersonActorRepository moviesActorRepository, IMoviePersonDirectorRepository moviesDirectorRepository)
         {
             _movieRepository = movieRepository;
             _moviesActorRepository = moviesActorRepository;
+            _moviesDirectorRepository = moviesDirectorRepository;
             personDetail = personEditDetail = null;
             SavePersonEditViewCommand = new RelayCommand(SavePerson, (canExecute) => true);
             DeletePersonEditViewCommand = new RelayCommand(DeletePerson, (canExecute) => true);
@@ -32,6 +34,7 @@ namespace MoviesApp.APP.ViewModels
         }
         public ObservableCollection<MovieListModel> Movies { get; } = new ObservableCollection<MovieListModel>();
         public ObservableCollection<MovieListModel> MoviesActed { get; } = new ObservableCollection<MovieListModel>();
+        public ObservableCollection<MovieListModel> MoviesDirected { get; } = new ObservableCollection<MovieListModel>();
         public ICommand SavePersonEditViewCommand { get; }
         public ICommand DeletePersonEditViewCommand { get; }
         public ICommand EditPersonViewCommand { get; }
@@ -66,6 +69,7 @@ namespace MoviesApp.APP.ViewModels
             personDetail = personDetailModel;
             LoadMovies(_movieRepository);
             LoadActedMovies(_moviesActorRepository);
+            //LoadDirectedMovies(_moviesDirectorRepository);
         }
 
         private void SavePerson(object x = null)
@@ -112,6 +116,7 @@ namespace MoviesApp.APP.ViewModels
             var movies = _movieRepository.GetAll();
             Movies.AddRange(movies);
         }
+
         private void LoadActedMovies(IMoviePersonActorRepository movieActorRepository)
         {
             MoviesActed.Clear();
@@ -121,6 +126,17 @@ namespace MoviesApp.APP.ViewModels
             {
                 var actedMovie = _movieRepository.GetByIdListModel(movie.MovieId);
                 if (actedMovie != null) MoviesActed.Add(actedMovie);
+            }
+        }
+        private void LoadDirectedMovies(IMoviePersonDirectorRepository movieDirectorRepository)
+        {
+            MoviesDirected.Clear();
+            _moviesDirectorRepository = movieDirectorRepository;
+            var movies = _moviesDirectorRepository.GetAllMovieDirectorsByDirectorId(personDetail.Id);
+            foreach (var movie in movies)
+            {
+                var directedMovie = _movieRepository.GetByIdListModel(movie.MovieId);
+                if (directedMovie != null) MoviesActed.Add(directedMovie);
             }
         }
 

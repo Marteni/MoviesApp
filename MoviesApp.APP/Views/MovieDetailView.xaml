@@ -20,8 +20,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="60" />
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="60"/>
         </Grid.ColumnDefinitions>
 
 
@@ -33,9 +33,9 @@
                 HorizontalAlignment="Right"
                 Margin="0,10,10,0"
                 Grid.Column="1"
-                Command="{Binding EditMovieDetailCommand}" />
+                Command="{Binding EditMovieDetailCommand}"/>
 
-        <StackPanel Grid.Column="0" Grid.Row="0" >
+        <StackPanel Grid.Column="0" Grid.Row="0">
             <Grid >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="200"/>
@@ -49,33 +49,32 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Margin="10 10"/>
-                <StackPanel Grid.Column="1" >
+                <StackPanel Grid.Column="1">
                     <TextBlock Text="{Binding MovieWrapperDetailModel.OriginalTitle}"
                                FontSize="15"
                                FontWeight="Bold"
                                Margin="10 10"
-                               HorizontalAlignment="Left"
-                               ></TextBlock>
+                               HorizontalAlignment="Left"/>
                     <TextBlock Text="{Binding MovieWrapperDetailModel.CzechTitle}"
                                Margin="10"
-                               HorizontalAlignment="Left"></TextBlock>
+                               HorizontalAlignment="Left"/>
                 </StackPanel>
             </Grid>
 
         </StackPanel>
 
-        <StackPanel Grid.Column="0" Grid.Row="1">
+        <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
             <StackPanel Orientation="Horizontal">
                 <Label FontWeight="Bold">Genre:</Label>
-                <Label Content="{Binding MovieWrapperDetailModel.Genre}"></Label>
+                <Label Content="{Binding MovieWrapperDetailModel.Genre}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label FontWeight="Bold">Country:</Label>
-                <Label Content="{Binding MovieWrapperDetailModel.CountryOfOrigin}"></Label>
+                <Label Content="{Binding MovieWrapperDetailModel.CountryOfOrigin}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label FontWeight="Bold">Length:</Label>
-                <Label Content="{Binding MovieWrapperDetailModel.Length}"></Label>
+                <Label Content="{Binding MovieWrapperDetailModel.Length}"/>
             </StackPanel>
 
             <Label FontWeight="Bold">Description:</Label>
@@ -86,18 +85,64 @@
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                      IsReadOnly="True"
                      TextWrapping="Wrap"
-                     AcceptsReturn="True"></TextBox>
+                     AcceptsReturn="True"/>
             
-            <ListBox Height="200" Width="300" HorizontalAlignment="Left"
-                     Margin="0 10 0 0"
-                     ItemsSource="{Binding Actors}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Label Content="{Binding Name}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
+            <Grid>
 
-            </ListBox>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Actors" 
+                       FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Center"/>
+                <ListBox ItemsSource="{Binding Actors}"
+                         Grid.Row="1" Grid.Column="0" Height="215" Margin="5,0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label>
+                                <Label.Content>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0} {1}">
+                                                <Binding Path="Name"/>
+                                                <Binding Path="Surname"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Label.Content>
+                            </Label>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <Label Content="Directors" 
+                       FontWeight="Bold" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"/>
+                <ListBox ItemsSource="{Binding Directors}" 
+                         Grid.Row="1" Grid.Column="1" Height="215" Margin="5,0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Label>
+                                <Label.Content>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0} {1}">
+                                                <Binding Path="Name"/>
+                                                <Binding Path="Surname"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Label.Content>
+                            </Label>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+            </Grid>
         </StackPanel>
 
 
