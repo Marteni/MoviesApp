@@ -35,10 +35,10 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="2*"/>
-                        
+
                     </Grid.ColumnDefinitions>
 
-                   
+
                     <views:MovieListView Grid.Column="0"/>
                     <views:MovieDetailView  Grid.Column="1"></views:MovieDetailView>
                     <views:MovieDetailEditView  Grid.Column="1"></views:MovieDetailEditView>
@@ -47,17 +47,16 @@
             <TabItem Header="Actors/Directors" >
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="600"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
 
-                    <views:PersonListView Grid.Column="0" Grid.Row="1"/>
-                    <views:PersonDetailView Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"/>
-                    <views:PersonDetailEditView Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"/>
+                    <views:PersonListView Grid.Column="0" Grid.Row="1" Grid.RowSpan="2"/>
+                    <views:PersonDetailView Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="2" Margin="281,0,0,0"/>
+                    <views:PersonDetailEditView Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="2" Margin="281,0,0,0"/>
                 </Grid>
 
             </TabItem>

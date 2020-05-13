@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="60" />
         </Grid.ColumnDefinitions>
 
 
@@ -31,6 +31,7 @@
                 Width="50"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Right"
+                Margin="0,10,10,0"
                 Grid.Column="1"
                 Command="{Binding EditMovieDetailCommand}" />
 

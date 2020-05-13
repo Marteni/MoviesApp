@@ -36,6 +36,7 @@ namespace MoviesApp.APP.ViewModels
 
         private void AddNewPerson(PersonDetailModel personDetailModel)
         {
+            ExistingPersonFlag = false;
             if (personDetailModel == null)
             {
                 personDetail = null;
