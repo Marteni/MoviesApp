@@ -21,6 +21,7 @@ namespace MoviesApp.APP.ViewModels
         private IMoviePersonActorRepository _movieActorRepository;
         private IMovieRepository _movieRepository;
         private IMoviePersonDirectorRepository _movieDirectorRepository;
+
         public MovieDetailViewModel(IPeopleRepository personRepository,
             IMoviePersonActorRepository movieActorRepository,
             IMoviePersonDirectorRepository movieDirectorRepository,
@@ -72,7 +73,6 @@ namespace MoviesApp.APP.ViewModels
             ShowModel = new MovieDetailModel();
             Model = null;
             MovieWrapperDetailModel = movieWrapperDetailModel;
-            LoadPeople();
             LoadActors(_movieActorRepository);
             LoadDirectors();
         }
@@ -95,14 +95,16 @@ namespace MoviesApp.APP.ViewModels
             }
             
             CreateAndReloadMovieActors(_movieActorRepository);
+            CreateAndReloadMovieDirectors(_movieDirectorRepository);
         }
 
         private void EditMovieDetail(object x = null)
         {
-
+            LoadPeople();
             ShowModel = null;
             Model = new MovieDetailModel();
             UpdatePeopleListWithActors();
+            UpdateDirectorListWithDirectors();
         }
 
 
@@ -119,7 +121,7 @@ namespace MoviesApp.APP.ViewModels
             var id = Guid.Parse(obj.ToString());
 
             Messenger.Default.Send(id, DeleteMovieToken);
-            _movieActorRepository.TryDeleteByMovieId(id);
+            _movieActorRepository.TryDeleteByMovieId(Model.Id, id);
             Model = null; 
         }
 
@@ -147,14 +149,13 @@ namespace MoviesApp.APP.ViewModels
                 var personInCurrentMovie =_personRepository.GetByIdListModel(actor.ActorId);
                 if (personInCurrentMovie != null) Actors.Add(personInCurrentMovie);
             }
-           
         }
 
         private void CreateAndReloadMovieActors(IMoviePersonActorRepository movieActorRepository)
         {
             foreach (var person in ActorsEditList)
             {
-                if (person.IsChecked)
+                if (person.IsActorChecked)
                 {
                     var actor = Actors.FirstOrDefault(x => x.Id == person.Id);
                     if (actor == null)
@@ -201,7 +202,7 @@ namespace MoviesApp.APP.ViewModels
             foreach (var person in ActorsEditList)
             {
                 var actor = Actors.FirstOrDefault(x => x.Id == person.Id);
-                if (actor != null) person.IsChecked = true;
+                if (actor != null) person.IsActorChecked = true;
             }
 
             CollectionViewSource.GetDefaultView(ActorsEditList).Refresh();
@@ -216,62 +217,62 @@ namespace MoviesApp.APP.ViewModels
                 var personInCurrentMovie =_personRepository.GetByIdListModel(director.DirectorId);
                 if (personInCurrentMovie != null) Directors.Add(personInCurrentMovie);
             }
-           
         }
 
-        private void CreateAndReloadMovieDirectors(IMoviePersonActorRepository movieActorRepository)
+        private void CreateAndReloadMovieDirectors(IMoviePersonDirectorRepository movieDirectorRepository)
         {
-            foreach (var person in ActorsEditList)
+            foreach (var person in DirectorsEditList)
             {
-                if (person.IsChecked)
+                if (person.IsDirectorChecked)
                 {
-                    var actor = Actors.FirstOrDefault(x => x.Id == person.Id);
-                    if (actor == null)
+                    var director = Directors.FirstOrDefault(x => x.Id == person.Id);
+                    if (director == null)
                     {
-                        var movieActor = new PersonActorDetailModel()
+                        var movieDirector = new PersonDirectorDetailModel()
                         {
                             Id = Guid.NewGuid(),
                             MovieId = MovieWrapperDetailModel.Id,
-                            ActorId = person.Id
+                            DirectorId = person.Id
                         };
 
-                        movieActorRepository.Create(movieActor);
-                        Actors.Add(person);
+                        movieDirectorRepository.Create(movieDirector);
+                        Directors.Add(person);
                     }
                 }
                 else
                 {
-                    var actor = Actors.FirstOrDefault(x => x.Id == person.Id);
-                    if (actor != null)
+                    var director = Directors.FirstOrDefault(x => x.Id == person.Id);
+                    if (director != null)
                     {
-                        movieActorRepository.TryDeleteByActorId(person.Id);
-                        DeleteActorInActorListById(person.Id);
+                        movieDirectorRepository.TryDeleteByDirectorId(person.Id);
+                        DeleteDirectorInDirectorListById(person.Id);
                     }
                 }
+
+                LoadDirectors();
             }
         }
 
         private void DeleteDirectorInDirectorListById(Guid id)
         {
-            var item = Actors.FirstOrDefault(a => a.Id == id);
-            var index = Actors.IndexOf(item);
+            var item = Directors.FirstOrDefault(a => a.Id == id);
+            var index = Directors.IndexOf(item);
 
             if (index != -1)
             {
-                Actors.RemoveAt(index);
-               
+                Directors.RemoveAt(index);
             }
         }
 
-        private void UpdateDirectorListWithDirectorss()
+        private void UpdateDirectorListWithDirectors()
         {
-            foreach (var person in ActorsEditList)
+            foreach (var person in DirectorsEditList)
             {
-                var actor = Actors.FirstOrDefault(x => x.Id == person.Id);
-                if (actor != null) person.IsChecked = true;
+                var director = Directors.FirstOrDefault(x => x.Id == person.Id);
+                if (director != null) person.IsDirectorChecked = true;
             }
 
-            CollectionViewSource.GetDefaultView(ActorsEditList).Refresh();
+            CollectionViewSource.GetDefaultView(DirectorsEditList).Refresh();
         }
 
 

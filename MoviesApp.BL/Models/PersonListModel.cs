@@ -8,6 +8,7 @@ namespace MoviesApp.BL.Models
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        public bool IsChecked { get; set; }
+        public bool IsActorChecked { get; set; }
+        public bool IsDirectorChecked { get; set; }
     }
 }

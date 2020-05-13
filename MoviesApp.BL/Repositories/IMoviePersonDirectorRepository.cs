@@ -8,10 +8,10 @@ namespace MoviesApp.BL.Repositories
     {
         IList<PersonDirectorDetailModel> GetAll();
         IList<PersonDirectorDetailModel> GetAllMovieDirectorByMovieId(Guid id);
-        IList<PersonDirectorDetailModel> GetAllMovieDirectorsByDirectorId(Guid id);
+        IList<PersonDirectorDetailModel> GetAllMovieDirectorByDirectorId(Guid id);
         PersonDirectorDetailModel Create(PersonDirectorDetailModel model);
         void Update(PersonDirectorDetailModel model);
-        void DeleteByDirectorId(Guid id);
-        void DeleteByMovieId(Guid id);
+        void TryDeleteByDirectorId(Guid id);
+        void TryDeleteByMovieId(Guid id);
     }
 }

@@ -46,7 +46,6 @@ namespace MoviesApp.BL.Repositories
                     .Where(t => t.ActorId == id)
                     .Select(e => PersonActorMapper.MapMoviesPersonActorEntityToDetailModel(e))
                     .ToList();
-
             }
         }
 
@@ -84,17 +83,17 @@ namespace MoviesApp.BL.Repositories
             }
         }
 
-        public void TryDeleteByMovieId(Guid id)
+        public void TryDeleteByMovieId(Guid movieId, Guid actorId)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-              
-                    var entity = dbContext.Actors.FirstOrDefault(t => t.MovieId == id);
-                    if (entity != null)
-                    {
-                        dbContext.Remove(entity);
-                        dbContext.SaveChanges();
-                    }
+                var entity = dbContext.Actors.FirstOrDefault(t => t.MovieId == movieId && t.ActorId == actorId);
+
+                if (entity != null)
+                {
+                    dbContext.Remove(entity);
+                    dbContext.SaveChanges();
+                }
               
                     
             }

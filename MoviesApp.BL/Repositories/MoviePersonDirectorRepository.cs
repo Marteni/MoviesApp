@@ -37,7 +37,7 @@ namespace MoviesApp.BL.Repositories
             }
         }
 
-        public IList<PersonDirectorDetailModel> GetAllMovieDirectorsByDirectorId(Guid id)
+        public IList<PersonDirectorDetailModel> GetAllMovieDirectorByDirectorId(Guid id)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
@@ -70,23 +70,29 @@ namespace MoviesApp.BL.Repositories
             }
         }
 
-        public void DeleteByDirectorId(Guid id)
+        public void TryDeleteByDirectorId(Guid id)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
                 var entity = dbContext.Directors.First(t => t.DirectorId == id);
-                dbContext.Remove(entity);
-                dbContext.SaveChanges();
+                if (entity != null)
+                {
+                    dbContext.Remove(entity);
+                    dbContext.SaveChanges();
+                }
             }
         }
 
-        public void DeleteByMovieId(Guid id)
+        public void TryDeleteByMovieId(Guid id)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
                 var entity = dbContext.Directors.First(t => t.MovieId == id);
-                dbContext.Remove(entity);
-                dbContext.SaveChanges();
+                if (entity != null)
+                {
+                    dbContext.Remove(entity);
+                    dbContext.SaveChanges();
+                }
             }
         }
     }
