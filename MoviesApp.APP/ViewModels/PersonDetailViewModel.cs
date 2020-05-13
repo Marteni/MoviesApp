@@ -41,7 +41,7 @@ namespace MoviesApp.APP.ViewModels
 
         private void AddNewPerson(PersonDetailModel personDetailModel)
         {
-            LoadMovies(_movieRepository);
+            LoadMovies();
             ExistingPersonFlag = false;
             //if (personDetailModel == null)
             //{
@@ -67,9 +67,8 @@ namespace MoviesApp.APP.ViewModels
             ExistingPersonFlag = true;
             personEditDetail = null;
             personDetail = personDetailModel;
-            LoadMovies(_movieRepository);
             LoadActedMovies(_moviesActorRepository);
-            //LoadDirectedMovies(_moviesDirectorRepository);
+            LoadDirectedMovies();
         }
 
         private void SavePerson(object x = null)
@@ -86,15 +85,19 @@ namespace MoviesApp.APP.ViewModels
             personEditDetail = null;
             ExistingPersonFlag = false;
             CreateAndReloadMovieActors(_moviesActorRepository);
+            CreateAndReloadMovieDirectors(_moviesDirectorRepository);
         }
+
         private void EditPerson(object x = null)
         {
             ExistingPersonFlag = true;
             personEditDetail = personDetail;
             personDetail = null;
+            LoadMovies();
             UpdateMovieListWithActedMovies();
-
+            UpdateMovieListWithDirectedMovies();
         }
+
         private void DeletePerson(object x)
         {
             var id = Guid.Parse(personEditDetail.Id.ToString());
@@ -108,12 +111,11 @@ namespace MoviesApp.APP.ViewModels
             ExistingPersonFlag = false;
         }
 
-        
-        private void LoadMovies(IMovieRepository movieRepository)
+        private void LoadMovies()
         {
-            Movies.Clear();
-            _movieRepository = movieRepository;
             var movies = _movieRepository.GetAll();
+
+            Movies.Clear();
             Movies.AddRange(movies);
         }
 
@@ -128,23 +130,12 @@ namespace MoviesApp.APP.ViewModels
                 if (actedMovie != null) MoviesActed.Add(actedMovie);
             }
         }
-        private void LoadDirectedMovies(IMoviePersonDirectorRepository movieDirectorRepository)
-        {
-            MoviesDirected.Clear();
-            _moviesDirectorRepository = movieDirectorRepository;
-            var movies = _moviesDirectorRepository.GetAllMovieDirectorsByDirectorId(personDetail.Id);
-            foreach (var movie in movies)
-            {
-                var directedMovie = _movieRepository.GetByIdListModel(movie.MovieId);
-                if (directedMovie != null) MoviesActed.Add(directedMovie);
-            }
-        }
 
         private void CreateAndReloadMovieActors(IMoviePersonActorRepository movieActorRepository)
         {
             foreach (var movie in Movies)
             {
-                if (movie.IsChecked)
+                if (movie.IsActedInChecked)
                 {
                     var movieChecked = MoviesActed.FirstOrDefault(x => x.Id == movie.Id);
                     if (movieChecked == null)
@@ -158,7 +149,6 @@ namespace MoviesApp.APP.ViewModels
 
                         movieActorRepository.Create(movieActor);
                         MoviesActed.Add(movie);
-
                     }
                 }
                 else
@@ -166,17 +156,15 @@ namespace MoviesApp.APP.ViewModels
                     var actor = MoviesActed.FirstOrDefault(x => x.Id == movie.Id);
                     if (actor != null)
                     {
-                        movieActorRepository.TryDeleteByMovieId(movie.Id);
-                        DeleteMovieInMovieListById(movie.Id);
+                        movieActorRepository.TryDeleteByMovieId(movie.Id, personDetail.Id);
+                        DeleteMovieInActedMovieListById(movie.Id);
                     }
                 }
                 LoadActedMovies(movieActorRepository);
-
             }
-
         }
 
-        private void DeleteMovieInMovieListById(Guid id)
+        private void DeleteMovieInActedMovieListById(Guid id)
         {
             var item = MoviesActed.FirstOrDefault(a => a.Id == id);
             var index = MoviesActed.IndexOf(item);
@@ -184,7 +172,6 @@ namespace MoviesApp.APP.ViewModels
             if (index != -1)
             {
                 MoviesActed.RemoveAt(index);
-
             }
         }
 
@@ -193,7 +180,75 @@ namespace MoviesApp.APP.ViewModels
             foreach (var movie in Movies)
             {
                 var actor = MoviesActed.FirstOrDefault(x => x.Id == movie.Id);
-                if (actor != null) movie.IsChecked = true;
+                if (actor != null) movie.IsActedInChecked = true;
+            }
+
+            CollectionViewSource.GetDefaultView(Movies).Refresh();
+        }
+
+
+        private void LoadDirectedMovies()
+        {
+            MoviesDirected.Clear();
+            var movies = _moviesDirectorRepository.GetAllMovieDirectorByDirectorId(personDetail.Id);
+            foreach (var movie in movies)
+            {
+                var directedMovie = _movieRepository.GetByIdListModel(movie.MovieId);
+                if (directedMovie != null) MoviesDirected.Add(directedMovie);
+            }
+        }
+
+
+        private void CreateAndReloadMovieDirectors(IMoviePersonDirectorRepository movieDirectorRepository)
+        {
+            foreach (var movie in Movies)
+            {
+                if (movie.IsDirectedChecked)
+                {
+                    var movieChecked = MoviesDirected.FirstOrDefault(x => x.Id == movie.Id);
+                    if (movieChecked == null)
+                    {
+                        var movieDirector = new PersonDirectorDetailModel()
+                        {
+                            Id = Guid.NewGuid(),
+                            MovieId = movie.Id,
+                            DirectorId = personDetail.Id
+                        };
+
+                        movieDirectorRepository.Create(movieDirector);
+                        MoviesDirected.Add(movie);
+                    }
+                }
+                else
+                {
+                    var director = MoviesDirected.FirstOrDefault(x => x.Id == movie.Id);
+                    if (director != null)
+                    {
+                        movieDirectorRepository.TryDeleteByMovieId(movie.Id);
+                        DeleteMovieInDirectedMovieListById(movie.Id);
+                    }
+                }
+                LoadDirectedMovies();
+            }
+        }
+
+        private void DeleteMovieInDirectedMovieListById(Guid id)
+        {
+            var item = MoviesDirected.FirstOrDefault(a => a.Id == id);
+            var index = MoviesDirected.IndexOf(item);
+
+            if (index != -1)
+            {
+                MoviesDirected.RemoveAt(index);
+            }
+        }
+
+        private void UpdateMovieListWithDirectedMovies()
+        {
+            foreach (var movie in Movies)
+            {
+                var director = MoviesDirected.FirstOrDefault(x => x.Id == movie.Id);
+                if (director != null) movie.IsDirectedChecked = true;
             }
 
             CollectionViewSource.GetDefaultView(Movies).Refresh();

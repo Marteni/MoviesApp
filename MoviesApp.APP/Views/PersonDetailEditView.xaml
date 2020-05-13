@@ -64,7 +64,7 @@
                      Grid.Row="1" Grid.Column="0" Margin="5,0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" Content="{Binding Name}"/>
+                        <CheckBox IsChecked="{Binding IsActedInChecked, Mode=TwoWay}" Content="{Binding Name}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -72,15 +72,9 @@
             <Label Content="Directed" Grid.Column="1" HorizontalAlignment="Center"/>
             <ListBox ItemsSource="{Binding Movies}"
                      Grid.Row="1" Grid.Column="1" Margin="5,0">
-                <!--<interactions:Interaction.Triggers>
-                    <interactions:EventTrigger EventName="SelectionChanged">
-                        <interactions:InvokeCommandAction Command="{Binding Source={StaticResource mainViewModelLocator}, Path=MovieListViewModel.MovieSelectedCommand}"
-                                                          CommandParameter="{Binding ElementName=MoviesListBox, Path=SelectedItem}" />
-                    </interactions:EventTrigger>
-                </interactions:Interaction.Triggers>-->
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" Content="{Binding Name}"/>
+                        <CheckBox IsChecked="{Binding IsDirectedChecked, Mode=TwoWay}" Content="{Binding Name}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

@@ -13,6 +13,6 @@ namespace MoviesApp.BL.Repositories
         PersonActorDetailModel Create(PersonActorDetailModel model);
         void Update(PersonActorDetailModel model);
         void TryDeleteByActorId(Guid id);
-        void TryDeleteByMovieId(Guid id);
+        void TryDeleteByMovieId(Guid movieId, Guid actorId);
     }
 }
