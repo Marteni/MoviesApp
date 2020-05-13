@@ -20,13 +20,17 @@ namespace MoviesApp.APP.ViewModels
         private IPeopleRepository _personRepository;
         private IMoviePersonActorRepository _movieActorRepository;
         private IMovieRepository _movieRepository;
+        private IMoviePersonDirectorRepository _directorRepository;
         public MovieDetailViewModel(IPeopleRepository personRepository,
             IMoviePersonActorRepository movieActorRepository,
-            IMovieRepository movieRepository)
+            IMoviePersonDirectorRepository directorRepository,
+            IMovieRepository movieRepository
+           )
         {
             _personRepository = personRepository;
             _movieActorRepository = movieActorRepository;
             _movieRepository = movieRepository;
+            _directorRepository = directorRepository;
 
             
             
