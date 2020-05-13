@@ -70,7 +70,7 @@
             </ListBox>
 
             <Label Content="Directed" Grid.Column="1" HorizontalAlignment="Center"/>
-            <ListBox ItemsSource="{Binding Source={StaticResource mainViewModelLocator}, Path=MovieListViewModel.Movies}"
+            <ListBox ItemsSource="{Binding Movies}"
                      Grid.Row="1" Grid.Column="1" Margin="5,0">
                 <!--<interactions:Interaction.Triggers>
                     <interactions:EventTrigger EventName="SelectionChanged">
@@ -80,7 +80,7 @@
                 </interactions:Interaction.Triggers>-->
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <CheckBox Content="{Binding Name}" Tag="{Binding Id}"/>
+                        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" Content="{Binding Name}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
