@@ -72,7 +72,7 @@ namespace MoviesApp.APP.ViewModels
             ShowModel = new MovieDetailModel();
             Model = null;
             MovieWrapperDetailModel = movieWrapperDetailModel;
-            //LoadPeople();
+            LoadPeople();
             LoadActors(_movieActorRepository);
             LoadDirectors();
         }

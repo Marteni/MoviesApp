@@ -20,8 +20,15 @@
 
         </Grid.ColumnDefinitions>
 
-        <TextBox Height="20" 
-                 Grid.Column="0"/>
+        <StackPanel>
+            <TextBox Height="20" 
+                     VerticalAlignment="Top"
+                     Text="{Binding SearchQuery}"/>
+            <Button Height="30"
+                    Content="Search"
+                    Command="{Binding SearchCommand}"></Button>
+            <ListBox Height="300"></ListBox>
+        </StackPanel>
 
         <TabControl Grid.Column="1" 
                     Grid.Row="0">
