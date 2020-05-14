@@ -4,7 +4,9 @@ using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
 using MoviesApp.APP.Command;
+using MoviesApp.APP.Enums;
 using MoviesApp.APP.Services;
+using MoviesApp.App.ViewModels;
 using MoviesApp.APP.Wrappers;
 using MoviesApp.BL.Extensions;
 using MoviesApp.BL.Models;
@@ -25,6 +27,15 @@ namespace MoviesApp.APP.ViewModels
             Messenger.Default.Register<PersonDetailModel>(this, NewPersonReceived, PersonDetailViewModel.AddPersonToken);
             Messenger.Default.Register<PersonDetailModel>(this, UpdatePersonReceived, PersonDetailViewModel.UpdatePersonToken);
             Messenger.Default.Register<Guid>(this, DeletePersonGuidReceived, PersonDetailViewModel.DeletePersonToken);
+            Messenger.Default.Register<PersonListModel>(this, SelectedPersonReceived, MovieDetailViewModel.SelectedPersonToken);
+        }
+
+        private void SelectedPersonReceived(PersonListModel selectedPerson)
+        {
+            var person = People.FirstOrDefault(t => t.Id == selectedPerson.Id);
+            PersonSelected(person);
+            var value = (int) TabEnums.PeopleTab;
+            Messenger.Default.Send(value, MainViewModel.ChangeTabToken);
         }
 
         public ObservableCollection<PersonListModel> People { get; } = new ObservableCollection<PersonListModel>();
@@ -101,6 +112,8 @@ namespace MoviesApp.APP.ViewModels
 
         public static readonly Guid AddNewPersonToken = Guid.Parse("057B5DF5-4480-47EF-8A5A-ED0159C15A93");
         public static readonly Guid PersonSelectedToken = Guid.Parse("788FC5E8-41FB-4D82-9A35-827AE67A6D2A");
+        
+        
     }
 }
 

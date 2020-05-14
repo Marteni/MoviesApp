@@ -7,7 +7,9 @@ using System.Threading;
 using System.Windows.Data;
 using System.Windows.Input;
 using MoviesApp.APP.Command;
+using MoviesApp.APP.Enums;
 using MoviesApp.APP.Services;
+using MoviesApp.App.ViewModels;
 using MoviesApp.BL.Extensions;
 using MoviesApp.BL.Models;
 using MoviesApp.BL.Repositories;
@@ -26,10 +28,18 @@ namespace MoviesApp.APP.ViewModels
             Messenger.Default.Register<MovieDetailModel>(this, NewMoveReceived, MovieDetailViewModel.SaveNewMovieToken);
             Messenger.Default.Register<MovieDetailModel>(this, MovieUpdatedReceived, MovieDetailViewModel.UpdateMovieToken);
             Messenger.Default.Register<Guid>(this, OnGuidReceived, MovieDetailViewModel.DeleteMovieToken);
+            Messenger.Default.Register<MovieListModel>(this, SelectedMovieReceived, PersonDetailViewModel.SelectedMovieToken);
         }
 
-       
-    
+        private void SelectedMovieReceived(MovieListModel selectedMovie)
+        {
+            var movie = Movies.FirstOrDefault(t => t.Id == selectedMovie.Id);
+            MovieSelected(movie);
+            var value = (int)TabEnums.MovieTab;
+            Messenger.Default.Send(value, MainViewModel.ChangeTabToken);
+        }
+
+
         public ObservableCollection<MovieListModel> Movies { get; } = new ObservableCollection<MovieListModel>();
 
         public ICommand MovieDetailCommand { get; }

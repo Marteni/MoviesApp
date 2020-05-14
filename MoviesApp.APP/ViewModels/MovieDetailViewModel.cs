@@ -34,8 +34,14 @@ namespace MoviesApp.APP.ViewModels
             CloseMovieDetailViewCommand = new RelayCommand(CloseMovieDetailView, (canExecute) => true);
             EditMovieDetailCommand = new RelayCommand(EditMovieDetail, (canExecute) => true);
             DeleteMovieDetailCommand = new RelayCommand(DeleteMovieDetail, (canExecute) => CanDeleteFlag);
+            ShowPersonDetailCommand = new RelayCommand<PersonListModel>(ShowPersonDetail, (canExecute) => true);
             Messenger.Default.Register<MovieDetailModel>(this, OnMovieAddNewReceived,MovieListViewModel.MovieAddToken);
             Messenger.Default.Register<MovieDetailModel>(this, OnMovieSelectedReceived, MovieListViewModel.MovieSelectedToken);
+        }
+
+        private void ShowPersonDetail(PersonListModel selectedPerson)
+        {
+            Messenger.Default.Send(selectedPerson,SelectedPersonToken);
         }
 
         public ObservableCollection<PersonListModel> ActorsEditList { get; } = new ObservableCollection<PersonListModel>();
@@ -48,6 +54,7 @@ namespace MoviesApp.APP.ViewModels
         public ICommand CloseMovieDetailViewCommand { get; }
         public ICommand DeleteMovieDetailCommand { get; }
         public ICommand EditMovieDetailCommand { get; }
+        public ICommand ShowPersonDetailCommand { get; }
 
         private void OnMovieAddNewReceived(MovieDetailModel movieDetailModel)
         {
@@ -230,7 +237,7 @@ namespace MoviesApp.APP.ViewModels
                             DirectorId = person.Id
                         };
 
-                        movieDirectorRepository.TryDeleteDirectorMovieRelation(MovieWrapperDetailModel.Id, person.Id);
+                        movieDirectorRepository.Create(movieDirector);
                         Directors.Add(person);
                     }
                 }
@@ -282,5 +289,6 @@ namespace MoviesApp.APP.ViewModels
         public static readonly Guid SaveNewMovieToken = Guid.Parse("9e8e69dc-7c4f-46c0-8e82-bedce9d9421f");
         public static readonly Guid DeleteMovieToken = Guid.Parse("c4ba749a-443e-4ea0-8016-e733cdba2275");
         public static readonly Guid UpdateMovieToken = Guid.Parse("34946034-1cc4-4806-988a-60fa608714f7");
+        public static readonly Guid SelectedPersonToken = Guid.Parse("aa35fc2f-1bdb-4380-96d6-159ec24603f7");
     }
 }

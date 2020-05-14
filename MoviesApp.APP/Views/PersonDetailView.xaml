@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:MoviesApp.APP.ViewModels"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="700"
              d:DataContext="{d:DesignInstance viewModels:PersonDetailViewModel}"
@@ -52,8 +53,15 @@
 
 
             <Label Content="Acted In" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center"/>
-            <ListBox ItemsSource="{Binding MoviesActed}"
+            <ListBox x:Name ="ActedInListBox" 
+                ItemsSource="{Binding MoviesActed}"
                      Grid.Row="1" Grid.Column="0" Margin="5,0">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="SelectionChanged">
+                        <b:InvokeCommandAction Command="{Binding ShowMovieDetailCommand}"
+                                               CommandParameter="{Binding ElementName=ActedInListBox, Path=SelectedItem}" />
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Label Content="{Binding Name}"/>
@@ -61,14 +69,15 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <Label Content="Directed" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center"/>
-            <ListBox ItemsSource="{Binding MoviesDirected}"
+            <ListBox x:Name="DirectedInListBox"
+                ItemsSource="{Binding MoviesDirected}"
                      Grid.Row="1" Grid.Column="1" Margin="5,0">
-                <!--<interactions:Interaction.Triggers>
-                    <interactions:EventTrigger EventName="SelectionChanged">
-                        <interactions:InvokeCommandAction Command="{Binding Source={StaticResource mainViewModelLocator}, Path=MovieListViewModel.MovieSelectedCommand}"
-                                                          CommandParameter="{Binding ElementName=MoviesListBox, Path=SelectedItem}" />
-                    </interactions:EventTrigger>
-                </interactions:Interaction.Triggers>-->
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="SelectionChanged">
+                        <b:InvokeCommandAction Command="{Binding ShowMovieDetailCommand}"
+                                               CommandParameter="{Binding ElementName=DirectedInListBox, Path=SelectedItem}" />
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Label Content="{Binding Name}"/>

@@ -26,9 +26,16 @@ namespace MoviesApp.APP.ViewModels
             SavePersonEditViewCommand = new RelayCommand(SavePerson, (canExecute) => true);
             DeletePersonEditViewCommand = new RelayCommand(DeletePerson, (canExecute) => true);
             EditPersonViewCommand = new RelayCommand(EditPerson, (canExecute) => true);
+            ShowMovieDetailCommand = new RelayCommand<MovieListModel>(ShowMovieDetail, (canExecute) => true);
 
             Messenger.Default.Register<PersonDetailModel>(this, AddNewPerson, PersonListViewModel.AddNewPersonToken);
             Messenger.Default.Register<PersonDetailModel>(this, DisplayPerson, PersonListViewModel.PersonSelectedToken);
+        }
+
+        private void ShowMovieDetail(MovieListModel selectedMovie)
+        {
+            Messenger.Default.Send(selectedMovie, SelectedMovieToken);
+            
         }
 
         public ObservableCollection<MovieListModel> Movies { get; } = new ObservableCollection<MovieListModel>();
@@ -37,6 +44,7 @@ namespace MoviesApp.APP.ViewModels
         public ICommand SavePersonEditViewCommand { get; }
         public ICommand DeletePersonEditViewCommand { get; }
         public ICommand EditPersonViewCommand { get; }
+        public ICommand ShowMovieDetailCommand { get; }
 
         private void AddNewPerson(PersonDetailModel personDetailModel)
         {
@@ -267,5 +275,6 @@ namespace MoviesApp.APP.ViewModels
         public static readonly Guid AddPersonToken = Guid.Parse("C2C51FFF-64B8-4EEA-9819-3F027C49BE5E");
         public static readonly Guid UpdatePersonToken = Guid.Parse("305EBDDE-72A8-4698-801F-DF49A5313F30");
         public static readonly Guid DeletePersonToken = Guid.Parse("26D8B1E8-033F-47B3-9A8E-36BE53406BF7");
+        public static readonly Guid SelectedMovieToken = Guid.Parse("634c8794-106e-426c-84ee-f825928a3bf5");
     }
 }

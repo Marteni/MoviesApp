@@ -32,7 +32,8 @@
         </StackPanel>
 
         <TabControl Grid.Column="1" 
-                    Grid.Row="0">
+                    Grid.Row="0"
+                    SelectedIndex="{Binding TabItem}">
 
             <TabItem Header="Movies" >
                 <Grid >

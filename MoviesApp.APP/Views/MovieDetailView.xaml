@@ -8,6 +8,7 @@
              xmlns:viewModels1="clr-namespace:MoviesApp.APP.ViewModels"
              xmlns:extension="clr-namespace:MoviesApp.APP.Extension"
              xmlns:enums="clr-namespace:MoviesApp.DAL.Enums;assembly=MoviesApp.DAL"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="700"
              d:DataContext="{d:DesignInstance viewModels1:MovieDetailViewModel}"
@@ -115,8 +116,14 @@
 
                 <Label Content="Actors" 
                        FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Center"/>
-                <ListBox ItemsSource="{Binding Actors}"
+                <ListBox x:Name="ShowActorsListBox"  ItemsSource="{Binding Actors}"
                          Grid.Row="1" Grid.Column="0" Height="205" Margin="5,0" VerticalAlignment="Top">
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="SelectionChanged">
+                            <b:InvokeCommandAction Command="{Binding ShowPersonDetailCommand}"
+                                                   CommandParameter="{Binding ElementName=ShowActorsListBox, Path=SelectedItem}" />
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Label>
@@ -137,8 +144,15 @@
 
                 <Label Content="Directors" 
                        FontWeight="Bold" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"/>
-                <ListBox ItemsSource="{Binding Directors}" 
-                         Grid.Row="1" Grid.Column="1" Height="205" Margin="5,0" VerticalAlignment="Top">
+                <ListBox  x:Name="ShowDirectorsListBox" 
+                          ItemsSource="{Binding Directors}" 
+                          Grid.Row="1" Grid.Column="1" Height="205" Margin="5,0" VerticalAlignment="Top">
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="SelectionChanged">
+                            <b:InvokeCommandAction Command="{Binding ShowPersonDetailCommand}"
+                                                   CommandParameter="{Binding ElementName=ShowDirectorsListBox, Path=SelectedItem}" />
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Label>
