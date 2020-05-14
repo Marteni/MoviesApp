@@ -229,7 +229,7 @@ namespace MoviesApp.APP.ViewModels
                     var director = MoviesDirected.FirstOrDefault(x => x.Id == movie.Id);
                     if (director != null)
                     {
-                        movieDirectorRepository.TryDeleteDirectorMovieRelation(personDetail.Id,movie.Id);
+                        movieDirectorRepository.TryDeleteDirectorMovieRelation(movie.Id,personDetail.Id);
                         DeleteMovieInDirectedMovieListById(movie.Id);
                     }
                 }
