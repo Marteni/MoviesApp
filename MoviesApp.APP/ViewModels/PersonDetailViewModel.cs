@@ -111,16 +111,14 @@ namespace MoviesApp.APP.ViewModels
         private void DeletePerson(object x)
         {
             var id = Guid.Parse(personEditDetail.Id.ToString());
+            
+            Messenger.Default.Send(id, DeletePersonToken);
+
             _moviesActorRepository.TryDeleteAllByMovieOrActorId(id);
             _moviesDirectorRepository.TryDeleteAllByMovieOrDirectorId(id);
 
-            if (ExistingPersonFlag)
-            {
-                Messenger.Default.Send(id, DeletePersonToken);
-            }
-           
             personEditDetail = null;
-            ExistingPersonFlag = false;
+            
         }
 
         private void LoadMovies()

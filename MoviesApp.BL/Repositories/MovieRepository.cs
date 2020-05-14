@@ -43,7 +43,8 @@ namespace MoviesApp.BL.Repositories
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
                 //SELECT * FROM Ingredient WHERE Id = id;
-                var entity = dbContext.Movies.First(t => t.Id == id);
+                var entity = dbContext.Movies.FirstOrDefault(t => t.Id == id);
+                if (entity == null) return null;
                 return MovieMapper.MapMovieEntityToListModel(entity);
             }
         }

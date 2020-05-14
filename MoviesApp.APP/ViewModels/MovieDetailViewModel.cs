@@ -124,7 +124,8 @@ namespace MoviesApp.APP.ViewModels
             var id = Guid.Parse(obj.ToString());
 
             Messenger.Default.Send(id, DeleteMovieToken);
-            _movieActorRepository.TryDeleteAllByMovieOrActorId(Model.Id);
+            _movieActorRepository.TryDeleteAllByMovieOrActorId(MovieWrapperDetailModel.Id);
+            _movieDirectorRepository.TryDeleteAllByMovieOrDirectorId(MovieWrapperDetailModel.Id);
             Model = null; 
         }
 

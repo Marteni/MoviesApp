@@ -47,6 +47,8 @@
                 Command="{Binding DeletePersonEditViewCommand}"/>
         </Grid>
 
+        
+
         <Grid Grid.Row="1" Margin="5,1,5,-145" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>

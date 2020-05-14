@@ -88,7 +88,6 @@ namespace MoviesApp.BL.Repositories
             {
                 var allDirectorMovieRelationships = dbContext.Directors
                     .Where(t => t.DirectorId == id || t.MovieId == id)
-                    .Select(e => PersonDirectorMapper.MapMoviesPersonDirectorEntityToDetailModel(e))
                     .ToList();
 
                 foreach (var directorMovieRelationship in allDirectorMovieRelationships)
