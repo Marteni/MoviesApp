@@ -28,7 +28,13 @@
                     Content="Search"
                     Margin="0,0,0,1"
                     Command="{Binding SearchCommand}"></Button>
-            <ListBox Height="300"></ListBox>
+            <ListBox Height="300" ItemsSource="{Binding FoundMovies}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding OriginalTitle}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </StackPanel>
 
         <TabControl Grid.Column="1" 
