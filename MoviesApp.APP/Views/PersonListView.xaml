@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:MoviesApp.APP.Views"
              xmlns:viewModels="clr-namespace:MoviesApp.APP.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="200"
+             d:DesignHeight="600" d:DesignWidth="200"
              d:DataContext="{d:DesignInstance viewModels:PersonListViewModel}"
              DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=PersonListViewModel}">
     <StackPanel>
@@ -15,7 +15,7 @@
                 Content="Add a new Person"
                 Margin="0,1"
                 Command="{Binding PersonDetailCommand}"/>
-        <ListBox Height="500" x:Name="PeopleListBox" ItemsSource="{Binding People}">
+        <ListBox Height="570" x:Name="PeopleListBox" ItemsSource="{Binding People}">
             <interactions:Interaction.Triggers>
                 <interactions:EventTrigger EventName="SelectionChanged">
                     <interactions:InvokeCommandAction Command="{Binding PersonSelectedCommand}"

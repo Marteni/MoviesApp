@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using MoviesApp.BL.Models;
 
 namespace MoviesApp.BL.Repositories
@@ -12,7 +11,7 @@ namespace MoviesApp.BL.Repositories
         IList<PersonActorDetailModel> GetAllMovieActorByActorId(Guid id);
         PersonActorDetailModel Create(PersonActorDetailModel model);
         void Update(PersonActorDetailModel model);
-        void TryDeleteByActorId(Guid id);
-        void TryDeleteByMovieId(Guid movieId, Guid actorId);
+        void TryDeleteActorMovieRelation(Guid movieId, Guid actorId);
+        void TryDeleteAllByMovieOrActorId(Guid id);
     }
 }

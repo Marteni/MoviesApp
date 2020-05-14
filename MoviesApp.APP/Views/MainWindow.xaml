@@ -3,11 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MoviesApp.APP"
         xmlns:viewModels="clr-namespace:MoviesApp.App.ViewModels"
         xmlns:views="clr-namespace:MoviesApp.APP.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="1000"
+        Title="Movies Application" Height="700" Width="1000"
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
         DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=MainViewModel}">
     <Grid>
@@ -21,11 +20,13 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel>
-            <TextBox Height="20" 
+            <TextBox Height="25" 
                      VerticalAlignment="Top"
+                     Margin="0,0.5"
                      Text="{Binding SearchQuery}"/>
             <Button Height="30"
                     Content="Search"
+                    Margin="0,0,0,1"
                     Command="{Binding SearchCommand}"></Button>
             <ListBox Height="300"></ListBox>
         </StackPanel>
@@ -40,15 +41,15 @@
 
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="281*" />
+                        <ColumnDefinition Width="563*"/>
 
                     </Grid.ColumnDefinitions>
 
 
                     <views:MovieListView Grid.Column="0"/>
-                    <views:MovieDetailView  Grid.Column="1"></views:MovieDetailView>
-                    <views:MovieDetailEditView  Grid.Column="1"></views:MovieDetailEditView>
+                    <views:MovieDetailView  Grid.Column="1"/>
+                    <views:MovieDetailEditView  Grid.Column="1"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Actors/Directors" >

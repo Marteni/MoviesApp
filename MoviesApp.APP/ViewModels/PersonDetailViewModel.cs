@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Data;
 using System.Windows.Input;
 using MoviesApp.APP.Command;
 using MoviesApp.APP.Services;
-using MoviesApp.APP.Wrappers;
 using MoviesApp.BL.Extensions;
 using MoviesApp.BL.Models;
 using MoviesApp.BL.Repositories;
@@ -19,6 +16,7 @@ namespace MoviesApp.APP.ViewModels
         private IMovieRepository _movieRepository;
         private IMoviePersonActorRepository _moviesActorRepository;
         private IMoviePersonDirectorRepository _moviesDirectorRepository;
+
         public PersonDetailViewModel(IMovieRepository movieRepository, IMoviePersonActorRepository moviesActorRepository, IMoviePersonDirectorRepository moviesDirectorRepository)
         {
             _movieRepository = movieRepository;
@@ -32,6 +30,7 @@ namespace MoviesApp.APP.ViewModels
             Messenger.Default.Register<PersonDetailModel>(this, AddNewPerson, PersonListViewModel.AddNewPersonToken);
             Messenger.Default.Register<PersonDetailModel>(this, DisplayPerson, PersonListViewModel.PersonSelectedToken);
         }
+
         public ObservableCollection<MovieListModel> Movies { get; } = new ObservableCollection<MovieListModel>();
         public ObservableCollection<MovieListModel> MoviesActed { get; } = new ObservableCollection<MovieListModel>();
         public ObservableCollection<MovieListModel> MoviesDirected { get; } = new ObservableCollection<MovieListModel>();
@@ -81,9 +80,11 @@ namespace MoviesApp.APP.ViewModels
             {
                 Messenger.Default.Send(personEditDetail, AddPersonToken);
             }
+
             personDetail = personEditDetail;
             personEditDetail = null;
             ExistingPersonFlag = false;
+
             CreateAndReloadMovieActors(_moviesActorRepository);
             CreateAndReloadMovieDirectors(_moviesDirectorRepository);
         }
@@ -93,6 +94,7 @@ namespace MoviesApp.APP.ViewModels
             ExistingPersonFlag = true;
             personEditDetail = personDetail;
             personDetail = null;
+
             LoadMovies();
             UpdateMovieListWithActedMovies();
             UpdateMovieListWithDirectedMovies();
@@ -101,7 +103,9 @@ namespace MoviesApp.APP.ViewModels
         private void DeletePerson(object x)
         {
             var id = Guid.Parse(personEditDetail.Id.ToString());
-            _moviesActorRepository.TryDeleteByActorId(id);
+            _moviesActorRepository.TryDeleteAllByMovieOrActorId(id);
+            _moviesDirectorRepository.TryDeleteAllByMovieOrDirectorId(id);
+
             if (ExistingPersonFlag)
             {
                 Messenger.Default.Send(id, DeletePersonToken);
@@ -156,10 +160,11 @@ namespace MoviesApp.APP.ViewModels
                     var actor = MoviesActed.FirstOrDefault(x => x.Id == movie.Id);
                     if (actor != null)
                     {
-                        movieActorRepository.TryDeleteByMovieId(movie.Id, personDetail.Id);
+                        movieActorRepository.TryDeleteActorMovieRelation(movie.Id, personDetail.Id);
                         DeleteMovieInActedMovieListById(movie.Id);
                     }
                 }
+
                 LoadActedMovies(movieActorRepository);
             }
         }
@@ -224,10 +229,11 @@ namespace MoviesApp.APP.ViewModels
                     var director = MoviesDirected.FirstOrDefault(x => x.Id == movie.Id);
                     if (director != null)
                     {
-                        movieDirectorRepository.TryDeleteByMovieId(movie.Id);
+                        movieDirectorRepository.TryDeleteDirectorMovieRelation(personDetail.Id,movie.Id);
                         DeleteMovieInDirectedMovieListById(movie.Id);
                     }
                 }
+
                 LoadDirectedMovies();
             }
         }

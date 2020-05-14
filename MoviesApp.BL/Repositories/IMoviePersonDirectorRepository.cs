@@ -11,7 +11,7 @@ namespace MoviesApp.BL.Repositories
         IList<PersonDirectorDetailModel> GetAllMovieDirectorByDirectorId(Guid id);
         PersonDirectorDetailModel Create(PersonDirectorDetailModel model);
         void Update(PersonDirectorDetailModel model);
-        void TryDeleteByDirectorId(Guid id);
-        void TryDeleteByMovieId(Guid id);
+        void TryDeleteDirectorMovieRelation(Guid movieId, Guid directorId);
+        void TryDeleteAllByMovieOrDirectorId(Guid id);
     }
 }

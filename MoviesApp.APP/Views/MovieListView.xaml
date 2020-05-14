@@ -8,17 +8,18 @@
              xmlns:viewModels="clr-namespace:MoviesApp.App.ViewModels"
              xmlns:viewModels1="clr-namespace:MoviesApp.APP.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="200"
+             d:DesignHeight="600" d:DesignWidth="200"
              d:DataContext="{d:DesignInstance viewModels1:MovieListViewModel}"
              DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=MovieListViewModel}">
     
     
-    <StackPanel >
+    <StackPanel>
 
-        <Button Height="50" 
-                Content="Add new Movie"
+        <Button Height="30" 
+                Content="Add a new Movie"
+                Margin="0,1"
                 Command="{Binding MovieDetailCommand}"></Button>
-        <ListBox Height="500" 
+        <ListBox Height="570" 
                  x:Name="MoviesListBox"
                  ItemsSource="{Binding Movies}">
             <interactions:Interaction.Triggers>

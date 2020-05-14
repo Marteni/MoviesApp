@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using MoviesApp.BL.Mappers;
 using MoviesApp.BL.Models;
 using MoviesApp.DAL.Factories;
@@ -70,20 +69,7 @@ namespace MoviesApp.BL.Repositories
             }
         }
 
-        public void TryDeleteByActorId(Guid id)
-        {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
-            {
-                var entity = dbContext.Actors.FirstOrDefault(t => t.ActorId == id);
-                if (entity != null)
-                {
-                    dbContext.Remove(entity);
-                    dbContext.SaveChanges();
-                }
-            }
-        }
-
-        public void TryDeleteByMovieId(Guid movieId, Guid actorId)
+        public void TryDeleteActorMovieRelation(Guid movieId, Guid actorId)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
@@ -94,8 +80,26 @@ namespace MoviesApp.BL.Repositories
                     dbContext.Remove(entity);
                     dbContext.SaveChanges();
                 }
-              
-                    
+            }
+        }
+
+        public void TryDeleteAllByMovieOrActorId(Guid id)
+        {
+            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            {
+                var allActorMovieRelationships = dbContext.Actors
+                    .Where(t => t.ActorId == id || t.MovieId == id)
+                    .Select(e => PersonActorMapper.MapMoviesPersonActorEntityToDetailModel(e))
+                    .ToList();
+
+                foreach (var actorMovieRelationship in allActorMovieRelationships)
+                {
+                    if (actorMovieRelationship != null)
+                    {
+                        dbContext.Remove(actorMovieRelationship);
+                    }
+                }
+                dbContext.SaveChanges();
             }
         }
 

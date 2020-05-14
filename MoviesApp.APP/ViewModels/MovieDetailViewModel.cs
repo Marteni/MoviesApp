@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Data;
 using System.Windows.Input;
 using MoviesApp.APP.Command;
 using MoviesApp.APP.Services;
-using MoviesApp.APP.Wrappers;
 using MoviesApp.BL.Extensions;
 using MoviesApp.BL.Models;
 using MoviesApp.BL.Repositories;
@@ -121,7 +117,7 @@ namespace MoviesApp.APP.ViewModels
             var id = Guid.Parse(obj.ToString());
 
             Messenger.Default.Send(id, DeleteMovieToken);
-            _movieActorRepository.TryDeleteByMovieId(Model.Id, id);
+            _movieActorRepository.TryDeleteAllByMovieOrActorId(Model.Id);
             Model = null; 
         }
 
@@ -176,7 +172,7 @@ namespace MoviesApp.APP.ViewModels
                     var actor = Actors.FirstOrDefault(x => x.Id == person.Id);
                     if (actor != null)
                     {
-                        movieActorRepository.TryDeleteByActorId(person.Id);
+                        movieActorRepository.TryDeleteActorMovieRelation(MovieWrapperDetailModel.Id, person.Id);
                         DeleteActorInActorListById(person.Id);
                     }
                 }
@@ -193,7 +189,6 @@ namespace MoviesApp.APP.ViewModels
             if (index != -1)
             {
                 Actors.RemoveAt(index);
-               
             }
         }
 
@@ -235,7 +230,7 @@ namespace MoviesApp.APP.ViewModels
                             DirectorId = person.Id
                         };
 
-                        movieDirectorRepository.Create(movieDirector);
+                        movieDirectorRepository.TryDeleteDirectorMovieRelation(MovieWrapperDetailModel.Id, person.Id);
                         Directors.Add(person);
                     }
                 }
@@ -244,7 +239,7 @@ namespace MoviesApp.APP.ViewModels
                     var director = Directors.FirstOrDefault(x => x.Id == person.Id);
                     if (director != null)
                     {
-                        movieDirectorRepository.TryDeleteByDirectorId(person.Id);
+                        movieDirectorRepository.TryDeleteDirectorMovieRelation(MovieWrapperDetailModel.Id, person.Id);
                         DeleteDirectorInDirectorListById(person.Id);
                     }
                 }

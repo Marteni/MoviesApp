@@ -33,7 +33,6 @@ namespace MoviesApp.BL.Repositories
                     .Where(t => t.MovieId == id)
                     .Select(e => PersonDirectorMapper.MapMoviesPersonDirectorEntityToDetailModel(e))
                     .ToList();
-
             }
         }
 
@@ -45,7 +44,6 @@ namespace MoviesApp.BL.Repositories
                     .Where(t => t.DirectorId == id)
                     .Select(e => PersonDirectorMapper.MapMoviesPersonDirectorEntityToDetailModel(e))
                     .ToList();
-
             }
         }
 
@@ -70,30 +68,40 @@ namespace MoviesApp.BL.Repositories
             }
         }
 
-        public void TryDeleteByDirectorId(Guid id)
+        public void TryDeleteDirectorMovieRelation(Guid movieId, Guid directorId)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                var entity = dbContext.Directors.First(t => t.DirectorId == id);
-                if (entity != null)
+                var directorMovieRelation = dbContext.Directors.FirstOrDefault(t => t.MovieId == movieId && t.DirectorId == directorId);
+
+                if (directorMovieRelation != null)
                 {
-                    dbContext.Remove(entity);
+                    dbContext.Remove(directorMovieRelation);
                     dbContext.SaveChanges();
                 }
             }
         }
 
-        public void TryDeleteByMovieId(Guid id)
+        public void TryDeleteAllByMovieOrDirectorId(Guid id)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                var entity = dbContext.Directors.First(t => t.MovieId == id);
-                if (entity != null)
+                var allDirectorMovieRelationships = dbContext.Directors
+                    .Where(t => t.DirectorId == id || t.MovieId == id)
+                    .Select(e => PersonDirectorMapper.MapMoviesPersonDirectorEntityToDetailModel(e))
+                    .ToList();
+
+                foreach (var directorMovieRelationship in allDirectorMovieRelationships)
                 {
-                    dbContext.Remove(entity);
-                    dbContext.SaveChanges();
+                    if (directorMovieRelationship != null)
+                    {
+                        dbContext.Remove(directorMovieRelationship);
+                    }
                 }
+
+                dbContext.SaveChanges();
             }
         }
+
     }
 }

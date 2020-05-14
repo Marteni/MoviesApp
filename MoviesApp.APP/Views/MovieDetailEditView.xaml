@@ -74,30 +74,46 @@
             </Grid>
         </StackPanel>
 
-        <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Genre:" FontWeight="Bold"/>
-                <ComboBox ItemsSource="{Binding Source={extension:EnumBindingSource {x:Type enums:GenreType}}}"
-                          SelectedItem="{Binding MovieWrapperDetailModel.Genre, Mode=TwoWay}"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Country:" FontWeight="Bold"/>
-                <TextBox Text="{Binding MovieWrapperDetailModel.CountryOfOrigin}" MinWidth="150" MaxWidth="240"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Length:" FontWeight="Bold"/>
-                <TextBox Text="{Binding MovieWrapperDetailModel.Length}" MinWidth="150" MaxWidth="240"/>
-            </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,5,0,0">
 
-            <Label Content="Description:" FontWeight="Bold"/>
-            <TextBox Text="{Binding MovieWrapperDetailModel.Description}"
-                     Width="300"
-                     Height="100"
-                     HorizontalAlignment="Left"
-                     ScrollViewer.VerticalScrollBarVisibility="Auto"
-                     IsReadOnly="False"
-                     TextWrapping="Wrap"
-                     AcceptsReturn="True"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width="3.5*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Top">
+                    <Label Content="Genre:" FontWeight="Bold"/>
+                    <Label Content="Country:" FontWeight="Bold"/>
+                    <Label Content="Length:" FontWeight="Bold"/>
+                    <Label Content="Description:" FontWeight="Bold"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Top">
+                    <ComboBox ItemsSource="{Binding Source={extension:EnumBindingSource {x:Type enums:GenreType}}}"
+                              SelectedItem="{Binding MovieWrapperDetailModel.Genre, Mode=TwoWay}" Height="25" Margin="0,0,5,0"/>
+                    <TextBox Text="{Binding MovieWrapperDetailModel.CountryOfOrigin}" Height="25" VerticalAlignment="Stretch" Margin="0,1,5,1"/>
+                    <TextBox Text="{Binding MovieWrapperDetailModel.Length}" Height="25" VerticalAlignment="Stretch" Margin="0,0,5,0"/>
+                </StackPanel>
+
+                <TextBox Text="{Binding MovieWrapperDetailModel.Description}"
+                         Height="100"
+                         Grid.Row="1"
+                         Grid.Column="0"
+                         Grid.ColumnSpan="2"
+                         Margin="5,0"
+                         HorizontalAlignment="Stretch"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         IsReadOnly="False"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"/>
+
+            </Grid>
 
             <Grid>
 
@@ -113,7 +129,7 @@
                 <Label Content="Actors" 
                        FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Center"/>
                 <ListBox x:Name="PeopleListBox" ItemsSource="{Binding ActorsEditList}"  
-                         Grid.Row="1" Grid.Column="0" Height="215"  Margin="5,0">
+                         Grid.Row="1" Grid.Column="0" Height="205" Margin="5,0" VerticalAlignment="Top">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Label>
@@ -137,7 +153,7 @@
                 <Label Content="Directors" 
                        FontWeight="Bold" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"/>
                 <ListBox x:Name="DirectorsListBox" ItemsSource="{Binding DirectorsEditList}" 
-                         Grid.Row="1" Grid.Column="1" Height="215" Margin="5,0">
+                         Grid.Row="1" Grid.Column="1" Height="205" Margin="5,0" VerticalAlignment="Top">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Label>
