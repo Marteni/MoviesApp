@@ -73,7 +73,7 @@ namespace MoviesApp.APP.ViewModels
         public bool CanSaveFlag { get; set; }
         public Visibility ShowRatingAddFormButton { get; set; } = Visibility.Visible;
         public Visibility ShowRatingAddForm { get; set; } = Visibility.Collapsed;
-        public double AverageRating { get; set; } = 5.2;
+        public double AverageRating { get; set; }
 
         public static readonly Guid SaveNewMovieToken = Guid.Parse("9e8e69dc-7c4f-46c0-8e82-bedce9d9421f");
         public static readonly Guid DeleteMovieToken = Guid.Parse("c4ba749a-443e-4ea0-8016-e733cdba2275");
@@ -115,7 +115,19 @@ namespace MoviesApp.APP.ViewModels
         private void SaveNewMovie(object x = null)
         {
             var movieWrapper = MovieWrapperDetailModel;
-          
+
+            if (movieWrapper.OriginalTitle == null)
+            {
+                    _messageDialogService.Show(
+                    "Error",
+                    $"Original Title is empty. Please specify title of movie.",
+                    MessageDialogButtonConfiguration.OK,
+                    MessageDialogResult.OK);
+
+                return;
+            }
+
+
             if (CanDeleteFlag)
             {
                 Messenger.Default.Send(movieWrapper, UpdateMovieToken );
@@ -341,6 +353,16 @@ namespace MoviesApp.APP.ViewModels
 
         private void SaveNewRating(object x = null)
         {
+            if (RatingNewDetailModel.Nick == null || RatingNewDetailModel.NumericEvaluation <= 0)
+            {
+                _messageDialogService.Show(
+                    "Error",
+                    $"Please specify correct nick and numerical rating.",
+                    MessageDialogButtonConfiguration.OK,
+                    MessageDialogResult.OK);
+
+                return;
+            }
             RatingNewDetailModel.RatedMovieId = MovieWrapperDetailModel.Id;
 
             _ratingRepository.Create(RatingNewDetailModel);

@@ -86,14 +86,18 @@ namespace MoviesApp.APP.ViewModels
 
         private void SavePerson(object x = null)
         {
-            if (ExistingPersonFlag)
+            if (personEditDetail.Name == null || personEditDetail.Surname == null)
             {
-                Messenger.Default.Send(personEditDetail, UpdatePersonToken);
+                _messageDialogService.Show(
+                    "Error",
+                    $"Original Name and Surname are empty. Please specify correct name and surname.",
+                    MessageDialogButtonConfiguration.OK,
+                    MessageDialogResult.OK);
+
+                return;
             }
-            else
-            {
-                Messenger.Default.Send(personEditDetail, AddPersonToken);
-            }
+
+            Messenger.Default.Send(personEditDetail, ExistingPersonFlag ? UpdatePersonToken : AddPersonToken);
 
             personDetail = personEditDetail;
             personEditDetail = null;
@@ -105,6 +109,7 @@ namespace MoviesApp.APP.ViewModels
 
         private void EditPerson(object x = null)
         {
+           
             ExistingPersonFlag = true;
             personEditDetail = personDetail;
             personDetail = null;
