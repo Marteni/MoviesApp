@@ -17,22 +17,22 @@
     <Grid Visibility="{Binding ShowModel, Converter={StaticResource NullToVisibilityConverter}}">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="150"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>
 
 
 
         <Button Content="Edit" 
                 Height="30"
-                Width="50"
+                Width="40"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Right"
-                Margin="0,10,10,0"
+                Margin="5"
                 Grid.Column="1"
                 Command="{Binding EditMovieDetailCommand}"/>
 
@@ -42,14 +42,15 @@
                     <RowDefinition Height="200"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="160" />
+                    <ColumnDefinition Width="120" />
                     <ColumnDefinition Width="100*"/>
                 </Grid.ColumnDefinitions>
                 <Image Source="{Binding MovieWrapperDetailModel.PosterImageUrl}" 
-                       Height="150" Width="150"
+                       Height="150" Width="120"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
-                       Margin="10 10"/>
+                       Margin="5"
+                       />
                 <StackPanel Grid.Column="1">
                     <TextBlock Text="{Binding MovieWrapperDetailModel.OriginalTitle}"
                                FontSize="15"
@@ -67,9 +68,8 @@
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,5,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1.5*"/>
-                    <ColumnDefinition Width="3.5*"/>
-                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -77,23 +77,27 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Top">
-                    <Label Content="Genre:" FontWeight="Bold"/>
-                    <Label Content="Country:" FontWeight="Bold"/>
-                    <Label Content="Length:" FontWeight="Bold"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Genre:" FontWeight="Bold"/>
+                        <Label Content="{Binding MovieWrapperDetailModel.Genre}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Country:" FontWeight="Bold"/>
+                        <Label Content="{Binding MovieWrapperDetailModel.CountryOfOrigin}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Length:" FontWeight="Bold"/>
+                        <Label Content="{Binding MovieWrapperDetailModel.Length}"/>
+                    </StackPanel>
+                    
                     <Label Content="Description:" FontWeight="Bold"/>
-                </StackPanel>
 
-                <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Top">
-                    <Label Content="{Binding MovieWrapperDetailModel.Genre}" Height="25" Margin="0,0,5,0"/>
-                    <Label Content="{Binding MovieWrapperDetailModel.CountryOfOrigin}" Height="25" Margin="0,0,5,0"/>
-                    <Label Content="{Binding MovieWrapperDetailModel.Length}" Height="25" Margin="0,0,5,0"/>
                 </StackPanel>
 
                 <TextBox Text="{Binding MovieWrapperDetailModel.Description}"
                          Height="100"
                          Grid.Row="1"
                          Grid.Column="0"
-                         Grid.ColumnSpan="2"
                          Margin="5,0"
                          HorizontalAlignment="Stretch"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -115,7 +119,9 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Content="Actors" 
-                       FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Center"/>
+                       FontWeight="Bold" 
+                       Grid.Row="0" 
+                       HorizontalAlignment="Center"/>
                 <ListBox x:Name="ShowActorsListBox"  ItemsSource="{Binding Actors}"
                          Grid.Row="1" Grid.Column="0" Height="205" Margin="5,0" VerticalAlignment="Top">
                     <b:Interaction.Triggers>
