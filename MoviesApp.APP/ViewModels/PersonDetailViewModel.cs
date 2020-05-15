@@ -119,7 +119,7 @@ namespace MoviesApp.APP.ViewModels
 
             var delete = _messageDialogService.Show(
                 "Delete",
-                $"Do you want to delete {personEditDetail?.Name}?.",
+                $"Do you want to delete {personEditDetail?.Name} {personEditDetail?.Surname}?",
                 MessageDialogButtonConfiguration.YesNo,
                 MessageDialogResult.No);
             if(delete == MessageDialogResult.No) return;

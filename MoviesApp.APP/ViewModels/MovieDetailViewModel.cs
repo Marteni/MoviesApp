@@ -145,7 +145,7 @@ namespace MoviesApp.APP.ViewModels
         {
             var delete = _messageDialogService.Show(
                 "Delete",
-                $"Do you want to delete {MovieWrapperDetailModel?.OriginalTitle}?.",
+                $"Do you want to delete {MovieWrapperDetailModel?.OriginalTitle}?",
                 MessageDialogButtonConfiguration.YesNo,
                 MessageDialogResult.No);
             if (delete == MessageDialogResult.No) return;
