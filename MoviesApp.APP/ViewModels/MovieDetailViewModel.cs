@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using Microsoft.Xaml.Behaviors.Core;
 using MoviesApp.APP.Command;
 using MoviesApp.APP.Services;
 using MoviesApp.BL.Extensions;
@@ -17,44 +20,68 @@ namespace MoviesApp.APP.ViewModels
         private IMoviePersonActorRepository _movieActorRepository;
         private IMovieRepository _movieRepository;
         private IMoviePersonDirectorRepository _movieDirectorRepository;
+        private IRatingRepository _ratingRepository;
 
         public MovieDetailViewModel(IPeopleRepository personRepository,
             IMoviePersonActorRepository movieActorRepository,
             IMoviePersonDirectorRepository movieDirectorRepository,
-            IMovieRepository movieRepository
+            IMovieRepository movieRepository,
+            IRatingRepository ratingRepository
            )
         {
             _personRepository = personRepository;
             _movieActorRepository = movieActorRepository;
             _movieRepository = movieRepository;
             _movieDirectorRepository = movieDirectorRepository;
+            _ratingRepository = ratingRepository;
 
-
+            PersonShowDetailCommand = new RelayCommand<PersonListModel>(ShowPersonDetail, (canExecute) => true);
+            MovieEditDetailCommand = new RelayCommand(EditMovieDetail, (canExecute) => true);
             MovieSaveCommand = new RelayCommand(SaveNewMovie, (canExecute) => true);
-            CloseMovieDetailViewCommand = new RelayCommand(CloseMovieDetailView, (canExecute) => true);
-            EditMovieDetailCommand = new RelayCommand(EditMovieDetail, (canExecute) => true);
-            DeleteMovieDetailCommand = new RelayCommand(DeleteMovieDetail, (canExecute) => CanDeleteFlag);
-            ShowPersonDetailCommand = new RelayCommand<PersonListModel>(ShowPersonDetail, (canExecute) => true);
+            MovieDeleteDetailCommand = new RelayCommand(DeleteMovieDetail, (canExecute) => CanDeleteFlag);
+            MovieCloseDetailViewCommand = new RelayCommand(CloseMovieDetailView, (canExecute) => true);
+            RatingShowFormCommand = new RelayCommand(ShowAddRatingForm, canExecute => true);
+            RatingSaveNewCommand = new RelayCommand(SaveNewRating, canExecute => true);
+
             Messenger.Default.Register<MovieDetailModel>(this, OnMovieAddNewReceived,MovieListViewModel.MovieAddToken);
             Messenger.Default.Register<MovieDetailModel>(this, OnMovieSelectedReceived, MovieListViewModel.MovieSelectedToken);
         }
 
-        private void ShowPersonDetail(PersonListModel selectedPerson)
-        {
-            Messenger.Default.Send(selectedPerson,SelectedPersonToken);
-        }
+        public ICommand PersonShowDetailCommand { get; }
+        public ICommand MovieEditDetailCommand { get; }
+        public ICommand MovieSaveCommand { get; }
+        public ICommand MovieDeleteDetailCommand { get; }
+        public ICommand MovieCloseDetailViewCommand { get; }
+        public ICommand RatingShowFormCommand { get; }
+        public ICommand RatingSaveNewCommand { get; }
+
+        public MovieDetailModel Model { get; set; }
+        public MovieDetailModel ShowModel { get; set; }
+        public MovieDetailModel MovieWrapperDetailModel { get; set; }
+        public RatingDetailModel RatingNewDetailModel { get; set; }
 
         public ObservableCollection<PersonListModel> ActorsEditList { get; } = new ObservableCollection<PersonListModel>();
         public ObservableCollection<PersonListModel> DirectorsEditList { get; } = new ObservableCollection<PersonListModel>();
         public ObservableCollection<PersonListModel> Actors { get; } = new ObservableCollection<PersonListModel>();
         public ObservableCollection<PersonListModel> Directors { get; } = new ObservableCollection<PersonListModel>();
+        public ObservableCollection<RatingDetailModel> Ratings { get; set; } = new ObservableCollection<RatingDetailModel>();
+
+        public bool CanDeleteFlag { get; set; }
+        public bool CanSaveFlag { get; set; }
+        public Visibility ShowRatingAddFormButton { get; set; } = Visibility.Visible;
+        public Visibility ShowRatingAddForm { get; set; } = Visibility.Collapsed;
+        public double AverageRating { get; set; } = 5.2;
+
+        public static readonly Guid SaveNewMovieToken = Guid.Parse("9e8e69dc-7c4f-46c0-8e82-bedce9d9421f");
+        public static readonly Guid DeleteMovieToken = Guid.Parse("c4ba749a-443e-4ea0-8016-e733cdba2275");
+        public static readonly Guid UpdateMovieToken = Guid.Parse("34946034-1cc4-4806-988a-60fa608714f7");
+        public static readonly Guid SelectedPersonToken = Guid.Parse("aa35fc2f-1bdb-4380-96d6-159ec24603f7");
 
 
-        public ICommand MovieSaveCommand { get; }
-        public ICommand CloseMovieDetailViewCommand { get; }
-        public ICommand DeleteMovieDetailCommand { get; }
-        public ICommand EditMovieDetailCommand { get; }
-        public ICommand ShowPersonDetailCommand { get; }
+        private void ShowPersonDetail(PersonListModel selectedPerson)
+        {
+            Messenger.Default.Send(selectedPerson, SelectedPersonToken);
+        }
 
         private void OnMovieAddNewReceived(MovieDetailModel movieDetailModel)
         {
@@ -76,10 +103,11 @@ namespace MoviesApp.APP.ViewModels
             ShowModel = new MovieDetailModel();
             Model = null;
             MovieWrapperDetailModel = movieWrapperDetailModel;
+            RatingNewDetailModel = new RatingDetailModel();
             LoadActors(_movieActorRepository);
             LoadDirectors();
+            LoadRatings();
         }
-
 
         private void SaveNewMovie(object x = null)
         {
@@ -110,15 +138,6 @@ namespace MoviesApp.APP.ViewModels
             UpdateDirectorListWithDirectors();
         }
 
-
-
-        private void CloseMovieDetailView(object x = null)
-        {
-            CanDeleteFlag = false;
-            Model = null;
-            MovieWrapperDetailModel = null;
-        }
-
         private void DeleteMovieDetail(object obj)
         {
             var id = Guid.Parse(obj.ToString());
@@ -129,7 +148,12 @@ namespace MoviesApp.APP.ViewModels
             Model = null; 
         }
 
-
+        private void CloseMovieDetailView(object x = null)
+        {
+            CanDeleteFlag = false;
+            Model = null;
+            MovieWrapperDetailModel = null;
+        }
 
 
         private void LoadPeople()
@@ -211,6 +235,7 @@ namespace MoviesApp.APP.ViewModels
             CollectionViewSource.GetDefaultView(ActorsEditList).Refresh();
         }
 
+
         private void LoadDirectors()
         {
             Directors.Clear();
@@ -278,18 +303,42 @@ namespace MoviesApp.APP.ViewModels
             CollectionViewSource.GetDefaultView(DirectorsEditList).Refresh();
         }
 
+        private void LoadRatings()
+        {
+            var ratingCounter = 0;
+            var ratingValues = 0;
 
-        public bool CanDeleteFlag { get; set; }
-        public bool CanSaveFlag { get; set; }
-        public MovieDetailModel Model { get; set; }
+            Ratings.Clear();
+            var allRatings = _ratingRepository.GetAllByMovieId(MovieWrapperDetailModel.Id);
+            foreach (var rating in allRatings)
+            {
+                if (rating != null)
+                {
+                    Ratings.Add(rating);
+                    ratingValues += rating.NumericEvaluation;
+                    ratingCounter++;
+                }
+            }
 
-        public MovieDetailModel ShowModel { get; set; }
+            AverageRating = (double) ratingValues / ratingCounter;
+        }
 
-        public MovieDetailModel MovieWrapperDetailModel { get; set; }
+        private void ShowAddRatingForm(object x = null)
+        {
+            ShowRatingAddFormButton = Visibility.Collapsed;
+            ShowRatingAddForm = Visibility.Visible;
+        }
 
-        public static readonly Guid SaveNewMovieToken = Guid.Parse("9e8e69dc-7c4f-46c0-8e82-bedce9d9421f");
-        public static readonly Guid DeleteMovieToken = Guid.Parse("c4ba749a-443e-4ea0-8016-e733cdba2275");
-        public static readonly Guid UpdateMovieToken = Guid.Parse("34946034-1cc4-4806-988a-60fa608714f7");
-        public static readonly Guid SelectedPersonToken = Guid.Parse("aa35fc2f-1bdb-4380-96d6-159ec24603f7");
+        private void SaveNewRating(object x = null)
+        {
+            RatingNewDetailModel.RatedMovieId = MovieWrapperDetailModel.Id;
+
+            _ratingRepository.Create(RatingNewDetailModel);
+            LoadRatings();
+
+            ShowRatingAddFormButton = Visibility.Visible;
+            ShowRatingAddForm = Visibility.Collapsed;
+            RatingNewDetailModel = new RatingDetailModel();
+        }
     }
 }

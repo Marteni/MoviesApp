@@ -15,12 +15,13 @@ namespace MoviesApp.APP.ViewModels
         private static readonly PeopleRepository _peopleRepository = new PeopleRepository(new DbContextSqlFactory());
         private static readonly MoviePersonActorRepository _actorRepository = new MoviePersonActorRepository(new DbContextSqlFactory());
         private static readonly MoviePersonDirectorRepository _directorRepository = new MoviePersonDirectorRepository(new DbContextSqlFactory());
+        private static readonly RatingRepository _ratingRepository = new RatingRepository(new DbContextSqlFactory());
 
         public static MainViewModel MainViewModel { get; } = new MainViewModel(_movieRepository,_peopleRepository);
 
         public static MovieListViewModel MovieListViewModel { get; } = new MovieListViewModel(_movieRepository);
 
-        public static MovieDetailViewModel MovieDetailViewModel { get; } = new MovieDetailViewModel(_peopleRepository, _actorRepository, _directorRepository, _movieRepository);
+        public static MovieDetailViewModel MovieDetailViewModel { get; } = new MovieDetailViewModel(_peopleRepository, _actorRepository, _directorRepository, _movieRepository, _ratingRepository);
 
 
        

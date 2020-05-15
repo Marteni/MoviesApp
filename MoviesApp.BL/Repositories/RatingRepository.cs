@@ -28,13 +28,14 @@ namespace MoviesApp.BL.Repositories
             }
         }
 
-        public RatingDetailModel GetById(Guid id)
+        public IList<RatingDetailModel> GetAllByMovieId(Guid id)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                //SELECT * FROM Ingredient WHERE Id = id;
-                var entity = dbContext.Ratings.First(t => t.Id == id);
-                return RatingMapper.MapRatingEntityToDetailModel(entity);
+                return dbContext.Ratings
+                    .Where(t => t.RatedMovieId == id)
+                    .Select(e => RatingMapper.MapRatingEntityToDetailModel(e))
+                    .ToList();
             }
         }
 
