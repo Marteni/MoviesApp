@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Microsoft.Xaml.Behaviors.Core;
 using MoviesApp.APP.Command;
 using MoviesApp.APP.Services;
+using MoviesApp.APP.Services.MessageDialog;
 using MoviesApp.BL.Extensions;
 using MoviesApp.BL.Models;
 using MoviesApp.BL.Repositories;
@@ -18,22 +19,22 @@ namespace MoviesApp.APP.ViewModels
     {
         private IPeopleRepository _personRepository;
         private IMoviePersonActorRepository _movieActorRepository;
-        private IMovieRepository _movieRepository;
         private IMoviePersonDirectorRepository _movieDirectorRepository;
         private IRatingRepository _ratingRepository;
+        private readonly IMessageDialogService _messageDialogService;
 
         public MovieDetailViewModel(IPeopleRepository personRepository,
             IMoviePersonActorRepository movieActorRepository,
             IMoviePersonDirectorRepository movieDirectorRepository,
-            IMovieRepository movieRepository,
-            IRatingRepository ratingRepository
+            IRatingRepository ratingRepository,
+            IMessageDialogService messageDialogService
            )
         {
             _personRepository = personRepository;
             _movieActorRepository = movieActorRepository;
-            _movieRepository = movieRepository;
             _movieDirectorRepository = movieDirectorRepository;
             _ratingRepository = ratingRepository;
+            _messageDialogService = messageDialogService;
 
             PersonShowDetailCommand = new RelayCommand<PersonListModel>(ShowPersonDetail, (canExecute) => true);
             MovieEditDetailCommand = new RelayCommand(EditMovieDetail, (canExecute) => true);
@@ -140,6 +141,13 @@ namespace MoviesApp.APP.ViewModels
 
         private void DeleteMovieDetail(object obj)
         {
+            var delete = _messageDialogService.Show(
+                "Delete",
+                $"Do you want to delete {MovieWrapperDetailModel?.OriginalTitle}?.",
+                MessageDialogButtonConfiguration.YesNo,
+                MessageDialogResult.No);
+            if (delete == MessageDialogResult.No) return;
+
             var id = Guid.Parse(obj.ToString());
 
             Messenger.Default.Send(id, DeleteMovieToken);

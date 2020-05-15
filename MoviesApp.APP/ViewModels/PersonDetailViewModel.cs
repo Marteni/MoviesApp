@@ -5,6 +5,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using MoviesApp.APP.Command;
 using MoviesApp.APP.Services;
+using MoviesApp.APP.Services.MessageDialog;
 using MoviesApp.BL.Extensions;
 using MoviesApp.BL.Models;
 using MoviesApp.BL.Repositories;
@@ -16,12 +17,17 @@ namespace MoviesApp.APP.ViewModels
         private IMovieRepository _movieRepository;
         private IMoviePersonActorRepository _moviesActorRepository;
         private IMoviePersonDirectorRepository _moviesDirectorRepository;
+        private readonly IMessageDialogService _messageDialogService;
 
-        public PersonDetailViewModel(IMovieRepository movieRepository, IMoviePersonActorRepository moviesActorRepository, IMoviePersonDirectorRepository moviesDirectorRepository)
+        public PersonDetailViewModel(IMovieRepository movieRepository, 
+            IMoviePersonActorRepository moviesActorRepository, 
+            IMoviePersonDirectorRepository moviesDirectorRepository,
+            IMessageDialogService messageDialogService)
         {
             _movieRepository = movieRepository;
             _moviesActorRepository = moviesActorRepository;
             _moviesDirectorRepository = moviesDirectorRepository;
+            _messageDialogService = messageDialogService;
             personDetail = personEditDetail = null;
             SavePersonEditViewCommand = new RelayCommand(SavePerson, (canExecute) => true);
             DeletePersonEditViewCommand = new RelayCommand(DeletePerson, (canExecute) => true);
@@ -110,6 +116,14 @@ namespace MoviesApp.APP.ViewModels
 
         private void DeletePerson(object x)
         {
+
+            var delete = _messageDialogService.Show(
+                "Delete",
+                $"Do you want to delete {personEditDetail?.Name}?.",
+                MessageDialogButtonConfiguration.YesNo,
+                MessageDialogResult.No);
+            if(delete == MessageDialogResult.No) return;
+
             var id = Guid.Parse(personEditDetail.Id.ToString());
             
             Messenger.Default.Send(id, DeletePersonToken);
