@@ -7,6 +7,7 @@
              xmlns:extension="clr-namespace:MoviesApp.APP.Extension"
              xmlns:enums="clr-namespace:MoviesApp.DAL.Enums;assembly=MoviesApp.DAL"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="700"
              d:DataContext="{d:DesignInstance viewModels:MovieDetailViewModel}"
@@ -98,7 +99,11 @@
                     <ComboBox ItemsSource="{Binding Source={extension:EnumBindingSource {x:Type enums:GenreType}}}"
                               SelectedItem="{Binding MovieWrapperDetailModel.Genre, Mode=TwoWay}" Height="25" Margin="0,0,5,0"/>
                     <TextBox Text="{Binding MovieWrapperDetailModel.CountryOfOrigin}" Height="25" VerticalAlignment="Stretch" Margin="0,1,5,1"/>
-                    <TextBox Text="{Binding MovieWrapperDetailModel.Length}" Height="25" VerticalAlignment="Stretch" Margin="0,0,5,0"/>
+                    <xctk:DateTimePicker AutoCloseCalendar="True"
+                                         Format="Custom"
+                                         FormatString="HH:mm:ss"
+                                         Text="{Binding MovieWrapperDetailModel.Length}"
+                                         DefaultValue="0:00"/>
                 </StackPanel>
 
                 <TextBox Text="{Binding MovieWrapperDetailModel.Description}"
