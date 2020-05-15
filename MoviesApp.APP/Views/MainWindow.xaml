@@ -101,8 +101,8 @@
 
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="281*" />
-                        <ColumnDefinition Width="563*"/>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="2*"/>
 
                     </Grid.ColumnDefinitions>
 
@@ -122,9 +122,9 @@
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
 
-                    <views:PersonListView Grid.Column="0" Grid.Row="1" Grid.RowSpan="2"/>
-                    <views:PersonDetailView Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="2" Margin="281,0,0,0"/>
-                    <views:PersonDetailEditView Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="2" Margin="281,0,0,0"/>
+                    <views:PersonListView Grid.Column="0"/>
+                    <views:PersonDetailView Grid.Column="1"/>
+                    <views:PersonDetailEditView Grid.Column="1" />
                 </Grid>
 
             </TabItem>
