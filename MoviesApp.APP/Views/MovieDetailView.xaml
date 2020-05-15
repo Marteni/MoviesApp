@@ -236,7 +236,7 @@
                                         </Label.Content>
                                     </Label>
                                     <TextBox Text="{Binding Path=Review}"
-                                             
+                                             Width="{Binding ActualWidth, ElementName=RatingStackPanel}"
                                              Grid.Row="1"
                                              IsReadOnly="True" 
                                              TextWrapping="Wrap" 
