@@ -31,10 +31,18 @@
             <Label Content="Surname:" Margin="0,50,0,125" Grid.Row="0" Grid.Column="0" Padding="5,0" VerticalContentAlignment="Center"/>
             <Label Content="Age:"     Margin="0,75,0,100" Grid.Row="0" Grid.Column="0" Padding="5,0" VerticalContentAlignment="Center"/>
             <Label Content="Image:"   Margin="0,125,0,50" Grid.Row="0" Grid.Column="0" Padding="5,0" VerticalContentAlignment="Center"/>
-            <TextBox Text="{Binding personEditDetail.Name}"    Margin="0,25,0,150" Grid.Row="0" Grid.Column="1" Padding="5,0" VerticalContentAlignment="Center"/>
-            <TextBox Text="{Binding personEditDetail.Surname}" Margin="0,50,0,125" Grid.Row="0" Grid.Column="1" Padding="5,0" VerticalContentAlignment="Center"/>
-            <TextBox Text="{Binding personEditDetail.Age}"     Margin="0,75,0,100" Grid.Row="0" Grid.Column="1" Padding="5,0" VerticalContentAlignment="Center"/>
-            <TextBox Text="{Binding personEditDetail.PictureUrl}" Margin="0,125,0,50" Grid.Row="0" Grid.Column="1" Padding="5,0" VerticalContentAlignment="Center"/>
+            <TextBox Text="{Binding personEditDetail.Name}"   
+                     VerticalAlignment="Center" 
+                     Margin="0,25,0,150" Grid.Row="0" Grid.Column="1" Padding="5,0" VerticalContentAlignment="Center"/>
+            <TextBox Text="{Binding personEditDetail.Surname}" 
+                     VerticalAlignment="Center" 
+                     Margin="0,50,0,125" Grid.Row="0" Grid.Column="1" Padding="5,0" VerticalContentAlignment="Center"/>
+            <TextBox Text="{Binding personEditDetail.Age}"     
+                     VerticalAlignment="Center" 
+                     Margin="0,75,0,100" Grid.Row="0" Grid.Column="1" Padding="5,0" VerticalContentAlignment="Center"/>
+            <TextBox Text="{Binding personEditDetail.PictureUrl}"
+                     VerticalAlignment="Center" 
+                     Margin="0,125,0,50" Grid.Row="0" Grid.Column="1" Padding="5,0" VerticalContentAlignment="Center"/>
             <Button Height="30" Width="40"
                 Content="Save"
                 Margin="0,25,0,145"

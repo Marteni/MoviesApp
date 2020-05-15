@@ -62,15 +62,21 @@
                 <Label Content="Original Title:" Grid.Column="1" Grid.Row="0"/>
                 <TextBox Text="{Binding MovieWrapperDetailModel.OriginalTitle, Mode=TwoWay}"
                          Margin="10,0"
-                         Grid.Column="1" Grid.Row="1"/>
+                         Grid.Column="1" Grid.Row="1"
+                         VerticalAlignment="Stretch"
+                         VerticalContentAlignment="Center"/>
                 <Label Content="Czech Title:" Grid.Column="1" Grid.Row="2"/>
                 <TextBox Text="{Binding MovieWrapperDetailModel.CzechTitle, Mode=TwoWay}"
                          Margin="10,0"
-                         Grid.Column="1" Grid.Row="3"/>
+                         Grid.Column="1" Grid.Row="3"
+                         VerticalAlignment="Stretch"
+                         VerticalContentAlignment="Center"/>
                 <Label Content="Poster image:" Grid.Column="1" Grid.Row="4"/>
                 <TextBox Text="{Binding MovieWrapperDetailModel.PosterImageUrl, Mode=TwoWay}"
                          Margin="10,0"
-                         Grid.Column="1" Grid.Row="5"/>
+                         Grid.Column="1" Grid.Row="5"
+                         VerticalAlignment="Stretch"
+                         VerticalContentAlignment="Center"/>
                 
             </Grid>
         </StackPanel>
@@ -98,7 +104,11 @@
                 <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Top">
                     <ComboBox ItemsSource="{Binding Source={extension:EnumBindingSource {x:Type enums:GenreType}}}"
                               SelectedItem="{Binding MovieWrapperDetailModel.Genre, Mode=TwoWay}" Height="25" Margin="0,0,5,0"/>
-                    <TextBox Text="{Binding MovieWrapperDetailModel.CountryOfOrigin}" Height="25" VerticalAlignment="Stretch" Margin="0,1,5,1"/>
+                    <TextBox Text="{Binding MovieWrapperDetailModel.CountryOfOrigin}" 
+                             Height="25" 
+                             VerticalAlignment="Stretch" 
+                             Margin="0,1,5,1"
+                             VerticalContentAlignment="Center"/>
                     <xctk:DateTimePicker AutoCloseCalendar="True"
                                          Format="Custom"
                                          FormatString="HH:mm:ss"

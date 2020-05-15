@@ -19,7 +19,7 @@ namespace MoviesApp.APP.ViewModels
         private static readonly RatingRepository _ratingRepository = new RatingRepository(new DbContextSqlFactory());
         private static readonly MessageDialogService _messageDialogService = new MessageDialogService();
 
-        public static MainViewModel MainViewModel { get; } = new MainViewModel(_movieRepository,_peopleRepository);
+        public static MainViewModel MainViewModel { get; } = new MainViewModel(_movieRepository,_peopleRepository,_ratingRepository,_messageDialogService);
 
         public static MovieListViewModel MovieListViewModel { get; } = new MovieListViewModel(_movieRepository);
 

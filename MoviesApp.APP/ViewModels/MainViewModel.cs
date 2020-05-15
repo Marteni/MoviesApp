@@ -7,6 +7,7 @@ using System.Windows.Input;
 using MoviesApp.APP.Command;
 using MoviesApp.APP.Enums;
 using MoviesApp.APP.Services;
+using MoviesApp.APP.Services.MessageDialog;
 using MoviesApp.APP.ViewModels;
 using MoviesApp.BL.Extensions;
 using MoviesApp.BL.Models;
@@ -17,21 +18,43 @@ namespace MoviesApp.App.ViewModels
     public class MainViewModel : ViewModelBase
     {
 
-        private IMovieRepository _movieRepository;
-        private IPeopleRepository _peopleRepository;
+        private readonly IMovieRepository _movieRepository;
+        private readonly IPeopleRepository _peopleRepository;
+        private readonly IRatingRepository _ratingRepository;
+        private readonly IMessageDialogService _messageDialogService;
 
-        public MainViewModel(IMovieRepository movieRepository,IPeopleRepository peopleRepository)
+        public MainViewModel(IMovieRepository movieRepository,
+            IPeopleRepository peopleRepository, 
+            IRatingRepository ratingRepository,
+            IMessageDialogService messageDialogService)
         {
             _movieRepository = movieRepository;
             _peopleRepository = peopleRepository;
+            _ratingRepository = ratingRepository;
+            _messageDialogService = messageDialogService;
             SearchCommand = new RelayCommand(OnSearch, (canExecute) => true);
             CloseSearchViewMoviesCommand = new RelayCommand<MovieDetailModel>(OnCloseSearchMoviesView, (canExecute) => true);
             CloseSearchViewPeopleCommand = new RelayCommand<PersonListModel>(OnCloseSearchPeopleView, (canExecute) => true);
+            CloseSearchViewRatingsCommand = new RelayCommand<RatingDetailModel>(OnCloseSearchRatingsView, (canExecute) => true);
             CloseSearchViewCommand = new RelayCommand(OnClose, (canExecute) => true);
             Messenger.Default.Register<int>(this, OnTabReceived,ChangeTabToken);
         }
 
-       
+        
+
+        private void OnCloseSearchRatingsView(RatingDetailModel ratingDetail)
+        {
+            var listModel = new MovieListModel()
+            {
+                Id = ratingDetail.RatedMovieId
+            };
+
+            Messenger.Default.Send(listModel, PersonDetailViewModel.SelectedMovieToken);
+
+            ToggleSearchView = false;
+            ToggleTabView = true;
+            SearchQuery = null;
+        }
 
 
         public string SearchQuery { get; set; }
@@ -40,10 +63,12 @@ namespace MoviesApp.App.ViewModels
         public bool ToggleTabView { get; set; } = true;
         public IList<MovieDetailModel> FoundMovies { get; set; } = new List<MovieDetailModel>();
         public IList<PersonListModel> FoundPeople { get; set; } = new List<PersonListModel>();
+        public IList<RatingDetailModel> FoundRatings { get; set; } = new List<RatingDetailModel>();
         public ICommand SearchCommand { get; }
         public ICommand CloseSearchViewCommand { get; }
         public ICommand CloseSearchViewMoviesCommand { get; }
         public ICommand CloseSearchViewPeopleCommand { get; }
+        public ICommand CloseSearchViewRatingsCommand { get; }
         private void OnClose(object obj)
         {
             ToggleSearchView = false;
@@ -79,28 +104,39 @@ namespace MoviesApp.App.ViewModels
 
         private void OnSearch(object obj)
         {
-            
-          
-            if (SearchQuery != null)
+
+            if (string.IsNullOrEmpty(SearchQuery))
             {
-                
-                Regex searchTerm = new Regex(SearchQuery, RegexOptions.IgnoreCase);
-                
-                var allMovies = _movieRepository.GetAllDetails();
-                FoundMovies.Clear();
-                FoundMovies = allMovies.Where(x => searchTerm.IsMatch(x.OriginalTitle) 
-                                                   || searchTerm.IsMatch(x.CzechTitle)
-                                                   || searchTerm.IsMatch(x.CountryOfOrigin)
-                                                   || searchTerm.IsMatch(x.Description)).ToList();
+                _messageDialogService.Show(
+                    "Warning",
+                    $"Search query empty. Please specify query.",
+                    MessageDialogButtonConfiguration.OK,
+                    MessageDialogResult.OK);
 
-                var allPeople = _peopleRepository.GetAll();
-                FoundPeople.Clear();
-                FoundPeople = allPeople.Where(x => searchTerm.IsMatch(x.Name)
-                                                   || searchTerm.IsMatch(x.Surname)).ToList();
-
+                return;
             }
+            
+            var searchQuery = Regex.Replace(SearchQuery, @"\s+", @"\s*");
+            Regex searchTerm = new Regex(searchQuery, RegexOptions.IgnoreCase);
 
-           
+
+            var allMovies = _movieRepository.GetAllDetails();
+            FoundMovies.Clear();
+            FoundMovies = allMovies.Where(x => searchTerm.IsMatch(x.OriginalTitle ?? (x.OriginalTitle = "") ) 
+                                               || searchTerm.IsMatch(x.CzechTitle ?? (x.CzechTitle = ""))
+                                               || searchTerm.IsMatch(x.CountryOfOrigin ?? (x.CountryOfOrigin = ""))
+                                               || searchTerm.IsMatch(x.Description ?? (x.Description = ""))).ToList();
+
+            var allPeople = _peopleRepository.GetAll();
+            FoundPeople.Clear();
+            FoundPeople = allPeople.Where(x => searchTerm.IsMatch((x.Name + " " + x.Surname)))
+                .ToList();
+
+            var allRatings = _ratingRepository.GetAll();
+            FoundRatings.Clear();
+            FoundRatings = allRatings.Where(x => searchTerm.IsMatch(x.Review ?? (x.Review = "")))
+                .ToList();
+
             ToggleTabView = false;
             ToggleSearchView = true;
         }

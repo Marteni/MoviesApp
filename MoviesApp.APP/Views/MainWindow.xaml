@@ -19,14 +19,21 @@
             <ColumnDefinition Width="*"/>
 
         </Grid.ColumnDefinitions>
-
+        <Label Content="MoviesApp"
+               FontWeight="Bold"
+               FontSize="20"
+               FontFamily="Comic Sans MS"
+               VerticalAlignment="Top"
+               HorizontalAlignment="Left"></Label>
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Grid.Row="0">
+            
             <TextBox Height="30" 
                      Width="600"
                      VerticalAlignment="Top"
+                     VerticalContentAlignment="Center"
                      Margin="0,0.5"
                      Text="{Binding SearchQuery, Mode=TwoWay}"/>
             <Button Height="30"
@@ -36,59 +43,7 @@
             
         </StackPanel>
 
-        <StackPanel  Grid.Row="1"
-                     Visibility="{Binding ToggleSearchView, Converter={StaticResource BoolToVisibilityConverter}}">
-           <Button Content="Close" Width="50" Height="20"
-                   Command="{ Binding CloseSearchViewCommand}"
-                   HorizontalAlignment="Right"></Button>
-            
-            <Label>Movies</Label>
-            <ListBox x:Name="SearchListBoxMovies"  
-                Height="300" 
-                      ItemsSource="{Binding FoundMovies}">
-                
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="SelectionChanged">
-                        <b:InvokeCommandAction Command="{Binding CloseSearchViewMoviesCommand}"
-                                                          CommandParameter="{Binding ElementName=SearchListBoxMovies, Path=SelectedItem}" />
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Label Content="{Binding OriginalTitle}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <Label>People</Label>
-            <ListBox x:Name="SearchListBoxPeople"  
-                     Height="300" 
-                     ItemsSource="{Binding FoundPeople}">
-
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="SelectionChanged">
-                        <b:InvokeCommandAction Command="{Binding CloseSearchViewPeopleCommand}"
-                                               CommandParameter="{Binding ElementName=SearchListBoxPeople, Path=SelectedItem}" />
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Label>
-                            <Label.Content>
-                                <TextBlock>
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0} {1}">
-                                            <Binding Path="Name"/>
-                                            <Binding Path="Surname"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </Label.Content>
-                        </Label>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </StackPanel>
-
+        <views:SearchView Grid.Row="1"></views:SearchView>
         <TabControl 
                     Grid.Row="1"
                     SelectedIndex="{Binding TabItem}"
