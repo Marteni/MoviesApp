@@ -9,6 +9,7 @@
         <ResourceDictionary>
             <viewModels:ViewModelLocator x:Key="mainViewModelLocator"></viewModels:ViewModelLocator>
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
