@@ -218,6 +218,46 @@ namespace MoviesApp.DAL.Migrations
                             NumericEvaluation = 10,
                             RatedMovieId = new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129"),
                             Review = "Twas AMAZING!"
+                        },
+                        new
+                        {
+                            Id = new Guid("960F5D0B-5F7D-4F9A-8068-37EE3E5D81D5"),
+                            Nick = "NoobMaster69",
+                            NumericEvaluation = 2,
+                            RatedMovieId = new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129"),
+                            Review = "Didn't like it at all. Horrible acting, bad visuals."
+                        },
+                        new
+                        {
+                            Id = new Guid("741866DA-E6A4-45B8-A632-82A8789D9A79"),
+                            Nick = "JohnyB",
+                            NumericEvaluation = 7,
+                            RatedMovieId = new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129"),
+                            Review = "I like that movie, but it has some flaws."
+                        },
+                        new
+                        {
+                            Id = new Guid("5764CA7E-EDC1-4D23-B279-A4337CE17E03"),
+                            Nick = "AliceZee",
+                            NumericEvaluation = 10,
+                            RatedMovieId = new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129"),
+                            Review = "My favourite!"
+                        },
+                        new
+                        {
+                            Id = new Guid("F3464947-7C8A-424E-9B76-6FE1D592DC8D"),
+                            Nick = "MarkHammilHimself",
+                            NumericEvaluation = 10,
+                            RatedMovieId = new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129"),
+                            Review = "Mark Hammil is my favourite actor!"
+                        },
+                        new
+                        {
+                            Id = new Guid("7AF7F5ED-F11E-493D-8802-F2A229D86BF5"),
+                            Nick = "StarWarsFan01",
+                            NumericEvaluation = 8,
+                            RatedMovieId = new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129"),
+                            Review = "I like the old trilogy more."
                         });
                 });
 
