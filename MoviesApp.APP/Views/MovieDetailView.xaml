@@ -10,169 +10,160 @@
              d:DesignHeight="1439.043" d:DesignWidth="700"
              d:DataContext="{d:DesignInstance viewModels:MovieDetailViewModel}"
              DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=MovieDetailViewModel}">
+    <ScrollViewer Visibility="{Binding ShowModel, Converter={StaticResource NullToVisibilityConverter}}">
+        <Grid>
 
-    <Grid Visibility="{Binding ShowModel, Converter={StaticResource NullToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="60"/>
+            </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="3*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="50"/>
-        </Grid.ColumnDefinitions>
+            <Button Content="Edit" 
+                    Height="30"
+                    Width="50"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    Margin="0,10,10,0"
+                    Grid.Column="1"
+                    Command="{Binding MovieEditDetailCommand}"/>
 
+            <StackPanel Grid.Column="0" Grid.Row="0">
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="200"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160" />
+                        <ColumnDefinition Width="100*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="{Binding MovieWrapperDetailModel.PosterImageUrl}" 
+                           Height="150" Width="150"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Margin="10 10"/>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="{Binding MovieWrapperDetailModel.OriginalTitle}"
+                                   FontSize="15"
+                                   FontWeight="Bold"
+                                   Margin="10 10"
+                                   HorizontalAlignment="Left"/>
+                        <TextBlock Text="{Binding MovieWrapperDetailModel.CzechTitle}"
+                                   Margin="10"
+                                   HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Grid>
 
+            </StackPanel>
 
-        <Button Content="Edit" 
-                Height="30"
-                Width="40"
-                VerticalAlignment="Top"
-                HorizontalAlignment="Right"
-                Margin="5"
-                Grid.Column="1"
-                Command="{Binding EditMovieDetailCommand}"/>
+            <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,5,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="3.5*"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.Row="0">
-            <Grid >
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="200"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120" />
-                    <ColumnDefinition Width="100*"/>
-                </Grid.ColumnDefinitions>
-                <Image Source="{Binding MovieWrapperDetailModel.PosterImageUrl}" 
-                       Height="150" Width="120"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top"
-                       Margin="5"
-                       />
-                <StackPanel Grid.Column="1">
-                    <TextBlock Text="{Binding MovieWrapperDetailModel.OriginalTitle}"
-                               FontSize="15"
-                               FontWeight="Bold"
-                               Margin="10 10"
-                               HorizontalAlignment="Left"/>
-                    <TextBlock Text="{Binding MovieWrapperDetailModel.CzechTitle}"
-                               Margin="10"
-                               HorizontalAlignment="Left"/>
-                </StackPanel>
-            </Grid>
-
-        </StackPanel>
-
-        <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,5,0,0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Top">
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Top">
                         <Label Content="Genre:" FontWeight="Bold"/>
-                        <Label Content="{Binding MovieWrapperDetailModel.Genre}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
                         <Label Content="Country:" FontWeight="Bold"/>
-                        <Label Content="{Binding MovieWrapperDetailModel.CountryOfOrigin}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
                         <Label Content="Length:" FontWeight="Bold"/>
-                        <Label Content="{Binding MovieWrapperDetailModel.Length}"/>
+                        <Label Content="Description:" FontWeight="Bold"/>
                     </StackPanel>
-                    
-                    <Label Content="Description:" FontWeight="Bold"/>
 
-                </StackPanel>
+                    <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Top">
+                        <Label Content="{Binding MovieWrapperDetailModel.Genre}" Height="25" Margin="0,0,5,0"/>
+                        <Label Content="{Binding MovieWrapperDetailModel.CountryOfOrigin}" Height="25" Margin="0,0,5,0"/>
+                        <Label Content="{Binding MovieWrapperDetailModel.Length}" Height="25" Margin="0,0,5,0"/>
+                    </StackPanel>
 
-                <TextBox Text="{Binding MovieWrapperDetailModel.Description}"
-                         Height="100"
-                         Grid.Row="1"
-                         Grid.Column="0"
-                         Margin="5,0"
-                         HorizontalAlignment="Stretch"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         IsReadOnly="True"
-                         TextWrapping="Wrap"
-                         AcceptsReturn="True"/>
+                    <TextBox Text="{Binding MovieWrapperDetailModel.Description}"
+                             Height="100"
+                             Grid.Row="1"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="2"
+                             Margin="5,0"
+                             HorizontalAlignment="Stretch"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             IsReadOnly="True"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"/>
+                </Grid>
 
-            </Grid>
-            
-            <Grid>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                    <Label Content="Actors" 
+                           FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Center"/>
+                    <ListBox x:Name="ShowActorsListBox" ItemsSource="{Binding Actors}"
+                             Grid.Row="1" Grid.Column="0" Height="205" Margin="5,0" VerticalAlignment="Top">
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="SelectionChanged">
+                                <b:InvokeCommandAction Command="{Binding PersonShowDetailCommand}"
+                                                       CommandParameter="{Binding ElementName=ShowActorsListBox, Path=SelectedItem}" />
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Label>
+                                    <Label.Content>
+                                        <TextBlock>
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0} {1}">
+                                                    <Binding Path="Name"/>
+                                                    <Binding Path="Surname"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Label.Content>
+                                </Label>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
 
-                <Label Content="Actors" 
-                       FontWeight="Bold" 
-                       Grid.Row="0" 
-                       HorizontalAlignment="Center"/>
-                <ListBox x:Name="ShowActorsListBox"  ItemsSource="{Binding Actors}"
-                         Grid.Row="1" Grid.Column="0" Height="205" Margin="5,0" VerticalAlignment="Top">
-                    <b:Interaction.Triggers>
-                        <b:EventTrigger EventName="SelectionChanged">
-                            <b:InvokeCommandAction Command="{Binding ShowPersonDetailCommand}"
-                                                   CommandParameter="{Binding ElementName=ShowActorsListBox, Path=SelectedItem}" />
-                        </b:EventTrigger>
-                    </b:Interaction.Triggers>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Label>
-                                <Label.Content>
-                                    <TextBlock>
-                                        <TextBlock.Text>
-                                            <MultiBinding StringFormat="{}{0} {1}">
-                                                <Binding Path="Name"/>
-                                                <Binding Path="Surname"/>
-                                            </MultiBinding>
-                                        </TextBlock.Text>
-                                    </TextBlock>
-                                </Label.Content>
-                            </Label>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-
-                <Label Content="Directors" 
-                       FontWeight="Bold" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"/>
-                <ListBox  x:Name="ShowDirectorsListBox" 
-                          ItemsSource="{Binding Directors}" 
-                          Grid.Row="1" Grid.Column="1" Height="205" Margin="5,0" VerticalAlignment="Top">
-                    <b:Interaction.Triggers>
-                        <b:EventTrigger EventName="SelectionChanged">
-                            <b:InvokeCommandAction Command="{Binding ShowPersonDetailCommand}"
-                                                   CommandParameter="{Binding ElementName=ShowDirectorsListBox, Path=SelectedItem}" />
-                        </b:EventTrigger>
-                    </b:Interaction.Triggers>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Label>
-                                <Label.Content>
-                                    <TextBlock>
-                                        <TextBlock.Text>
-                                            <MultiBinding StringFormat="{}{0} {1}">
-                                                <Binding Path="Name"/>
-                                                <Binding Path="Surname"/>
-                                            </MultiBinding>
-                                        </TextBlock.Text>
-                                    </TextBlock>
-                                </Label.Content>
-                            </Label>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                    <Label Content="Directors" 
+                           FontWeight="Bold" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"/>
+                    <ListBox  x:Name="ShowDirectorsListBox" 
+                              ItemsSource="{Binding Directors}" 
+                              Grid.Row="1" Grid.Column="1" Height="205" Margin="5,0" VerticalAlignment="Top">
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="SelectionChanged">
+                                <b:InvokeCommandAction Command="{Binding PersonShowDetailCommand}"
+                                                       CommandParameter="{Binding ElementName=ShowDirectorsListBox, Path=SelectedItem}" />
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Label>
+                                    <Label.Content>
+                                        <TextBlock>
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0} {1}">
+                                                    <Binding Path="Name"/>
+                                                    <Binding Path="Surname"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Label.Content>
+                                </Label>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
 
                 <StackPanel x:Name="RatingStackPanel" Margin="0,5,0,0">
                     <StackPanel Orientation="Horizontal">
@@ -222,8 +213,7 @@
                     <Label Content="Movie ratings" FontSize="15" FontWeight="Bold"
                            Visibility="{Binding Ratings, Converter={StaticResource NullToVisibilityConverter}}"/>
 
-                    <ListBox x:Name="RatingsListBox" ItemsSource="{Binding Ratings}" Margin="0,0,0,15"
-                             Width="{Binding ActualWidth, ElementName=RatingStackPanel}"
+                    <ListBox ItemsSource="{Binding Ratings}" Margin="0,0,0,15"
                              Visibility="{Binding Ratings, Converter={StaticResource NullToVisibilityConverter}}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -246,7 +236,7 @@
                                         </Label.Content>
                                     </Label>
                                     <TextBox Text="{Binding Path=Review}"
-                                             Width="{Binding ActualWidth, ElementName=RatingsListBox}" 
+                                             
                                              Grid.Row="1"
                                              IsReadOnly="True" 
                                              TextWrapping="Wrap" 
