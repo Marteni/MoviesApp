@@ -43,6 +43,7 @@ namespace MoviesApp.APP.ViewModels
             MovieCloseDetailViewCommand = new RelayCommand(CloseMovieDetailView, (canExecute) => true);
             RatingShowFormCommand = new RelayCommand(ShowAddRatingForm, canExecute => true);
             RatingSaveNewCommand = new RelayCommand(SaveNewRating, canExecute => true);
+            RatingDiscardNewCommand = new RelayCommand(DiscardNewRating, canExecute => true);
 
             Messenger.Default.Register<MovieDetailModel>(this, OnMovieAddNewReceived,MovieListViewModel.MovieAddToken);
             Messenger.Default.Register<MovieDetailModel>(this, OnMovieSelectedReceived, MovieListViewModel.MovieSelectedToken);
@@ -55,6 +56,7 @@ namespace MoviesApp.APP.ViewModels
         public ICommand MovieCloseDetailViewCommand { get; }
         public ICommand RatingShowFormCommand { get; }
         public ICommand RatingSaveNewCommand { get; }
+        public ICommand RatingDiscardNewCommand { get; }
 
         public MovieDetailModel Model { get; set; }
         public MovieDetailModel ShowModel { get; set; }
@@ -346,6 +348,13 @@ namespace MoviesApp.APP.ViewModels
 
             ShowRatingAddFormButton = Visibility.Visible;
             ShowRatingAddForm = Visibility.Collapsed;
+            RatingNewDetailModel = new RatingDetailModel();
+        }
+
+        private void DiscardNewRating(object x = null)
+        {
+            ShowRatingAddForm = Visibility.Collapsed;
+            ShowRatingAddFormButton = Visibility.Visible;
             RatingNewDetailModel = new RatingDetailModel();
         }
     }

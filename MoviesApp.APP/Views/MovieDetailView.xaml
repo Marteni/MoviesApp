@@ -184,7 +184,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <Label Content="Number rating:" Height="26"/>
-                            <ComboBox SelectedItem="{Binding RatingNewDetailModel.NumericEvaluation, Mode=TwoWay}" Height="20" Margin="0,0,5,0">
+                            <ComboBox x:Name="RatingComboBox" SelectedItem="{Binding RatingNewDetailModel.NumericEvaluation, Mode=TwoWay}" Height="20" Margin="0,0,5,0">
                                 <ComboBox.ItemsSource>
                                     <x:Array Type="{x:Type system:Int32}">
                                         <system:Int32>1</system:Int32>
@@ -206,8 +206,12 @@
                          TextWrapping="Wrap" 
                          Margin="5,0"
                          Text="{Binding RatingNewDetailModel.Review, Mode=TwoWay}"/>
-                        <Button Content="Submit" Width="75" Height="25" HorizontalAlignment="Right" Margin="5"
-                            Command="{Binding RatingSaveNewCommand}"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Content="Submit" Width="75" Height="25" HorizontalAlignment="Right" Margin="5" 
+                                    Command="{Binding RatingSaveNewCommand}"/>
+                            <Button Content="Discard" Width="75" Height="25" HorizontalAlignment="Right" Margin="5"
+                                Command="{Binding RatingDiscardNewCommand}"/>
+                        </StackPanel>
                     </StackPanel>
 
                     <Label Content="Movie ratings" FontSize="15" FontWeight="Bold"
@@ -239,7 +243,7 @@
                                              Width="{Binding ActualWidth, ElementName=RatingStackPanel}"
                                              Grid.Row="1"
                                              IsReadOnly="True" 
-                                             TextWrapping="Wrap" 
+                                             TextWrapping="Wrap"
                                              Margin="5,0"/>
                                 </Grid>
                             </DataTemplate>
