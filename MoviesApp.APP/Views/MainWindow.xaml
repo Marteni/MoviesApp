@@ -7,9 +7,107 @@
         xmlns:views="clr-namespace:MoviesApp.APP.Views"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Movies Application" Height="720" Width="1000"
+        Title="Movies Application" Height="700" Width="1000"
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
         DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=MainViewModel}">
+
+    <Window.Resources>
+        <Style x:Key="ShadowStyle">
+            <Setter Property="Control.Foreground" Value="LightGray" />
+        </Style>
+
+        <Style TargetType="TabItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="Gainsboro" CornerRadius="4,4,0,0" Margin="2,0">
+                            <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#121212" />
+                                <Setter TargetName="Border" Property="Background" Value="White" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="LightGray" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#121212" />
+                                <Setter Property="Background" Value="#EDEDED" />
+                                <Setter Property="Foreground" Value="#202020" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+        				BorderThickness="1"
+        				Padding="4,2" 
+        				BorderBrush="DarkGray" 
+        				CornerRadius="3" 
+        				Background="{TemplateBinding Background}">
+                            <Grid >
+                                <ContentPresenter HorizontalAlignment="Center" 
+        	                           VerticalAlignment="Center" Name="contentShadow" 
+        					Style="{StaticResource ShadowStyle}">
+                                    <ContentPresenter.RenderTransform>
+                                        <TranslateTransform X="1.0" Y="1.0" />
+                                    </ContentPresenter.RenderTransform>
+                                </ContentPresenter>
+                                <ContentPresenter HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center" Name="content"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#121212" />
+                                <Setter Property="Foreground" Value="#202020" />
+                                <Setter Property="Background" Value="#EDEDED" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" >
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                                            <GradientStop Color="#E0E0E0" Offset="0.35"/>
+                                            <GradientStop Color="Silver" Offset="0.95"/>
+                                            <GradientStop Color="#E0E0E0" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="content" Property="RenderTransform" >
+                                    <Setter.Value>
+                                        <TranslateTransform Y="1.0" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsDefaulted" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#121212" />
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#121212" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Opacity" Value="0.7" />
+                                <Setter Property="Foreground" Value="Gray" />
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -19,28 +117,22 @@
             <ColumnDefinition Width="*"/>
 
         </Grid.ColumnDefinitions>
-        <Label Content="MoviesApp"
-               FontWeight="Bold"
-               FontSize="20"
-               FontFamily="Comic Sans MS"
-               VerticalAlignment="Top"
-               HorizontalAlignment="Left"/>
+        <Image Source="/Resources/MoviesAppCover.png"
+                   Stretch="Fill"></Image>
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Grid.Row="0">
-            <xctk:WatermarkTextBox Height="30" 
-                                   Width="600"
-                                   VerticalAlignment="Top"
-                                   VerticalContentAlignment="Center"
-                                   HorizontalContentAlignment="Center"
-                                   Margin="0,0.5"
-                                   Watermark="Search"
-                                   Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}">
-                <TextBox.InputBindings>
+            <xctk:WatermarkTextBox  Height="28" 
+                                    Width="434"
+                                    VerticalContentAlignment="Center"
+                                    HorizontalContentAlignment="Center"
+                                    Watermark="Search"
+                                    Text="{Binding SearchQuery, Delay=1000, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RenderTransformOrigin="0.505,0.557">
+                <xctk:WatermarkTextBox.InputBindings>
                     <KeyBinding Command="{Binding SearchCommand}" 
                                 Key="Return"/>
-                </TextBox.InputBindings>
+                </xctk:WatermarkTextBox.InputBindings>
             </xctk:WatermarkTextBox>
         </StackPanel>
 
