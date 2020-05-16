@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:MoviesApp.App.ViewModels"
         xmlns:views="clr-namespace:MoviesApp.APP.Views"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Movies Application" Height="700" Width="1000"
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
@@ -29,18 +30,20 @@
                     VerticalAlignment="Center"
                     Grid.Row="0">
 
-            <TextBox Height="30" 
-                     Width="600"
-                     VerticalAlignment="Top"
-                     VerticalContentAlignment="Center"
-                     HorizontalContentAlignment="Center"
-                     Margin="0,0.5"
-                     Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}">
+            
+            <xctk:WatermarkTextBox  Height="30" 
+                                    Width="600"
+                                    VerticalAlignment="Top"
+                                    VerticalContentAlignment="Center"
+                                    HorizontalContentAlignment="Center"
+                                    Margin="0,0.5"
+                                    Watermark="Search"
+                                    Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}">
                 <TextBox.InputBindings>
                     <KeyBinding Command="{Binding SearchCommand}" 
                                 Key="Return"/>
                 </TextBox.InputBindings>
-            </TextBox>
+            </xctk:WatermarkTextBox>
         </StackPanel>
 
         <views:SearchView Grid.Row="1"/>
