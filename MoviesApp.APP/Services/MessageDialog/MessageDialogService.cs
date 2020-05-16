@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Text;
+﻿using System.Windows;
 
 namespace MoviesApp.APP.Services.MessageDialog
 {

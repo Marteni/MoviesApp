@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using MoviesApp.BL.Models;
 using MoviesApp.DAL.Entities;
 
@@ -8,16 +5,15 @@ namespace MoviesApp.BL.Mappers
 {
     public static class RatingMapper
     {
-      
-        public static RatingDetailModel MapRatingEntityToDetailModel(RatingEntity enity)
+        public static RatingDetailModel MapRatingEntityToDetailModel(RatingEntity entity)
         {
             return new RatingDetailModel
             {
-                Id = enity.Id,
-                RatedMovieId = enity.RatedMovieId,
-                Nick = enity.Nick,
-                NumericEvaluation = enity.NumericEvaluation,
-                Review = enity.Review
+                Id = entity.Id,
+                RatedMovieId = entity.RatedMovieId,
+                Nick = entity.Nick,
+                NumericEvaluation = entity.NumericEvaluation,
+                Review = entity.Review
             };
         }
 

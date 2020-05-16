@@ -1,8 +1,5 @@
 ﻿using MoviesApp.BL.Models;
 using MoviesApp.DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MoviesApp.BL.Mappers
 {
@@ -15,7 +12,6 @@ namespace MoviesApp.BL.Mappers
                 Id = entity.Id,
                 Name = entity.Name,
                 Surname = entity.Surname
-
             };
         }
 

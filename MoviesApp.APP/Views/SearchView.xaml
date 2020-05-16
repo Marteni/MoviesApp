@@ -10,10 +10,9 @@
              d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
              DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=MainViewModel}">
     <Grid Visibility="{Binding ToggleSearchView, Converter={StaticResource BoolToVisibilityConverter}}">
-        
+
         <Grid.RowDefinitions>
-            <!--<RowDefinition Height="*"/>-->
-            <RowDefinition Height="15*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -21,16 +20,9 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
       
-        <!--<Button Content="Close" Width="50" Height="20"
-               Command="{Binding CloseSearchViewCommand}"
-               HorizontalAlignment="Right"
-               VerticalAlignment="Top"
-               Margin="0,5,5,0"
-               Grid.Row="0"
-               Grid.Column="2"></Button>-->
-        <StackPanel Grid.Column="0"
-                    Grid.Row="1">
-            <Label FontWeight="Bold">Movies:</Label>
+        <StackPanel Grid.Column="0">
+            <Label Content="Movies:" 
+                   FontWeight="Bold"/>
             <ListBox x:Name="SearchListBoxMovies"
                      Height="420" 
                      Margin="5,0,2.5,5"
@@ -39,18 +31,19 @@
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="SelectionChanged">
                         <b:InvokeCommandAction Command="{Binding CloseSearchViewMoviesCommand}"
-                                                          CommandParameter="{Binding ElementName=SearchListBoxMovies, Path=SelectedItem}" />
+                                               CommandParameter="{Binding ElementName=SearchListBoxMovies, Path=SelectedItem}" />
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Label Content="{Binding OriginalTitle}" />
+                        <Label Content="{Binding OriginalTitle}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </StackPanel>
         <StackPanel Grid.Column="1">
-            <Label FontWeight="Bold">People:</Label>
+            <Label Content="People:" 
+                   FontWeight="Bold"/>
             <ListBox x:Name="SearchListBoxPeople"
                      Height="420"
                      Margin="2.5,0,2.5,5"
@@ -82,7 +75,8 @@
         </StackPanel>
 
         <StackPanel Grid.Column="2">
-            <Label FontWeight="Bold">Ratings:</Label>
+            <Label Content="Ratings:" 
+                   FontWeight="Bold"/>
             <ListBox x:Name="SearchListBoxRatings"  
                      Height="420" 
                      Margin="2.5,0,5,0"
@@ -112,7 +106,6 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </StackPanel>
-
 
     </Grid>
 </UserControl>

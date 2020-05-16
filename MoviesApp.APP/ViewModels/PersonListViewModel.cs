@@ -7,7 +7,6 @@ using MoviesApp.APP.Command;
 using MoviesApp.APP.Enums;
 using MoviesApp.APP.Services;
 using MoviesApp.App.ViewModels;
-using MoviesApp.APP.Wrappers;
 using MoviesApp.BL.Extensions;
 using MoviesApp.BL.Models;
 using MoviesApp.BL.Repositories;
@@ -24,11 +23,21 @@ namespace MoviesApp.APP.ViewModels
 
             PersonDetailCommand = new RelayCommand(AddNewPerson, (canExecute) => true);
             PersonSelectedCommand = new RelayCommand<PersonListModel>(PersonSelected, (canExecute) => true);
+            
+            Messenger.Default.Register<PersonListModel>(this, SelectedPersonReceived, MovieDetailViewModel.SelectedPersonToken);
             Messenger.Default.Register<PersonDetailModel>(this, NewPersonReceived, PersonDetailViewModel.AddPersonToken);
             Messenger.Default.Register<PersonDetailModel>(this, UpdatePersonReceived, PersonDetailViewModel.UpdatePersonToken);
             Messenger.Default.Register<Guid>(this, DeletePersonGuidReceived, PersonDetailViewModel.DeletePersonToken);
-            Messenger.Default.Register<PersonListModel>(this, SelectedPersonReceived, MovieDetailViewModel.SelectedPersonToken);
         }
+
+        public ICommand PersonDetailCommand { get; }
+        public ICommand PersonSelectedCommand { get; }
+
+        public ObservableCollection<PersonListModel> People { get; } = new ObservableCollection<PersonListModel>();
+
+        public static readonly Guid AddNewPersonToken = Guid.Parse("057B5DF5-4480-47EF-8A5A-ED0159C15A93");
+        public static readonly Guid PersonSelectedToken = Guid.Parse("788FC5E8-41FB-4D82-9A35-827AE67A6D2A");
+
 
         private void SelectedPersonReceived(PersonListModel selectedPerson)
         {
@@ -37,12 +46,7 @@ namespace MoviesApp.APP.ViewModels
             var value = (int) TabEnums.PeopleTab;
             Messenger.Default.Send(value, MainViewModel.ChangeTabToken);
         }
-
-        public ObservableCollection<PersonListModel> People { get; } = new ObservableCollection<PersonListModel>();
-
-        public ICommand PersonDetailCommand { get; }
-        public ICommand PersonSelectedCommand { get; }
-
+        
         private void AddNewPerson(object x = null)
         {
             var newPersonWrapper = new PersonDetailModel
@@ -65,17 +69,10 @@ namespace MoviesApp.APP.ViewModels
             Messenger.Default.Send(personDetailViewModel, PersonSelectedToken);
         }
 
-
         private void UpdatePersonReceived(PersonDetailModel personDetailModel)
         {
             _personRepository.Update(personDetailModel);
             UpdatePeopleListWithExistingItem(personDetailModel);
-        }
-
-        private void DeletePersonGuidReceived(Guid id)
-        {
-            _personRepository.Delete(id);
-            People.Remove(People.First(t => t.Id == id));
         }
 
         private void UpdatePeopleListViewWithNewItem(PersonDetailModel personDetailModel)
@@ -88,6 +85,7 @@ namespace MoviesApp.APP.ViewModels
             };
             People.Add(movieListModel);
         }
+        
         private void UpdatePeopleListWithExistingItem(PersonDetailModel personDetailModelUpdated)
         {
             var item = People.FirstOrDefault(a => a.Id == personDetailModelUpdated.Id);
@@ -100,6 +98,12 @@ namespace MoviesApp.APP.ViewModels
                 CollectionViewSource.GetDefaultView(People).Refresh();
             }
         }
+        
+        private void DeletePersonGuidReceived(Guid id)
+        {
+            _personRepository.Delete(id);
+            People.Remove(People.First(t => t.Id == id));
+        }
 
         private void Load(IPeopleRepository personRepository)
         {
@@ -109,11 +113,6 @@ namespace MoviesApp.APP.ViewModels
             People.AddRange(people);
         }
 
-
-        public static readonly Guid AddNewPersonToken = Guid.Parse("057B5DF5-4480-47EF-8A5A-ED0159C15A93");
-        public static readonly Guid PersonSelectedToken = Guid.Parse("788FC5E8-41FB-4D82-9A35-827AE67A6D2A");
-        
-        
     }
 }
 

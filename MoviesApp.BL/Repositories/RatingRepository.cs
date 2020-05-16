@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using MoviesApp.BL.Mappers;
 using MoviesApp.BL.Models;
 using MoviesApp.DAL.Factories;
@@ -10,7 +9,6 @@ namespace MoviesApp.BL.Repositories
 {
     public class RatingRepository : IRatingRepository
     {
-
         private readonly IDbContextSqlFactory _dbContextSqlFactory;
 
         public RatingRepository(IDbContextSqlFactory dbContextSqlFactory)

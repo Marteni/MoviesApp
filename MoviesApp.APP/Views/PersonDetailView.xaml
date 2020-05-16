@@ -10,7 +10,7 @@
              d:DataContext="{d:DesignInstance viewModels:PersonDetailViewModel}"
              DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=PersonDetailViewModel}">
 
-    <Grid Visibility="{Binding personDetail, Converter={StaticResource NullToVisibilityConverter}}">
+    <Grid Visibility="{Binding PersonDetail, Converter={StaticResource NullToVisibilityConverter}}">
         
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -33,16 +33,16 @@
                      Grid.Column="0"
                      Margin="5">
             <StackPanel Orientation="Horizontal">
-                <Image Source="{Binding personDetail.PictureUrl}" 
+                <Image Source="{Binding PersonDetail.PictureUrl}" 
                        Height="150" 
                        Width="120" 
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"/>
                 <StackPanel Width="500">
-                    <Label Content="{Binding personDetail.Name}"
+                    <Label Content="{Binding PersonDetail.Name}"
                            FontWeight="Bold"
                            FontSize="15"/>
-                    <Label Content="{Binding personDetail.Surname}"
+                    <Label Content="{Binding PersonDetail.Surname}"
                            FontWeight="Bold"
                            FontSize="15"/>
                 </StackPanel>
@@ -51,7 +51,7 @@
             <StackPanel Orientation="Horizontal">
                 <Label FontWeight="Bold"
                        Content="Age:"/>
-                <Label Content="{Binding personDetail.Age}"/>
+                <Label Content="{Binding PersonDetail.Age}"/>
             </StackPanel>
         </StackPanel>
 

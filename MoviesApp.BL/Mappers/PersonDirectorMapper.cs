@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using MoviesApp.BL.Models;
-using MoviesApp.BL.Repositories;
 using MoviesApp.DAL.Entities;
 
 namespace MoviesApp.BL.Mappers
@@ -13,12 +9,9 @@ namespace MoviesApp.BL.Mappers
         {
             return new PersonDirectorDetailModel
             {
+                Id = entity.Id,
                 DirectorId = entity.DirectorId,
-                MovieId = entity.MovieId,
-                //Name = entity.Director.Name,
-                //Surname = entity.Director.Surname,
-                //Age = entity.Director.Age,
-                //PictureUrl = entity.Director.PictureUrl,
+                MovieId = entity.MovieId
             };
         }
 

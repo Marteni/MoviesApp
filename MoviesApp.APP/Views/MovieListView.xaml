@@ -4,21 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:interactions="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:local="clr-namespace:MoviesApp.APP.Views"
-             xmlns:viewModels="clr-namespace:MoviesApp.App.ViewModels"
              xmlns:viewModels1="clr-namespace:MoviesApp.APP.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="200"
              d:DataContext="{d:DesignInstance viewModels1:MovieListViewModel}"
              DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=MovieListViewModel}">
-    
-    
-    <StackPanel>
 
+    <StackPanel>
         <Button Height="30" 
                 Content="Add a new Movie"
                 Margin="0,1"
-                Command="{Binding MovieDetailCommand}"></Button>
+                Command="{Binding MovieDetailCommand}"/>
         <ListBox Height="570" 
                  x:Name="MoviesListBox"
                  ItemsSource="{Binding Movies}">
@@ -30,11 +26,9 @@
             </interactions:Interaction.Triggers>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding Name}" />
+                    <Label Content="{Binding Name}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-
         </ListBox>
     </StackPanel>
-
 </UserControl>

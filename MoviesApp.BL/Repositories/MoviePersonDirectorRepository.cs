@@ -58,16 +58,6 @@ namespace MoviesApp.BL.Repositories
             }
         }
 
-        public void Update(PersonDirectorDetailModel model)
-        {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
-            {
-                var entity = PersonDirectorMapper.MapPersonDirectorDetailModelToEntity(model);
-                dbContext.Directors.Update(entity);
-                dbContext.SaveChanges();
-            }
-        }
-
         public void TryDeleteDirectorMovieRelation(Guid movieId, Guid directorId)
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows.Data;
 using System.Windows.Input;
 using MoviesApp.APP.Command;
@@ -25,11 +22,21 @@ namespace MoviesApp.APP.ViewModels
 
             MovieDetailCommand = new RelayCommand(AddNewMovieClicked, (canExecute) => true);
             MovieSelectedCommand = new RelayCommand<MovieListModel>(MovieSelected, (canExecute) => true);
+            
             Messenger.Default.Register<MovieDetailModel>(this, NewMoveReceived, MovieDetailViewModel.SaveNewMovieToken);
             Messenger.Default.Register<MovieDetailModel>(this, MovieUpdatedReceived, MovieDetailViewModel.UpdateMovieToken);
             Messenger.Default.Register<Guid>(this, OnGuidReceived, MovieDetailViewModel.DeleteMovieToken);
             Messenger.Default.Register<MovieListModel>(this, SelectedMovieReceived, PersonDetailViewModel.SelectedMovieToken);
         }
+
+
+        public ICommand MovieDetailCommand { get; }
+        public ICommand MovieSelectedCommand { get; }
+        public ObservableCollection<MovieListModel> Movies { get; } = new ObservableCollection<MovieListModel>();
+
+        public static readonly Guid MovieAddToken = Guid.Parse("3e5989ad-186a-4262-827c-81569973e36e");
+        public static readonly Guid MovieSelectedToken = Guid.Parse("97c53351-898f-45d3-9e55-eaaef9511ed2");
+
 
         private void SelectedMovieReceived(MovieListModel selectedMovie)
         {
@@ -39,24 +46,16 @@ namespace MoviesApp.APP.ViewModels
             Messenger.Default.Send(value, MainViewModel.ChangeTabToken);
         }
 
-
-        public ObservableCollection<MovieListModel> Movies { get; } = new ObservableCollection<MovieListModel>();
-
-        public ICommand MovieDetailCommand { get; }
-
-        public ICommand MovieSelectedCommand { get; }
-
-        
         private void AddNewMovieClicked(object x = null)
         {
             var newMovieModel = new MovieDetailModel()
             {
                 Id = Guid.NewGuid()
-
             };
        
             Messenger.Default.Send(newMovieModel, MovieAddToken);
         }
+
         private void NewMoveReceived(MovieDetailModel movieDetailModel)
         {
             _movieRepository.Create(movieDetailModel);
@@ -68,7 +67,6 @@ namespace MoviesApp.APP.ViewModels
             var movieDetailViewModel = _movieRepository.GetById(movieListModel.Id);
 
             Messenger.Default.Send(movieDetailViewModel, MovieSelectedToken);
-
         }
 
         private void MovieUpdatedReceived(MovieDetailModel movieDetailModelUpdated)
@@ -77,12 +75,10 @@ namespace MoviesApp.APP.ViewModels
             UpdateMovieListWithExistingItem(movieDetailModelUpdated);
         }
 
-
         private void OnGuidReceived(Guid id)
         {
             _movieRepository.Delete(id);
             Movies.Remove(Movies.First(t => t.Id == id));
-            
         }
 
         private void UpdateMovieListViewWithNewItem(MovieDetailModel movieDetailModel)
@@ -114,8 +110,5 @@ namespace MoviesApp.APP.ViewModels
             var movies = _movieRepository.GetAll();
             Movies.AddRange(movies);
         }
-
-        public static readonly Guid MovieAddToken = Guid.Parse("3e5989ad-186a-4262-827c-81569973e36e");
-        public static readonly Guid MovieSelectedToken = Guid.Parse("97c53351-898f-45d3-9e55-eaaef9511ed2");
     }
 }

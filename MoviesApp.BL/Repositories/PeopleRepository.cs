@@ -11,7 +11,6 @@ namespace MoviesApp.BL.Repositories
     public class PeopleRepository : IPeopleRepository
     {
 
- 
         private readonly IDbContextSqlFactory _dbContextSqlFactory;
 
         public PeopleRepository(IDbContextSqlFactory dbContextSqlFactory)
@@ -33,7 +32,6 @@ namespace MoviesApp.BL.Repositories
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                //SELECT * FROM Ingredient WHERE Id = id;
                 var entity = dbContext.People.First(t => t.Id == id);
                 return PersonMapper.MapPersonEntityToDetailModel(entity);
             }
@@ -43,7 +41,6 @@ namespace MoviesApp.BL.Repositories
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                //SELECT * FROM Ingredient WHERE Id = id;
                 var entity = dbContext.People.FirstOrDefault(t => t.Id == id);
                 if (entity == null) return null;
                 return PersonMapper.MapPersonEntityToListModel(entity);

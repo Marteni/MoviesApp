@@ -21,6 +21,5 @@ namespace MoviesApp.DAL.Factories
             return new MoviesAppDbContext(optionsBuilder.Options);
         }
 
-      
     }
 }

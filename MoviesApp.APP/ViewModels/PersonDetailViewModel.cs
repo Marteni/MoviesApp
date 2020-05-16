@@ -14,9 +14,9 @@ namespace MoviesApp.APP.ViewModels
 {
     public class PersonDetailViewModel : ViewModelBase
     {
-        private IMovieRepository _movieRepository;
-        private IMoviePersonActorRepository _moviesActorRepository;
-        private IMoviePersonDirectorRepository _moviesDirectorRepository;
+        private readonly IMovieRepository _movieRepository;
+        private readonly IMoviePersonActorRepository _moviesActorRepository;
+        private readonly IMoviePersonDirectorRepository _moviesDirectorRepository;
         private readonly IMessageDialogService _messageDialogService;
 
         public PersonDetailViewModel(IMovieRepository movieRepository, 
@@ -28,7 +28,8 @@ namespace MoviesApp.APP.ViewModels
             _moviesActorRepository = moviesActorRepository;
             _moviesDirectorRepository = moviesDirectorRepository;
             _messageDialogService = messageDialogService;
-            personDetail = personEditDetail = null;
+            PersonDetail = PersonEditDetail = null;
+
             SavePersonEditViewCommand = new RelayCommand(SavePerson, (canExecute) => true);
             DeletePersonEditViewCommand = new RelayCommand(DeletePerson, (canExecute) => true);
             EditPersonViewCommand = new RelayCommand(EditPerson, (canExecute) => true);
@@ -38,55 +39,53 @@ namespace MoviesApp.APP.ViewModels
             Messenger.Default.Register<PersonDetailModel>(this, DisplayPerson, PersonListViewModel.PersonSelectedToken);
         }
 
-        private void ShowMovieDetail(MovieListModel selectedMovie)
-        {
-            Messenger.Default.Send(selectedMovie, SelectedMovieToken);
-            
-        }
-
         public ObservableCollection<MovieListModel> Movies { get; } = new ObservableCollection<MovieListModel>();
         public ObservableCollection<MovieListModel> MoviesActed { get; } = new ObservableCollection<MovieListModel>();
         public ObservableCollection<MovieListModel> MoviesDirected { get; } = new ObservableCollection<MovieListModel>();
+
         public ICommand SavePersonEditViewCommand { get; }
         public ICommand DeletePersonEditViewCommand { get; }
         public ICommand EditPersonViewCommand { get; }
         public ICommand ShowMovieDetailCommand { get; }
 
+        public bool ExistingPersonFlag { get; set; } = false;
+        public PersonDetailModel PersonDetail { get; set; }
+        public PersonDetailModel PersonEditDetail { get; set; }
+
+        public static readonly Guid AddPersonToken = Guid.Parse("C2C51FFF-64B8-4EEA-9819-3F027C49BE5E");
+        public static readonly Guid UpdatePersonToken = Guid.Parse("305EBDDE-72A8-4698-801F-DF49A5313F30");
+        public static readonly Guid DeletePersonToken = Guid.Parse("26D8B1E8-033F-47B3-9A8E-36BE53406BF7");
+        public static readonly Guid SelectedMovieToken = Guid.Parse("634c8794-106e-426c-84ee-f825928a3bf5");
+
+
+        private void ShowMovieDetail(MovieListModel selectedMovie)
+        {
+            Messenger.Default.Send(selectedMovie, SelectedMovieToken);
+        }
+
         private void AddNewPerson(PersonDetailModel personDetailModel)
         {
             LoadMovies();
             ExistingPersonFlag = false;
-            //if (personDetailModel == null)
-            //{
-            //    personDetail = null;
-            //    return;
-            //}
-            personDetail = null;
-            personEditDetail = new PersonDetailModel();
+            PersonDetail = null;
+            PersonEditDetail = new PersonDetailModel();
             {
-                personEditDetail.Id = personDetailModel.Id;
+                PersonEditDetail.Id = personDetailModel.Id;
             }
-
-            //TODO: Nulovanie kolekcii ActedIn a Directed
         }
 
         private void DisplayPerson(PersonDetailModel personDetailModel)
         {
-            //if (personDetailModel == null)
-            //{
-            //    personDetail = null;
-            //    return;
-            //}
             ExistingPersonFlag = true;
-            personEditDetail = null;
-            personDetail = personDetailModel;
-            LoadActedMovies(_moviesActorRepository);
+            PersonEditDetail = null;
+            PersonDetail = personDetailModel;
+            LoadActedMovies();
             LoadDirectedMovies();
         }
 
         private void SavePerson(object x = null)
         {
-            if (personEditDetail.Name == null || personEditDetail.Surname == null)
+            if (PersonEditDetail.Name == null || PersonEditDetail.Surname == null)
             {
                 _messageDialogService.Show(
                     "Error",
@@ -97,22 +96,21 @@ namespace MoviesApp.APP.ViewModels
                 return;
             }
 
-            Messenger.Default.Send(personEditDetail, ExistingPersonFlag ? UpdatePersonToken : AddPersonToken);
+            Messenger.Default.Send(PersonEditDetail, ExistingPersonFlag ? UpdatePersonToken : AddPersonToken);
 
-            personDetail = personEditDetail;
-            personEditDetail = null;
+            PersonDetail = PersonEditDetail;
+            PersonEditDetail = null;
             ExistingPersonFlag = false;
 
-            CreateAndReloadMovieActors(_moviesActorRepository);
-            CreateAndReloadMovieDirectors(_moviesDirectorRepository);
+            CreateAndReloadMovieActors();
+            CreateAndReloadMovieDirectors();
         }
 
         private void EditPerson(object x = null)
         {
-           
             ExistingPersonFlag = true;
-            personEditDetail = personDetail;
-            personDetail = null;
+            PersonEditDetail = PersonDetail;
+            PersonDetail = null;
 
             LoadMovies();
             UpdateMovieListWithActedMovies();
@@ -121,23 +119,21 @@ namespace MoviesApp.APP.ViewModels
 
         private void DeletePerson(object x)
         {
-
             var delete = _messageDialogService.Show(
                 "Delete",
-                $"Do you want to delete {personEditDetail?.Name} {personEditDetail?.Surname}?",
+                $"Do you want to delete {PersonEditDetail?.Name} {PersonEditDetail?.Surname}?",
                 MessageDialogButtonConfiguration.YesNo,
                 MessageDialogResult.No);
             if(delete == MessageDialogResult.No) return;
 
-            var id = Guid.Parse(personEditDetail.Id.ToString());
+            var id = Guid.Parse(PersonEditDetail.Id.ToString());
             
             Messenger.Default.Send(id, DeletePersonToken);
 
             _moviesActorRepository.TryDeleteAllByMovieOrActorId(id);
             _moviesDirectorRepository.TryDeleteAllByMovieOrDirectorId(id);
 
-            personEditDetail = null;
-            
+            PersonEditDetail = null;
         }
 
         private void LoadMovies()
@@ -148,11 +144,10 @@ namespace MoviesApp.APP.ViewModels
             Movies.AddRange(movies);
         }
 
-        private void LoadActedMovies(IMoviePersonActorRepository movieActorRepository)
+        private void LoadActedMovies()
         {
             MoviesActed.Clear();
-            _moviesActorRepository = movieActorRepository;
-            var movies = _moviesActorRepository.GetAllMovieActorByActorId(personDetail.Id);
+            var movies = _moviesActorRepository.GetAllMovieActorByActorId(PersonDetail.Id);
             foreach (var movie in movies)
             {
                 var actedMovie = _movieRepository.GetByIdListModel(movie.MovieId);
@@ -160,7 +155,7 @@ namespace MoviesApp.APP.ViewModels
             }
         }
 
-        private void CreateAndReloadMovieActors(IMoviePersonActorRepository movieActorRepository)
+        private void CreateAndReloadMovieActors()
         {
             foreach (var movie in Movies)
             {
@@ -173,10 +168,10 @@ namespace MoviesApp.APP.ViewModels
                         {
                             Id = Guid.NewGuid(),
                             MovieId = movie.Id,
-                            ActorId = personDetail.Id
+                            ActorId = PersonDetail.Id
                         };
 
-                        movieActorRepository.Create(movieActor);
+                        _moviesActorRepository.Create(movieActor);
                         MoviesActed.Add(movie);
                     }
                 }
@@ -185,12 +180,12 @@ namespace MoviesApp.APP.ViewModels
                     var actor = MoviesActed.FirstOrDefault(x => x.Id == movie.Id);
                     if (actor != null)
                     {
-                        movieActorRepository.TryDeleteActorMovieRelation(movie.Id, personDetail.Id);
+                        _moviesActorRepository.TryDeleteActorMovieRelation(movie.Id, PersonDetail.Id);
                         DeleteMovieInActedMovieListById(movie.Id);
                     }
                 }
 
-                LoadActedMovies(movieActorRepository);
+                LoadActedMovies();
             }
         }
 
@@ -220,7 +215,7 @@ namespace MoviesApp.APP.ViewModels
         private void LoadDirectedMovies()
         {
             MoviesDirected.Clear();
-            var movies = _moviesDirectorRepository.GetAllMovieDirectorByDirectorId(personDetail.Id);
+            var movies = _moviesDirectorRepository.GetAllMovieDirectorByDirectorId(PersonDetail.Id);
             foreach (var movie in movies)
             {
                 var directedMovie = _movieRepository.GetByIdListModel(movie.MovieId);
@@ -229,7 +224,7 @@ namespace MoviesApp.APP.ViewModels
         }
 
 
-        private void CreateAndReloadMovieDirectors(IMoviePersonDirectorRepository movieDirectorRepository)
+        private void CreateAndReloadMovieDirectors()
         {
             foreach (var movie in Movies)
             {
@@ -242,10 +237,10 @@ namespace MoviesApp.APP.ViewModels
                         {
                             Id = Guid.NewGuid(),
                             MovieId = movie.Id,
-                            DirectorId = personDetail.Id
+                            DirectorId = PersonDetail.Id
                         };
 
-                        movieDirectorRepository.Create(movieDirector);
+                        _moviesDirectorRepository.Create(movieDirector);
                         MoviesDirected.Add(movie);
                     }
                 }
@@ -254,7 +249,7 @@ namespace MoviesApp.APP.ViewModels
                     var director = MoviesDirected.FirstOrDefault(x => x.Id == movie.Id);
                     if (director != null)
                     {
-                        movieDirectorRepository.TryDeleteDirectorMovieRelation(movie.Id,personDetail.Id);
+                        _moviesDirectorRepository.TryDeleteDirectorMovieRelation(movie.Id,PersonDetail.Id);
                         DeleteMovieInDirectedMovieListById(movie.Id);
                     }
                 }
@@ -285,13 +280,5 @@ namespace MoviesApp.APP.ViewModels
             CollectionViewSource.GetDefaultView(Movies).Refresh();
         }
 
-        public bool ExistingPersonFlag { get; set; } = false;
-        public PersonDetailModel personDetail { get; set; }
-        public PersonDetailModel personEditDetail { get; set; }
-
-        public static readonly Guid AddPersonToken = Guid.Parse("C2C51FFF-64B8-4EEA-9819-3F027C49BE5E");
-        public static readonly Guid UpdatePersonToken = Guid.Parse("305EBDDE-72A8-4698-801F-DF49A5313F30");
-        public static readonly Guid DeletePersonToken = Guid.Parse("26D8B1E8-033F-47B3-9A8E-36BE53406BF7");
-        public static readonly Guid SelectedMovieToken = Guid.Parse("634c8794-106e-426c-84ee-f825928a3bf5");
     }
 }

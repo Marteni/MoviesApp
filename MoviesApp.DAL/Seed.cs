@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MoviesApp.DAL.Entities;
@@ -25,22 +24,7 @@ namespace MoviesApp.DAL
             Name = "George",
             Surname = "Lucas",
             Age = 75,
-            PictureUrl = "https://img.csfd.cz/files/images/creator/photos/000/269/269670_1f4cd0.jpg?w100h132crop",
-            DirectedMovies =
-                {
-                    new MoviesPersonDirectorEntity()
-                    {
-                        Id = new Guid("19E3745E-9259-471A-890B-F6DB55D48F24"),
-                        DirectorId = new Guid("14858480-C954-4424-A549-16E2B0302397"),
-                        MovieId = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129")
-                    },
-                    new MoviesPersonDirectorEntity()
-                    {
-                        Id = new Guid("B9B09A92-8533-4C8E-BF5E-F371348B88DC"),
-                        DirectorId = new Guid("14858480-C954-4424-A549-16E2B0302397"),
-                        MovieId = new Guid("5866E0F7-DED9-4C71-9638-68EFDBEB958C")
-                    }
-                }
+            PictureUrl = "https://img.csfd.cz/files/images/creator/photos/000/269/269670_1f4cd0.jpg?w100h132crop"
         };
 
 
@@ -50,22 +34,7 @@ namespace MoviesApp.DAL
             Name = "Mark",
             Surname = "Hamill",
             Age = 68,
-            PictureUrl = "https://img.csfd.cz/files/images/creator/photos/163/523/163523956_9edcf8.jpg?w100h132crop",
-            ActedInMovies =
-                {
-                    new MoviesPersonActorEntity()
-                    {
-                        Id = new Guid("12E1CE4D-2C8C-4BCE-B610-129A784EB03B"),
-                        ActorId = new Guid("ED74BA50-F208-49CA-A71A-7BFDCA3E1469"),
-                        MovieId = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129")
-                    },
-                    new MoviesPersonActorEntity()
-                    {
-                        Id = new Guid("A4525787-679A-4AFC-86C3-2E0BC0E3518B"),
-                        ActorId = new Guid("ED74BA50-F208-49CA-A71A-7BFDCA3E1469"),
-                        MovieId = new Guid("5866E0F7-DED9-4C71-9638-68EFDBEB958C")
-                    }
-                }
+            PictureUrl = "https://img.csfd.cz/files/images/creator/photos/163/523/163523956_9edcf8.jpg?w100h132crop"
         };
 
 
@@ -75,22 +44,7 @@ namespace MoviesApp.DAL
             Name = "Carrie",
             Surname = "Fisher",
             Age = 60,
-            PictureUrl = "https://img.csfd.cz/files/images/creator/photos/164/132/164132451_95e211.jpg?w100h132crop",
-            ActedInMovies =
-                {
-                    new MoviesPersonActorEntity()
-                    {
-                        Id = new Guid("7648EBFA-9E58-4835-A237-E9E7B6387262"),
-                        ActorId = new Guid("CAB2CA13-0F8B-4839-A10D-BBEDEAB84565"),
-                        MovieId = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129")
-                    },
-                    new MoviesPersonActorEntity()
-                    {
-                        Id = new Guid("B65AE050-EAD0-4E04-BA65-828A65A613DA"),
-                        ActorId = new Guid("CAB2CA13-0F8B-4839-A10D-BBEDEAB84565"),
-                        MovieId = new Guid("5866E0F7-DED9-4C71-9638-68EFDBEB958C")
-                    }
-                }
+            PictureUrl = "https://img.csfd.cz/files/images/creator/photos/164/132/164132451_95e211.jpg?w100h132crop"
         };
 
 
@@ -105,35 +59,6 @@ namespace MoviesApp.DAL
             Length = TimeSpan.FromMinutes(121),
             Description =
                 "Rytíři Jedi byli vyhlazeni a Impérium vládne galaxii pevnou rukou. Malá skupina povstalců se odváží vzdorovat a ukradne plány k nejmocnější zbrani Impéria, Hvězdě smrti. Imperátorův nejvěrnější služebník, Darth Vader, musí najít plány a skrytou základnu povstalců. Zpráva o princezně Lei a vůdci rebelů se dostane až k obyčejnému farmáři, Lukovi Skywalkerovi. Ten se řídí svým osudem, zachraňuje princeznu a pomáhá povstalcům svrhnout Impérium společně s takovými nezapomenutelnými spojenci jako: Obi-Wan Kenobi, domýšlivý Han Solo, loajální Chewbacca a droidové R2-D2 a C3PO.",
-            Actors =
-                {
-                    new MoviesPersonActorEntity()
-                    {
-                        Id = new Guid("12E1CE4D-2C8C-4BCE-B610-129A784EB03B"),
-                        ActorId = new Guid("ED74BA50-F208-49CA-A71A-7BFDCA3E1469"),
-                        MovieId = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129")
-                        
-                    },
-                    new MoviesPersonActorEntity()
-                    {
-                        Id = new Guid("7648EBFA-9E58-4835-A237-E9E7B6387262"),
-                        ActorId = new Guid("CAB2CA13-0F8B-4839-A10D-BBEDEAB84565"),
-                        MovieId = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129")
-                        
-                    }
-                },
-            Directors =
-                {
-                    new MoviesPersonDirectorEntity()
-                    {
-                        Id = new Guid("6CE02CF5-4B04-469B-9CE1-6C99FDCE0FFA"),
-                        DirectorId = new Guid("14858480-C954-4424-A549-16E2B0302397"),
-                        MovieId = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129")
-                        
-                    }
-                },
-            Ratings = { RatingMovie1 }
-
         };
 
 
@@ -203,40 +128,6 @@ namespace MoviesApp.DAL
                     Nick = RatingMovie1.Nick,
                     NumericEvaluation = RatingMovie1.NumericEvaluation,
                     Review = RatingMovie1.Review
-                });
-        }
-
-        public static void SeedDirectors(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<MoviesPersonDirectorEntity>()
-                .HasData(new
-                {
-                    Id = GeorgeLucas.DirectedMovies.First().Id,
-                    DirectorId = GeorgeLucas.DirectedMovies.First().DirectorId,
-                    MovieId = GeorgeLucas.DirectedMovies.First().MovieId
-                    
-                });
-        }
-
-        public static void SeedActors(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<MoviesPersonActorEntity>()
-                .HasData(new
-                {
-                    Id = MarkHamill.ActedInMovies.First().Id,
-                    ActorId = MarkHamill.ActedInMovies.First().ActorId,
-                    MovieId = MarkHamill.ActedInMovies.First().MovieId
-                  
-                    
-                });
-
-            modelBuilder.Entity<MoviesPersonActorEntity>()
-                .HasData(new
-                {
-                    Id = CarrieFisher.ActedInMovies.First().Id,
-                    ActorId = CarrieFisher.ActedInMovies.First().ActorId,
-                    MovieId = CarrieFisher.ActedInMovies.First().MovieId
-                    
                 });
         }
 

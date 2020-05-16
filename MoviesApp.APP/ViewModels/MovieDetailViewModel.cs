@@ -2,14 +2,11 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using Microsoft.Xaml.Behaviors.Core;
 using MoviesApp.APP.Command;
 using MoviesApp.APP.Services;
 using MoviesApp.APP.Services.MessageDialog;
-using MoviesApp.APP.Views;
 using MoviesApp.BL.Extensions;
 using MoviesApp.BL.Models;
 using MoviesApp.BL.Repositories;
@@ -18,10 +15,10 @@ namespace MoviesApp.APP.ViewModels
 {
     public class MovieDetailViewModel : ViewModelBase
     {
-        private IPeopleRepository _personRepository;
-        private IMoviePersonActorRepository _movieActorRepository;
-        private IMoviePersonDirectorRepository _movieDirectorRepository;
-        private IRatingRepository _ratingRepository;
+        private readonly IPeopleRepository _personRepository;
+        private readonly IMoviePersonActorRepository _movieActorRepository;
+        private readonly IMoviePersonDirectorRepository _movieDirectorRepository;
+        private readonly IRatingRepository _ratingRepository;
         private readonly IMessageDialogService _messageDialogService;
 
         public MovieDetailViewModel(IPeopleRepository personRepository,
@@ -110,7 +107,7 @@ namespace MoviesApp.APP.ViewModels
             Model = null;
             MovieWrapperDetailModel = movieWrapperDetailModel;
             RatingNewDetailModel = new RatingDetailModel();
-            LoadActors(_movieActorRepository);
+            LoadActors();
             LoadDirectors();
             LoadRatings();
         }
@@ -130,7 +127,6 @@ namespace MoviesApp.APP.ViewModels
                 return;
             }
 
-
             if (CanDeleteFlag)
             {
                 Messenger.Default.Send(movieWrapper, UpdateMovieToken );
@@ -143,8 +139,8 @@ namespace MoviesApp.APP.ViewModels
                 Model = null;
             }
             
-            CreateAndReloadMovieActors(_movieActorRepository);
-            CreateAndReloadMovieDirectors(_movieDirectorRepository);
+            CreateAndReloadMovieActors();
+            CreateAndReloadMovieDirectors();
         }
 
         private void EditMovieDetail(object x = null)
@@ -192,10 +188,9 @@ namespace MoviesApp.APP.ViewModels
             DirectorsEditList.AddRange(people);
         }
 
-        private void LoadActors(IMoviePersonActorRepository movieActorRepository)
+        private void LoadActors()
         {
             Actors.Clear();
-            _movieActorRepository = movieActorRepository;
             var actors = _movieActorRepository.GetAllMovieActorByMovieId(MovieWrapperDetailModel.Id);
             foreach (var actor in actors)
             {
@@ -204,7 +199,7 @@ namespace MoviesApp.APP.ViewModels
             }
         }
 
-        private void CreateAndReloadMovieActors(IMoviePersonActorRepository movieActorRepository)
+        private void CreateAndReloadMovieActors()
         {
             foreach (var person in ActorsEditList)
             {
@@ -220,7 +215,7 @@ namespace MoviesApp.APP.ViewModels
                             ActorId = person.Id
                         };
 
-                        movieActorRepository.Create(movieActor);
+                        _movieActorRepository.Create(movieActor);
                         Actors.Add(person);
                     }
                 }
@@ -229,12 +224,12 @@ namespace MoviesApp.APP.ViewModels
                     var actor = Actors.FirstOrDefault(x => x.Id == person.Id);
                     if (actor != null)
                     {
-                        movieActorRepository.TryDeleteActorMovieRelation(MovieWrapperDetailModel.Id, person.Id);
+                        _movieActorRepository.TryDeleteActorMovieRelation(MovieWrapperDetailModel.Id, person.Id);
                         DeleteActorInActorListById(person.Id);
                     }
                 }
 
-                LoadActors(_movieActorRepository);
+                LoadActors();
             }
         }
 
@@ -272,7 +267,7 @@ namespace MoviesApp.APP.ViewModels
             }
         }
 
-        private void CreateAndReloadMovieDirectors(IMoviePersonDirectorRepository movieDirectorRepository)
+        private void CreateAndReloadMovieDirectors()
         {
             foreach (var person in DirectorsEditList)
             {
@@ -288,7 +283,7 @@ namespace MoviesApp.APP.ViewModels
                             DirectorId = person.Id
                         };
 
-                        movieDirectorRepository.Create(movieDirector);
+                        _movieDirectorRepository.Create(movieDirector);
                         Directors.Add(person);
                     }
                 }
@@ -297,7 +292,7 @@ namespace MoviesApp.APP.ViewModels
                     var director = Directors.FirstOrDefault(x => x.Id == person.Id);
                     if (director != null)
                     {
-                        movieDirectorRepository.TryDeleteDirectorMovieRelation(MovieWrapperDetailModel.Id, person.Id);
+                        _movieDirectorRepository.TryDeleteDirectorMovieRelation(MovieWrapperDetailModel.Id, person.Id);
                         DeleteDirectorInDirectorListById(person.Id);
                     }
                 }
@@ -327,6 +322,7 @@ namespace MoviesApp.APP.ViewModels
 
             CollectionViewSource.GetDefaultView(DirectorsEditList).Refresh();
         }
+
 
         private void LoadRatings()
         {

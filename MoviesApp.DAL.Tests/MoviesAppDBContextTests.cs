@@ -39,9 +39,6 @@ namespace MoviesApp.DAL.Tests
                 CountryOfOrigin = "USA",
                 Length = TimeSpan.FromMinutes(140),
                 Description = "V tøetí epizodì ságy Star Wars zuøí Klonové války, které prohloubily rozpory mezi kancléøem Palpatinem a Radou Jediù. Mladý rytíø Jedi Anakin Skywalker se musí rozhodnout, na èí stranì bude stát. Podlehne slibùm moci a pokušení Temné strany, vstoupí do služeb zlého Darth Sidiouse a stane se z nìj Darth Vader. Sithští lordové se chtìjí spoleènì pomstít a prvním krokem jejich plánu je likvidace Jediù. Pouze Yoda a Obi-Wan pøežijí a musejí se Sithùm postavit, což vede k dramatickému souboji svìtelnými meèi mezi Anakinem a Obi-Wanem, který rozhodne o osudu galaxie.",
-                Actors = new List<MoviesPersonActorEntity>(),
-                Directors = new List<MoviesPersonDirectorEntity>(),
-                Ratings = new List<RatingEntity>()
             };
 
             _moviesAppDbContext.Movies.Add(movie);
@@ -61,9 +58,7 @@ namespace MoviesApp.DAL.Tests
                 Name = "George",
                 Surname = "Lucas",
                 Age = 75,
-                PictureUrl = "https://img.csfd.cz/files/images/creator/photos/000/269/269670_1f4cd0.jpg?w100h132crop",
-                ActedInMovies = new List<MoviesPersonActorEntity>(),
-                DirectedMovies = new List<MoviesPersonDirectorEntity>()
+                PictureUrl = "https://img.csfd.cz/files/images/creator/photos/000/269/269670_1f4cd0.jpg?w100h132crop"
             };
 
             _moviesAppDbContext.People.Add(person);
@@ -92,15 +87,6 @@ namespace MoviesApp.DAL.Tests
             var ratingFromDb = dbx.Ratings.Single(r => r.Id == rating.Id);
             Assert.Equal(rating, ratingFromDb, RatingEntity.RatingComparer);
         }
-
-        //[Fact]
-        //public void AddNew_Director_Persistent()
-        //{
-        //    var director = new MoviesPersonDirectorEntity()
-        //    {
-
-        //    }
-        //}
 
         public void Dispose() => _moviesAppDbContext?.Dispose();
     }

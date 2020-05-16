@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:MoviesApp.APP.ViewModels"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:markup="http://schemas.kent.boogaart.com/converters"
              mc:Ignorable="d" 
@@ -39,7 +38,7 @@
                         <RowDefinition Height="200"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="160" />
+                        <ColumnDefinition Width="160"/>
                         <ColumnDefinition Width="100*"/>
                     </Grid.ColumnDefinitions>
                     <Image Source="{Binding MovieWrapperDetailModel.PosterImageUrl}" 
@@ -58,10 +57,12 @@
                                    HorizontalAlignment="Left"/>
                     </StackPanel>
                 </Grid>
-
             </StackPanel>
 
-            <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,5,0,0">
+            <StackPanel Grid.Column="0" 
+                        Grid.Row="1" 
+                        Grid.ColumnSpan="2" 
+                        Margin="0,5,0,0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1.5*"/>
@@ -73,17 +74,31 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Top">
-                        <Label Content="Genre:" FontWeight="Bold"/>
-                        <Label Content="Country:" FontWeight="Bold"/>
-                        <Label Content="Length:" FontWeight="Bold"/>
-                        <Label Content="Description:" FontWeight="Bold"/>
+                    <StackPanel Grid.Column="0" 
+                                Grid.Row="0" 
+                                VerticalAlignment="Top">
+                        <Label Content="Genre:" 
+                               FontWeight="Bold"/>
+                        <Label Content="Country:" 
+                               FontWeight="Bold"/>
+                        <Label Content="Length:" 
+                               FontWeight="Bold"/>
+                        <Label Content="Description:" 
+                               FontWeight="Bold"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Top">
-                        <Label Content="{Binding MovieWrapperDetailModel.Genre}" Height="25" Margin="0,0,5,0"/>
-                        <Label Content="{Binding MovieWrapperDetailModel.CountryOfOrigin}" Height="25" Margin="0,0,5,0"/>
-                        <Label Content="{Binding MovieWrapperDetailModel.Length}" Height="25" Margin="0,0,5,0"/>
+                    <StackPanel Grid.Column="1" 
+                                Grid.Row="0" 
+                                VerticalAlignment="Top">
+                        <Label Content="{Binding MovieWrapperDetailModel.Genre}" 
+                               Height="25" 
+                               Margin="0,0,5,0"/>
+                        <Label Content="{Binding MovieWrapperDetailModel.CountryOfOrigin}" 
+                               Height="25"
+                               Margin="0,0,5,0"/>
+                        <Label Content="{Binding MovieWrapperDetailModel.Length}" 
+                               Height="25" 
+                               Margin="0,0,5,0"/>
                     </StackPanel>
 
                     <TextBox Text="{Binding MovieWrapperDetailModel.Description}"
@@ -110,9 +125,16 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Content="Actors" 
-                           FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Center"/>
-                    <ListBox x:Name="ShowActorsListBox" ItemsSource="{Binding Actors}"
-                             Grid.Row="1" Grid.Column="0" Height="205" Margin="5,0,2.5,0" VerticalAlignment="Top">
+                           FontWeight="Bold" 
+                           Grid.Row="0" 
+                           HorizontalAlignment="Center"/>
+                    <ListBox x:Name="ShowActorsListBox" 
+                             ItemsSource="{Binding Actors}"
+                             Grid.Row="1" 
+                             Grid.Column="0" 
+                             Height="205" 
+                             Margin="5,0,2.5,0"
+                             VerticalAlignment="Top">
                         <b:Interaction.Triggers>
                             <b:EventTrigger EventName="SelectionChanged">
                                 <b:InvokeCommandAction Command="{Binding PersonShowDetailCommand}"
@@ -138,10 +160,17 @@
                     </ListBox>
 
                     <Label Content="Directors" 
-                           FontWeight="Bold" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"/>
+                           FontWeight="Bold" 
+                           Grid.Row="0" 
+                           Grid.Column="1" 
+                           HorizontalAlignment="Center"/>
                     <ListBox  x:Name="ShowDirectorsListBox" 
                               ItemsSource="{Binding Directors}" 
-                              Grid.Row="1" Grid.Column="1" Height="205" Margin="2.5,0,5,0" VerticalAlignment="Top">
+                              Grid.Row="1" 
+                              Grid.Column="1" 
+                              Height="205" 
+                              Margin="2.5,0,5,0" 
+                              VerticalAlignment="Top">
                         <b:Interaction.Triggers>
                             <b:EventTrigger EventName="SelectionChanged">
                                 <b:InvokeCommandAction Command="{Binding PersonShowDetailCommand}"
@@ -167,13 +196,20 @@
                     </ListBox>
                 </Grid>
 
-                <StackPanel x:Name="RatingStackPanel" Margin="0,5,0,0">
+                <StackPanel x:Name="RatingStackPanel" 
+                            Margin="0,5,0,0">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Rating average:"
                                FontWeight="Bold" 
                                Height="26"/>
-                        <Label Content="{Binding AverageRating}" Width="15" Height="26" Padding="0,5" HorizontalAlignment="Right"/>
-                        <Label Content="/10" Padding="0,5" Margin="2,0,0,0"/>
+                        <Label Content="{Binding AverageRating}" 
+                               Width="15" 
+                               Height="26" 
+                               Padding="0,5" 
+                               HorizontalAlignment="Right"/>
+                        <Label Content="/10" 
+                               Padding="0,5" 
+                               Margin="2,0,0,0"/>
                     </StackPanel>
 
                     <Button Content="Add a new rating" 
@@ -183,57 +219,63 @@
                             HorizontalAlignment="Left" 
                             Margin="5"/>
                     <StackPanel Visibility="{Binding ShowRatingAddForm}">
-                        <Label Content="Add a new rating" FontSize="15" FontWeight="Bold"/>
+                        <Label Content="Add a new rating" 
+                               FontSize="15" 
+                               FontWeight="Bold"/>
 
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Label Content="Nickname:" Height="26"/>
-                            <TextBox Text="{Binding RatingNewDetailModel.Nick, Mode=TwoWay}" MinWidth="100" MaxWidth="500" Height="20"/>
+                        <StackPanel Orientation="Horizontal" 
+                                    VerticalAlignment="Center">
+                            <Label Content="Nickname:" 
+                                   Height="26"/>
+                            <TextBox Text="{Binding RatingNewDetailModel.Nick, Mode=TwoWay}" 
+                                     MinWidth="100" 
+                                     MaxWidth="500" 
+                                     Height="20"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <Label Content="Number rating:" Height="26"/>
+                        <StackPanel Orientation="Horizontal" 
+                                    VerticalAlignment="Center">
+                            <Label Content="Number rating:" 
+                                   Height="26"/>
                             <xctk:IntegerUpDown AllowSpin="True"
                                                 Minimum="1"
                                                 Maximum="10"
                                                 MouseWheelActiveTrigger="MouseOver"
                                                 Value="{Binding RatingNewDetailModel.NumericEvaluation, Mode=TwoWay}"
                                                 Watermark="Rating"/>
-                            <!--<ComboBox x:Name="RatingComboBox" SelectedItem="{Binding RatingNewDetailModel.NumericEvaluation, Mode=TwoWay}" Height="20" Margin="0,0,5,0">
-                                <ComboBox.ItemsSource>
-                                    <x:Array Type="{x:Type system:Int32}">
-                                        <system:Int32>1</system:Int32>
-                                        <system:Int32>2</system:Int32>
-                                        <system:Int32>3</system:Int32>
-                                        <system:Int32>4</system:Int32>
-                                        <system:Int32>5</system:Int32>
-                                        <system:Int32>6</system:Int32>
-                                        <system:Int32>7</system:Int32>
-                                        <system:Int32>8</system:Int32>
-                                        <system:Int32>9</system:Int32>
-                                        <system:Int32>10</system:Int32>
-                                    </x:Array>
-                                </ComboBox.ItemsSource>
-                            </ComboBox>-->
                         </StackPanel>
                         <TextBox Height="150" 
-                         VerticalScrollBarVisibility="Auto" 
-                         TextWrapping="Wrap" 
-                         Margin="5,0"
-                         Text="{Binding RatingNewDetailModel.Review, Mode=TwoWay}"/>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Content="Submit" Width="75" Height="25" HorizontalAlignment="Right" Margin="5" 
+                                 VerticalScrollBarVisibility="Auto" 
+                                 TextWrapping="Wrap" 
+                                 Margin="5,0"
+                                 Text="{Binding RatingNewDetailModel.Review, Mode=TwoWay}"/>
+                        <StackPanel Orientation="Horizontal" 
+                                    HorizontalAlignment="Right">
+                            <Button Content="Submit" 
+                                    Width="75" 
+                                    Height="25" 
+                                    HorizontalAlignment="Right" 
+                                    Margin="5" 
                                     Command="{Binding RatingSaveNewCommand}"/>
-                            <Button Content="Discard" Width="75" Height="25" HorizontalAlignment="Right" Margin="5"
+                            <Button Content="Discard" 
+                                    Width="75" 
+                                    Height="25" 
+                                    HorizontalAlignment="Right" 
+                                    Margin="5"
                                 Command="{Binding RatingDiscardNewCommand}"/>
                         </StackPanel>
                     </StackPanel>
 
-                    <Label Content="Movie ratings" FontSize="15" FontWeight="Bold"/>
+                    <Label Content="Movie ratings" 
+                           FontSize="15" 
+                           FontWeight="Bold"/>
                     <StackPanel Margin="5,0,0,25"
                                 Visibility="{Binding DoesntHaveRatings}">
                         <Label Content="This movie doesn't have ratings yet."/>
-                        <Label Content="Feel free to leave one." Padding="5,0,5,5"/>
+                        <Label Content="Feel free to leave one." 
+                               Padding="5,0,5,5"/>
                     </StackPanel>
-                    <ListBox ItemsSource="{Binding Ratings}" Margin="5,0,5,15"
+                    <ListBox ItemsSource="{Binding Ratings}" 
+                             Margin="5,0,5,15"
                              Visibility="{Binding HasRatings}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>

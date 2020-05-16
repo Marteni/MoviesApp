@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using MoviesApp.DAL.Entities;
 
 namespace MoviesApp.BL.Models
@@ -22,16 +21,14 @@ namespace MoviesApp.BL.Models
                 if (ReferenceEquals(y, null)) return false;
                 if (x.GetType() != y.GetType()) return false;
                 return x.Id == y.Id
-                       && Equals(x.RatedMovie, y.RatedMovie)
                        && x.Nick == y.Nick
                        && x.NumericEvaluation == y.NumericEvaluation
-                       && x.Review == y.Review
-                       && x.RatedMovieId.Equals(y.RatedMovieId);
+                       && x.Review == y.Review;
             }
 
             public int GetHashCode(RatingEntity obj)
             {
-                return HashCode.Combine(obj.Id, obj.RatedMovie, obj.Nick, obj.NumericEvaluation, obj.Review, obj.RatedMovieId);
+                return HashCode.Combine(obj.Id, obj.Nick, obj.NumericEvaluation, obj.Review);
             }
         }
 

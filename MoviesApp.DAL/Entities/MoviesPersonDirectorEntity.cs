@@ -7,8 +7,6 @@ namespace MoviesApp.DAL.Entities
     {
         public Guid DirectorId { get; set; }
         public Guid MovieId { get; set; }
-        public PersonEntity Director { get; set; }
-        public MovieEntity DirectedMovie { get; set; }
 
         private sealed class MoviesPersonDirectorEntityEqualityComparer : IEqualityComparer<MoviesPersonDirectorEntity>
         {
@@ -20,14 +18,12 @@ namespace MoviesApp.DAL.Entities
                 if (x.GetType() != y.GetType()) return false;
                 return x.Id == y.Id 
                        && x.DirectorId.Equals(y.DirectorId) 
-                       && x.MovieId.Equals(y.MovieId)
-                       && PersonEntity.PersonWithoutCollectionsComparer.Equals(x.Director, y.Director)
-                       && MovieEntity.MovieWithoutCollectionsComparer.Equals(x.DirectedMovie, y.DirectedMovie);
+                       && x.MovieId.Equals(y.MovieId);
             }
 
             public int GetHashCode(MoviesPersonDirectorEntity obj)
             {
-                return HashCode.Combine(obj.Id, obj.DirectorId, obj.MovieId, obj.Director, obj.DirectedMovie);
+                return HashCode.Combine(obj.Id, obj.DirectorId, obj.MovieId);
             }
         }
 

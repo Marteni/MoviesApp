@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
-using Microsoft.Xaml.Behaviors;
 using MoviesApp.APP.Command;
 using MoviesApp.APP.Services;
 using MoviesApp.APP.Services.MessageDialog;
@@ -15,28 +14,53 @@ namespace MoviesApp.App.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-
         private readonly IMovieRepository _movieRepository;
         private readonly IPeopleRepository _peopleRepository;
         private readonly IRatingRepository _ratingRepository;
-        private readonly IMessageDialogService _messageDialogService;
 
         public MainViewModel(IMovieRepository movieRepository,
             IPeopleRepository peopleRepository, 
-            IRatingRepository ratingRepository,
-            IMessageDialogService messageDialogService)
+            IRatingRepository ratingRepository)
         {
             _movieRepository = movieRepository;
             _peopleRepository = peopleRepository;
             _ratingRepository = ratingRepository;
-            _messageDialogService = messageDialogService;
+
             SearchCommand = new RelayCommand(OnSearch, (canExecute) => true);
             CloseSearchViewMoviesCommand = new RelayCommand<MovieDetailModel>(OnCloseSearchMoviesView, (canExecute) => true);
             CloseSearchViewPeopleCommand = new RelayCommand<PersonListModel>(OnCloseSearchPeopleView, (canExecute) => true);
             CloseSearchViewRatingsCommand = new RelayCommand<RatingDetailModel>(OnCloseSearchRatingsView, (canExecute) => true);
             CloseSearchViewCommand = new RelayCommand(OnClose, (canExecute) => true);
+            
             Messenger.Default.Register<int>(this, OnTabReceived,ChangeTabToken);
         }
+
+        public IList<MovieDetailModel> FoundMovies { get; set; } = new List<MovieDetailModel>();
+        public IList<PersonListModel> FoundPeople { get; set; } = new List<PersonListModel>();
+        public IList<RatingDetailModel> FoundRatings { get; set; } = new List<RatingDetailModel>();
+
+        public ICommand SearchCommand { get; }
+        public ICommand CloseSearchViewCommand { get; }
+        public ICommand CloseSearchViewMoviesCommand { get; }
+        public ICommand CloseSearchViewPeopleCommand { get; }
+        public ICommand CloseSearchViewRatingsCommand { get; }
+
+        public int TabItem { get; set; }
+        public bool ToggleSearchView { get; set; } = false;
+        public bool ToggleTabView { get; set; } = true;
+        private string _searchQueryText;
+        public string SearchQuery
+        {
+            get { return _searchQueryText; }
+            set
+            {
+                _searchQueryText = value;
+                SearchCommand.Execute(null);
+            }
+        }
+
+        public static readonly Guid ChangeTabToken = Guid.Parse("be54ef43-fb66-4528-a558-b8ef69453fee");
+
 
         private void OnCloseSearchRatingsView(RatingDetailModel ratingDetail)
         {
@@ -51,29 +75,6 @@ namespace MoviesApp.App.ViewModels
             ToggleTabView = true;
             SearchQuery = null;
         }
-
-        private string _searchQueryText;
-        public string SearchQuery
-        {
-            get { return _searchQueryText; }
-            set
-            {
-                _searchQueryText = value;
-                SearchCommand.Execute(null);
-            }
-        }
-
-        public int TabItem { get; set; }
-        public bool ToggleSearchView { get; set; } = false;
-        public bool ToggleTabView { get; set; } = true;
-        public IList<MovieDetailModel> FoundMovies { get; set; } = new List<MovieDetailModel>();
-        public IList<PersonListModel> FoundPeople { get; set; } = new List<PersonListModel>();
-        public IList<RatingDetailModel> FoundRatings { get; set; } = new List<RatingDetailModel>();
-        public ICommand SearchCommand { get; }
-        public ICommand CloseSearchViewCommand { get; }
-        public ICommand CloseSearchViewMoviesCommand { get; }
-        public ICommand CloseSearchViewPeopleCommand { get; }
-        public ICommand CloseSearchViewRatingsCommand { get; }
 
         private void OnClose(object obj)
         {
@@ -114,11 +115,6 @@ namespace MoviesApp.App.ViewModels
 
             if (string.IsNullOrEmpty(SearchQuery))
             {
-                //_messageDialogService.Show(
-                //    "Warning",
-                //    $"Search query empty. Please specify query.",
-                //    MessageDialogButtonConfiguration.OK,
-                //    MessageDialogResult.OK);
                 OnClose(null);
                 return;
             }
@@ -147,10 +143,5 @@ namespace MoviesApp.App.ViewModels
             ToggleTabView = false;
             ToggleSearchView = true;
         }
-    
-
-      
-
-        public static readonly Guid ChangeTabToken = Guid.Parse("be54ef43-fb66-4528-a558-b8ef69453fee");
     }
 }

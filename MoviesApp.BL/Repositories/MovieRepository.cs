@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using MoviesApp.BL.Mappers;
 using MoviesApp.BL.Models;
 using MoviesApp.DAL.Factories;
@@ -42,7 +41,6 @@ namespace MoviesApp.BL.Repositories
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                //SELECT * FROM Ingredient WHERE Id = id;
                 var entity = dbContext.Movies.First(t => t.Id == id);
                 return MovieMapper.MapMovieEntityToDetailModel(entity);
             }
@@ -52,7 +50,6 @@ namespace MoviesApp.BL.Repositories
         {
             using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
             {
-                //SELECT * FROM Ingredient WHERE Id = id;
                 var entity = dbContext.Movies.FirstOrDefault(t => t.Id == id);
                 if (entity == null) return null;
                 return MovieMapper.MapMovieEntityToListModel(entity);

@@ -8,7 +8,7 @@
              d:DesignHeight="600" d:DesignWidth="700"
              d:DataContext="{d:DesignInstance viewModels:PersonDetailViewModel}"
              DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=PersonDetailViewModel}">
-    <Grid Visibility="{Binding personEditDetail, Converter={StaticResource NullToVisibilityConverter}}">
+    <Grid Visibility="{Binding PersonEditDetail, Converter={StaticResource NullToVisibilityConverter}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
             <RowDefinition Height="30"/>
@@ -18,9 +18,12 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <Image Source="{Binding personEditDetail.PictureUrl}" Height="150" Width="100" Grid.Row="0" Grid.Column="0"/>
-        <!--<Button Content="Add" Margin="96,178,0,0" Grid.Row="0" Grid.Column="0"/>-->
-
+        <Image Source="{Binding PersonEditDetail.PictureUrl}" 
+               Height="150" 
+               Width="100" 
+               Grid.Row="0" 
+               Grid.Column="0"/>
+        
         <Grid Grid.Row="0" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
@@ -31,16 +34,16 @@
             <Label Content="Surname:" Margin="0,50,0,125" Grid.Row="0" Grid.Column="0" Padding="5,0" VerticalContentAlignment="Center"/>
             <Label Content="Age:"     Margin="0,75,0,100" Grid.Row="0" Grid.Column="0" Padding="5,0" VerticalContentAlignment="Center"/>
             <Label Content="Image:"   Margin="0,125,0,50" Grid.Row="0" Grid.Column="0" Padding="5,0" VerticalContentAlignment="Center"/>
-            <TextBox Text="{Binding personEditDetail.Name}"   
+            <TextBox Text="{Binding PersonEditDetail.Name}"   
                      VerticalAlignment="Center" 
                      Margin="0,25,0,150" Grid.Row="0" Grid.Column="1" Padding="5,0" VerticalContentAlignment="Center"/>
-            <TextBox Text="{Binding personEditDetail.Surname}" 
+            <TextBox Text="{Binding PersonEditDetail.Surname}" 
                      VerticalAlignment="Center" 
                      Margin="0,50,0,125" Grid.Row="0" Grid.Column="1" Padding="5,0" VerticalContentAlignment="Center"/>
-            <TextBox Text="{Binding personEditDetail.Age}"     
+            <TextBox Text="{Binding PersonEditDetail.Age}"     
                      VerticalAlignment="Center" 
                      Margin="0,75,0,100" Grid.Row="0" Grid.Column="1" Padding="5,0" VerticalContentAlignment="Center"/>
-            <TextBox Text="{Binding personEditDetail.PictureUrl}"
+            <TextBox Text="{Binding PersonEditDetail.PictureUrl}"
                      VerticalAlignment="Center" 
                      Margin="0,125,0,50" Grid.Row="0" Grid.Column="1" Padding="5,0" VerticalContentAlignment="Center"/>
             <Button Height="30" Width="40"
@@ -54,8 +57,6 @@
                 Grid.Row="0" Grid.Column="2"
                 Command="{Binding DeletePersonEditViewCommand}"/>
         </Grid>
-
-        
 
         <Grid Grid.Row="1" Margin="5,1,5,-145" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
