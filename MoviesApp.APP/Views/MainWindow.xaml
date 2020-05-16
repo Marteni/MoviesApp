@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:MoviesApp.App.ViewModels"
         xmlns:views="clr-namespace:MoviesApp.APP.Views"
-        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="Movies Application" Height="700" Width="1000"
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
@@ -24,7 +23,7 @@
                FontSize="20"
                FontFamily="Comic Sans MS"
                VerticalAlignment="Top"
-               HorizontalAlignment="Left"></Label>
+               HorizontalAlignment="Left"/>
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
@@ -34,31 +33,33 @@
                      Width="600"
                      VerticalAlignment="Top"
                      VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Center"
                      Margin="0,0.5"
-                     Text="{Binding SearchQuery, Mode=TwoWay}"/>
-            <Button Height="30"
+                     Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding SearchCommand}" Key="Return"/>
+                </TextBox.InputBindings>
+            </TextBox>
+            <!--<Button Height="30"
                     Content="Search"
                     Margin="0,0,0,1"
-                    Command="{Binding SearchCommand}"></Button>
-            
+                    Command="{Binding SearchCommand}"/>-->
         </StackPanel>
 
-        <views:SearchView Grid.Row="1"></views:SearchView>
+        <views:SearchView Grid.Row="1"/>
         <TabControl 
                     Grid.Row="1"
                     SelectedIndex="{Binding TabItem}"
                     Visibility="{Binding ToggleTabView, Converter={StaticResource BoolToVisibilityConverter}}">
 
-            <TabItem Header="Movies" >
+            <TabItem Header="Movies">
                 <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="600"/>
-
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="2*"/>
-
                     </Grid.ColumnDefinitions>
 
 
@@ -81,12 +82,8 @@
                     <views:PersonDetailView Grid.Column="1"/>
                     <views:PersonDetailEditView Grid.Column="1" />
                 </Grid>
-
             </TabItem>
 
         </TabControl>
-
-
-
     </Grid>
 </Window>

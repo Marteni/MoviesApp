@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using Microsoft.Xaml.Behaviors;
 using MoviesApp.APP.Command;
-using MoviesApp.APP.Enums;
 using MoviesApp.APP.Services;
 using MoviesApp.APP.Services.MessageDialog;
 using MoviesApp.APP.ViewModels;
-using MoviesApp.BL.Extensions;
 using MoviesApp.BL.Models;
 using MoviesApp.BL.Repositories;
 
@@ -40,8 +38,6 @@ namespace MoviesApp.App.ViewModels
             Messenger.Default.Register<int>(this, OnTabReceived,ChangeTabToken);
         }
 
-        
-
         private void OnCloseSearchRatingsView(RatingDetailModel ratingDetail)
         {
             var listModel = new MovieListModel()
@@ -56,8 +52,17 @@ namespace MoviesApp.App.ViewModels
             SearchQuery = null;
         }
 
+        private string _searchQueryText;
+        public string SearchQuery
+        {
+            get { return _searchQueryText; }
+            set
+            {
+                _searchQueryText = value;
+                SearchCommand.Execute(null);
+            }
+        }
 
-        public string SearchQuery { get; set; }
         public int TabItem { get; set; }
         public bool ToggleSearchView { get; set; } = false;
         public bool ToggleTabView { get; set; } = true;
@@ -69,12 +74,14 @@ namespace MoviesApp.App.ViewModels
         public ICommand CloseSearchViewMoviesCommand { get; }
         public ICommand CloseSearchViewPeopleCommand { get; }
         public ICommand CloseSearchViewRatingsCommand { get; }
+
         private void OnClose(object obj)
         {
             ToggleSearchView = false;
             ToggleTabView = true;
             SearchQuery = null;
         }
+
         private void OnCloseSearchMoviesView(MovieDetailModel selectedItem)
         {
             
@@ -107,12 +114,12 @@ namespace MoviesApp.App.ViewModels
 
             if (string.IsNullOrEmpty(SearchQuery))
             {
-                _messageDialogService.Show(
-                    "Warning",
-                    $"Search query empty. Please specify query.",
-                    MessageDialogButtonConfiguration.OK,
-                    MessageDialogResult.OK);
-
+                //_messageDialogService.Show(
+                //    "Warning",
+                //    $"Search query empty. Please specify query.",
+                //    MessageDialogButtonConfiguration.OK,
+                //    MessageDialogResult.OK);
+                OnClose(null);
                 return;
             }
             

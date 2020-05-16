@@ -144,7 +144,7 @@
                 <Label Content="Actors" 
                        FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Center"/>
                 <ListBox x:Name="PeopleListBox" ItemsSource="{Binding ActorsEditList}"  
-                         Grid.Row="1" Grid.Column="0" Height="205" Margin="5,0" VerticalAlignment="Top">
+                         Grid.Row="1" Grid.Column="0" Height="205" Margin="5,0,2.5,0" VerticalAlignment="Top">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Label>
@@ -168,7 +168,7 @@
                 <Label Content="Directors" 
                        FontWeight="Bold" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"/>
                 <ListBox x:Name="DirectorsListBox" ItemsSource="{Binding DirectorsEditList}" 
-                         Grid.Row="1" Grid.Column="1" Height="205" Margin="5,0" VerticalAlignment="Top">
+                         Grid.Row="1" Grid.Column="1" Height="205" Margin="2.5,0,5,0" VerticalAlignment="Top">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Label>

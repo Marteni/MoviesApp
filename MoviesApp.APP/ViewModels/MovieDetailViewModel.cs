@@ -9,6 +9,7 @@ using Microsoft.Xaml.Behaviors.Core;
 using MoviesApp.APP.Command;
 using MoviesApp.APP.Services;
 using MoviesApp.APP.Services.MessageDialog;
+using MoviesApp.APP.Views;
 using MoviesApp.BL.Extensions;
 using MoviesApp.BL.Models;
 using MoviesApp.BL.Repositories;
@@ -71,6 +72,8 @@ namespace MoviesApp.APP.ViewModels
 
         public bool CanDeleteFlag { get; set; }
         public bool CanSaveFlag { get; set; }
+        public Visibility HasRatings { get; set; } = Visibility.Collapsed;
+        public Visibility DoesntHaveRatings { get; set; } = Visibility.Visible;
         public Visibility ShowRatingAddFormButton { get; set; } = Visibility.Visible;
         public Visibility ShowRatingAddForm { get; set; } = Visibility.Collapsed;
         public double AverageRating { get; set; }
@@ -342,7 +345,18 @@ namespace MoviesApp.APP.ViewModels
                 }
             }
 
-            AverageRating = (double) ratingValues / ratingCounter;
+            if (ratingCounter != 0)
+            {
+                AverageRating = (double) ratingValues / ratingCounter;
+                HasRatings = Visibility.Visible;
+                DoesntHaveRatings = Visibility.Collapsed;
+            }
+            else
+            {
+                AverageRating = 0;
+                HasRatings = Visibility.Collapsed;
+                DoesntHaveRatings = Visibility.Visible;
+            }
         }
 
         private void ShowAddRatingForm(object x = null)
@@ -367,10 +381,7 @@ namespace MoviesApp.APP.ViewModels
 
             _ratingRepository.Create(RatingNewDetailModel);
             LoadRatings();
-
-            ShowRatingAddFormButton = Visibility.Visible;
-            ShowRatingAddForm = Visibility.Collapsed;
-            RatingNewDetailModel = new RatingDetailModel();
+            DiscardNewRating();
         }
 
         private void DiscardNewRating(object x = null)
