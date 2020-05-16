@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MoviesApp.DAL.Entities;
 using MoviesApp.DAL.Enums;
@@ -8,7 +7,7 @@ namespace MoviesApp.DAL
 {
     public static class Seed
     {
-        public static readonly RatingEntity RatingMovie1 = new RatingEntity()
+        public static readonly RatingEntity RatingMovie1 = new RatingEntity
         {
             Id = new Guid("595FE374-060A-4E06-9201-56C1D61D30A2"),
             RatedMovieId = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129"),
@@ -18,7 +17,7 @@ namespace MoviesApp.DAL
         };
 
 
-        public static readonly PersonEntity GeorgeLucas = new PersonEntity()
+        public static readonly PersonEntity GeorgeLucas = new PersonEntity
         {
             Id = new Guid("14858480-C954-4424-A549-16E2B0302397"),
             Name = "George",
@@ -28,7 +27,7 @@ namespace MoviesApp.DAL
         };
 
 
-        public static readonly PersonEntity MarkHamill = new PersonEntity()
+        public static readonly PersonEntity MarkHamill = new PersonEntity
         {
             Id = new Guid("ED74BA50-F208-49CA-A71A-7BFDCA3E1469"),
             Name = "Mark",
@@ -38,7 +37,7 @@ namespace MoviesApp.DAL
         };
 
 
-        public static readonly PersonEntity CarrieFisher = new PersonEntity()
+        public static readonly PersonEntity CarrieFisher = new PersonEntity
         {
             Id = new Guid("CAB2CA13-0F8B-4839-A10D-BBEDEAB84565"),
             Name = "Carrie",
@@ -48,7 +47,7 @@ namespace MoviesApp.DAL
         };
 
 
-        public static readonly MovieEntity StarWars = new MovieEntity()
+        public static readonly MovieEntity StarWars = new MovieEntity
         {
             Id = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129"),
             OriginalTitle = "Star Wars: Episode IV - New Hope",
@@ -58,7 +57,7 @@ namespace MoviesApp.DAL
             CountryOfOrigin = "USA",
             Length = TimeSpan.FromMinutes(121),
             Description =
-                "Rytíři Jedi byli vyhlazeni a Impérium vládne galaxii pevnou rukou. Malá skupina povstalců se odváží vzdorovat a ukradne plány k nejmocnější zbrani Impéria, Hvězdě smrti. Imperátorův nejvěrnější služebník, Darth Vader, musí najít plány a skrytou základnu povstalců. Zpráva o princezně Lei a vůdci rebelů se dostane až k obyčejnému farmáři, Lukovi Skywalkerovi. Ten se řídí svým osudem, zachraňuje princeznu a pomáhá povstalcům svrhnout Impérium společně s takovými nezapomenutelnými spojenci jako: Obi-Wan Kenobi, domýšlivý Han Solo, loajální Chewbacca a droidové R2-D2 a C3PO.",
+                "Rytíři Jedi byli vyhlazeni a Impérium vládne galaxii pevnou rukou. Malá skupina povstalců se odváží vzdorovat a ukradne plány k nejmocnější zbrani Impéria, Hvězdě smrti. Imperátorův nejvěrnější služebník, Darth Vader, musí najít plány a skrytou základnu povstalců. Zpráva o princezně Lei a vůdci rebelů se dostane až k obyčejnému farmáři, Lukovi Skywalkerovi. Ten se řídí svým osudem, zachraňuje princeznu a pomáhá povstalcům svrhnout Impérium společně s takovými nezapomenutelnými spojenci jako: Obi-Wan Kenobi, domýšlivý Han Solo, loajální Chewbacca a droidové R2-D2 a C3PO."
         };
 
 
@@ -67,11 +66,11 @@ namespace MoviesApp.DAL
             modelBuilder.Entity<PersonEntity>()
                 .HasData(new
                 {
-                    Id = GeorgeLucas.Id,
-                    Name = GeorgeLucas.Name,
-                    Surname = GeorgeLucas.Name,
-                    Age = GeorgeLucas.Age,
-                    PictureUrl = GeorgeLucas.PictureUrl
+                    GeorgeLucas.Id,
+                    GeorgeLucas.Name,
+                    GeorgeLucas.Surname,
+                    GeorgeLucas.Age,
+                    GeorgeLucas.PictureUrl
                 });
         }
 
@@ -80,11 +79,11 @@ namespace MoviesApp.DAL
             modelBuilder.Entity<PersonEntity>()
                 .HasData(new
                 {
-                    Id = MarkHamill.Id,
-                    Name = MarkHamill.Name,
-                    Surname = MarkHamill.Surname,
-                    Age = MarkHamill.Age,
-                    PictureUrl = MarkHamill.PictureUrl
+                    MarkHamill.Id,
+                    MarkHamill.Name,
+                    MarkHamill.Surname,
+                    MarkHamill.Age,
+                    MarkHamill.PictureUrl
                 });
         }
 
@@ -93,11 +92,11 @@ namespace MoviesApp.DAL
             modelBuilder.Entity<PersonEntity>()
                 .HasData(new
                 {
-                    Id = CarrieFisher.Id,
-                    Name = CarrieFisher.Name,
-                    Surname = CarrieFisher.Surname,
-                    Age = CarrieFisher.Age,
-                    PictureUrl = CarrieFisher.PictureUrl
+                    CarrieFisher.Id,
+                    CarrieFisher.Name,
+                    CarrieFisher.Surname,
+                    CarrieFisher.Age,
+                    CarrieFisher.PictureUrl
                 });
         }
 
@@ -106,14 +105,14 @@ namespace MoviesApp.DAL
             modelBuilder.Entity<MovieEntity>()
                 .HasData(new
                 {
-                    Id = StarWars.Id,
-                    OriginalTitle = StarWars.OriginalTitle,
-                    CzechTitle = StarWars.CzechTitle,
-                    Genre = StarWars.Genre,
-                    PosterImageUrl = StarWars.PosterImageUrl,
-                    CountryOfOrigin = StarWars.CountryOfOrigin,
-                    Length = StarWars.Length,
-                    Description = StarWars.Description
+                    StarWars.Id,
+                    StarWars.OriginalTitle,
+                    StarWars.CzechTitle,
+                    StarWars.Genre,
+                    StarWars.PosterImageUrl,
+                    StarWars.CountryOfOrigin,
+                    StarWars.Length,
+                    StarWars.Description
                 });
         }
 
@@ -123,11 +122,11 @@ namespace MoviesApp.DAL
             modelBuilder.Entity<RatingEntity>()
                 .HasData(new
                 {
-                    Id = RatingMovie1.Id,
-                    RatedMovieId = RatingMovie1.RatedMovieId,
-                    Nick = RatingMovie1.Nick,
-                    NumericEvaluation = RatingMovie1.NumericEvaluation,
-                    Review = RatingMovie1.Review
+                    RatingMovie1.Id,
+                    RatingMovie1.RatedMovieId,
+                    RatingMovie1.Nick,
+                    RatingMovie1.NumericEvaluation,
+                    RatingMovie1.Review
                 });
         }
 

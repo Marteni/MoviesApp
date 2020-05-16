@@ -5,7 +5,6 @@ using System.Text.RegularExpressions;
 using System.Windows.Input;
 using MoviesApp.APP.Command;
 using MoviesApp.APP.Services;
-using MoviesApp.APP.Services.MessageDialog;
 using MoviesApp.APP.ViewModels;
 using MoviesApp.BL.Models;
 using MoviesApp.BL.Repositories;

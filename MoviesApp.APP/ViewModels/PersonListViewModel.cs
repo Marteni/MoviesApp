@@ -109,7 +109,7 @@ namespace MoviesApp.APP.ViewModels
         {
             People.Clear();
             _personRepository = personRepository;
-            var people = _personRepository.GetAll();
+            var people = _personRepository.GetAll().OrderBy(p => p.Surname).ThenBy(p => p.Name);
             People.AddRange(people);
         }
 

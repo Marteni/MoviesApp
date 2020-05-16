@@ -107,7 +107,7 @@ namespace MoviesApp.APP.ViewModels
         {
             _movieRepository = movieRepository;
             Movies.Clear();
-            var movies = _movieRepository.GetAll();
+            var movies = _movieRepository.GetAll().OrderBy(m=>m.Name);
             Movies.AddRange(movies);
         }
     }
