@@ -6,6 +6,7 @@
         xmlns:viewModels="clr-namespace:MoviesApp.App.ViewModels"
         xmlns:views="clr-namespace:MoviesApp.APP.Views"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:converters="http://schemas.kent.boogaart.com/converters"
         mc:Ignorable="d"
         Title="Movies Application" Height="700" Width="1000"
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
@@ -108,7 +109,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid>
+    <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="Auto"/>
@@ -124,11 +125,11 @@
                     VerticalAlignment="Center"
                     Grid.Row="0">
             <xctk:WatermarkTextBox  Height="28" 
-                                    Width="434"
+                                    Width="{Binding ActualWidth, ElementName=MainGrid, Converter={converters:ExpressionConverter {}{0} / 2}}"
                                     VerticalContentAlignment="Center"
                                     HorizontalContentAlignment="Center"
                                     Watermark="Search"
-                                    Text="{Binding SearchQuery, Delay=1000, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RenderTransformOrigin="0.505,0.557">
+                                    Text="{Binding SearchQuery, Delay=500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RenderTransformOrigin="0.505,0.557">
                 <xctk:WatermarkTextBox.InputBindings>
                     <KeyBinding Command="{Binding SearchCommand}" 
                                 Key="Return"/>

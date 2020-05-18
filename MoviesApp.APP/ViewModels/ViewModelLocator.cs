@@ -7,11 +7,12 @@ namespace MoviesApp.APP.ViewModels
 {
     public class ViewModelLocator
     {
-        private static readonly MovieRepository _movieRepository = new MovieRepository(new DbContextSqlFactory());
-        private static readonly PeopleRepository _peopleRepository = new PeopleRepository(new DbContextSqlFactory());
-        private static readonly MoviePersonActorRepository _actorRepository = new MoviePersonActorRepository(new DbContextSqlFactory());
-        private static readonly MoviePersonDirectorRepository _directorRepository = new MoviePersonDirectorRepository(new DbContextSqlFactory());
-        private static readonly RatingRepository _ratingRepository = new RatingRepository(new DbContextSqlFactory());
+        private static readonly DbContextSqlFactory _dbContext = new DbContextSqlFactory();
+        private static readonly MovieRepository _movieRepository = new MovieRepository(_dbContext);
+        private static readonly PeopleRepository _peopleRepository = new PeopleRepository(_dbContext);
+        private static readonly MoviePersonActorRepository _actorRepository = new MoviePersonActorRepository(_dbContext);
+        private static readonly MoviePersonDirectorRepository _directorRepository = new MoviePersonDirectorRepository(_dbContext);
+        private static readonly RatingRepository _ratingRepository = new RatingRepository(_dbContext);
         private static readonly MessageDialogService _messageDialogService = new MessageDialogService();
 
         public static MainViewModel MainViewModel { get; } = new MainViewModel(_movieRepository,_peopleRepository,_ratingRepository);
