@@ -9,16 +9,16 @@ namespace MoviesApp.BL.Repositories
 {
     public class RatingRepository : IRatingRepository
     {
-        private readonly IDbContextSqlFactory _dbContextSqlFactory;
+        private readonly IDbContextFactory _dbContextSqlFactory;
 
-        public RatingRepository(IDbContextSqlFactory dbContextSqlFactory)
+        public RatingRepository(IDbContextFactory dbContextSqlFactory)
         {
             this._dbContextSqlFactory = dbContextSqlFactory;
         }
 
         public IList<RatingDetailModel> GetAll()
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 return dbContext.Ratings
                     .Select(e => RatingMapper.MapRatingEntityToDetailModel(e))
@@ -28,7 +28,7 @@ namespace MoviesApp.BL.Repositories
 
         public IList<RatingDetailModel> GetAllByMovieId(Guid id)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 return dbContext.Ratings
                     .Where(t => t.RatedMovieId == id)
@@ -39,7 +39,7 @@ namespace MoviesApp.BL.Repositories
 
         public RatingDetailModel Create(RatingDetailModel model)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 var entity = RatingMapper.MapRatingDetailModelToEntity(model);
                 dbContext.Ratings.Add(entity);
@@ -50,7 +50,7 @@ namespace MoviesApp.BL.Repositories
 
         public void Update(RatingDetailModel model)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 var entity = RatingMapper.MapRatingDetailModelToEntity(model);
                 dbContext.Ratings.Update(entity);
@@ -60,7 +60,7 @@ namespace MoviesApp.BL.Repositories
 
         public void Delete(Guid id)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 var entity = dbContext.Ratings.First(t => t.Id == id);
                 dbContext.Remove(entity);

@@ -3,7 +3,7 @@ using MoviesApp.DAL.Entities;
 
 namespace MoviesApp.DAL
 {
-    public  class MoviesAppDbContext: DbContext
+    public class MoviesAppDbContext: DbContext
     {
   
         public MoviesAppDbContext(DbContextOptions options):base(options)

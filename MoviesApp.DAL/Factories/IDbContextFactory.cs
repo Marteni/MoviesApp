@@ -1,7 +1,8 @@
-namespace MoviesApp.DAL.Factories
+﻿namespace MoviesApp.DAL.Factories
 {
     public interface IDbContextFactory
     {
-        MoviesAppDbContext Create();
+        MoviesAppDbContext CreateDbContext();
+
     }
 }

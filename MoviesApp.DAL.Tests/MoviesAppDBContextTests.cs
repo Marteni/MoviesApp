@@ -1,35 +1,30 @@
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using MoviesApp.DAL.Entities;
 using MoviesApp.DAL.Enums;
 using Xunit;
 
-/*
- * USES Microsoft.EntityFrameworkCore.InMemory
- * InMemory => can't test foreign keys
- */
 
 namespace MoviesApp.DAL.Tests
 {
-    public class MoviesAppDBContextTests : IDisposable
+    public class MoviesAppDbContextTests : IClassFixture<MoviesAppDbContextTestsClassSetupFixture>, IDisposable
     {
-        private readonly DbContextInMemoryFactory _dbContextFactory;
-        private readonly MoviesAppDbContext _moviesAppDbContext;
+        private readonly MoviesAppDbContextTestsClassSetupFixture _testContext;
 
-        public MoviesAppDBContextTests()
+        public MoviesAppDbContextTests(MoviesAppDbContextTestsClassSetupFixture testContext)
         {
-            _dbContextFactory = new DbContextInMemoryFactory(nameof(MoviesAppDBContextTests));
-            _moviesAppDbContext = _dbContextFactory.Create();
-            _moviesAppDbContext.Database.EnsureCreated();   // For InMemory database
-            //_moviesAppDbContext.Database.Migrate();       // For SQL database
+            _testContext = testContext;
+            _testContext.PrepareDatabase();
         }
 
-        [Fact]
+        [Fact] 
         public void AddNew_Movie_Persistent()
         {
+            //Arrange
             var movie = new MovieEntity()
             {
-                Id = new Guid("0302A349-FFC2-429F-BC1C-8AD64FB77129"),
+                Id = new Guid("82a58772-dd6a-4a66-b7cc-08e316232663"),
                 OriginalTitle = "Star Wars: Episode III - Revenge of the Sith",
                 CzechTitle = "Star Wars: Epizoda III - Pomsta Sithù",
                 Genre = GenreType.ScienceFiction,
@@ -38,12 +33,13 @@ namespace MoviesApp.DAL.Tests
                 Length = TimeSpan.FromMinutes(140),
                 Description = "V tøetí epizodì ságy Star Wars zuøí Klonové války, které prohloubily rozpory mezi kancléøem Palpatinem a Radou Jediù. Mladý rytíø Jedi Anakin Skywalker se musí rozhodnout, na èí stranì bude stát. Podlehne slibùm moci a pokušení Temné strany, vstoupí do služeb zlého Darth Sidiouse a stane se z nìj Darth Vader. Sithští lordové se chtìjí spoleènì pomstít a prvním krokem jejich plánu je likvidace Jediù. Pouze Yoda a Obi-Wan pøežijí a musejí se Sithùm postavit, což vede k dramatickému souboji svìtelnými meèi mezi Anakinem a Obi-Wanem, který rozhodne o osudu galaxie.",
             };
+            //Act
+            _testContext.MoviesDbContextSUT.Movies.Add(movie);
+            _testContext.MoviesDbContextSUT.SaveChanges();
 
-            _moviesAppDbContext.Movies.Add(movie);
-            _moviesAppDbContext.SaveChanges();
-
-            using var dbx = _dbContextFactory.Create();
-            var movieFromDb = dbx.Movies.Single(m => m.Id == movie.Id);
+            //Assert
+            using var dbx = _testContext.DbContextFactory.CreateDbContext();
+            var movieFromDb = dbx.Movies.First(m => m.Id == movie.Id);
             Assert.Equal(movie, movieFromDb, MovieEntity.MovieComparer);
         }
 
@@ -52,18 +48,18 @@ namespace MoviesApp.DAL.Tests
         {
             var person = new PersonEntity()
             {
-                Id = new Guid("14858480-C954-4424-A549-16E2B0302397"),
+                Id = new Guid("d10250e0-7642-4f94-920d-23fe9a5db33d"),
                 Name = "George",
                 Surname = "Lucas",
                 Age = 75,
                 PictureUrl = "https://img.csfd.cz/files/images/creator/photos/000/269/269670_1f4cd0.jpg?w100h132crop"
             };
 
-            _moviesAppDbContext.People.Add(person);
-            _moviesAppDbContext.SaveChanges();
+            _testContext.MoviesDbContextSUT.People.Add(person);
+            _testContext.MoviesDbContextSUT.SaveChanges();
 
-            using var dbx = _dbContextFactory.Create();
-            var personFromDb = dbx.People.Single(p => p.Id == person.Id);
+            using var dbx = _testContext.DbContextFactory.CreateDbContext();
+            var personFromDb = dbx.People.First(p => p.Id == person.Id);
             Assert.Equal(person, personFromDb, PersonEntity.PersonComparer);
         }
 
@@ -72,20 +68,52 @@ namespace MoviesApp.DAL.Tests
         {
             var rating = new RatingEntity()
             {
-                Id = new Guid("595FE374-060A-4E06-9201-56C1D61D30A2"),
+                Id = new Guid("d36ec7a6-469f-4b92-b1a4-cec54ec5dd02"),
                 Nick = "SithJedi54",
                 NumericEvaluation = 10,
                 Review = "Twas AMAZING!"
             };
 
-            _moviesAppDbContext.Ratings.Add(rating);
-            _moviesAppDbContext.SaveChanges();
+            _testContext.MoviesDbContextSUT.Ratings.Add(rating);
+            _testContext.MoviesDbContextSUT.SaveChanges();
 
-            using var dbx = _dbContextFactory.Create();
-            var ratingFromDb = dbx.Ratings.Single(r => r.Id == rating.Id);
+            using var dbx = _testContext.DbContextFactory.CreateDbContext();
+            var ratingFromDb = dbx.Ratings.First(r => r.Id == rating.Id);
             Assert.Equal(rating, ratingFromDb, RatingEntity.RatingComparer);
         }
 
-        public void Dispose() => _moviesAppDbContext?.Dispose();
+        [Fact]
+        public void DeletePerson()
+        {
+            if (_testContext.MoviesDbContextSUT.Database.IsInMemory())
+            {
+                return;
+            }
+
+
+            _testContext.MoviesDbContextSUT.People.Remove(_testContext.MoviesDbContextSUT.People.Find(Seed.CarrieFisher.Id));
+            _testContext.MoviesDbContextSUT.SaveChanges();
+
+            using var dbx = _testContext.DbContextFactory.CreateDbContext();
+            Assert.Equal(2, dbx.People.Count());
+        }
+
+        [Fact]
+        public void DeleteMovie()
+        {
+            if (_testContext.MoviesDbContextSUT.Database.IsInMemory())
+            {
+                return;
+            }
+
+
+            _testContext.MoviesDbContextSUT.Movies.Remove(_testContext.MoviesDbContextSUT.Movies.Find(Seed.StarWars.Id));
+            _testContext.MoviesDbContextSUT.SaveChanges();
+
+            using var dbx = _testContext.DbContextFactory.CreateDbContext();
+            Assert.Equal(0, dbx.Movies.Count());
+        }
+
+        public void Dispose() => _testContext.Dispose();
     }
 }

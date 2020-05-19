@@ -7,6 +7,7 @@ namespace MoviesApp.APP.ViewModels
 {
     public class ViewModelLocator
     {
+       
         private static readonly DbContextSqlFactory _dbContext = new DbContextSqlFactory();
         private static readonly MovieRepository _movieRepository = new MovieRepository(_dbContext);
         private static readonly PeopleRepository _peopleRepository = new PeopleRepository(_dbContext);

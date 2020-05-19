@@ -32,7 +32,7 @@ namespace MoviesApp.APP.ViewModels
             PersonDetail = PersonEditDetail = null;
 
             SavePersonEditViewCommand = new RelayCommand(SavePerson, (canExecute) => true);
-            DeletePersonEditViewCommand = new RelayCommand(DeletePerson, (canExecute) => true);
+            DeletePersonEditViewCommand = new RelayCommand(DeletePerson, (canExecute) => ExistingPersonFlag);
             EditPersonViewCommand = new RelayCommand(EditPerson, (canExecute) => true);
             ShowMovieDetailCommand = new RelayCommand<MovieListModel>(ShowMovieDetail, (canExecute) => true);
 
@@ -81,7 +81,7 @@ namespace MoviesApp.APP.ViewModels
 
         private void SavePerson(object x = null)
         {
-            if (PersonEditDetail.Name == null || PersonEditDetail.Surname == null)
+            if (String.IsNullOrEmpty(PersonEditDetail.Name) || String.IsNullOrEmpty(PersonEditDetail.Surname))
             {
                 _messageDialogService.Show(
                     "Error",
@@ -211,7 +211,6 @@ namespace MoviesApp.APP.ViewModels
                 if (actor != null) movie.IsActedInChecked = true;
             }
 
-            CollectionViewSource.GetDefaultView(Movies).Refresh();
         }
 
 
@@ -279,7 +278,6 @@ namespace MoviesApp.APP.ViewModels
                 if (director != null) movie.IsDirectedChecked = true;
             }
 
-            CollectionViewSource.GetDefaultView(Movies).Refresh();
         }
 
     }

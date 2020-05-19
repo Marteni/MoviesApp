@@ -10,16 +10,16 @@ namespace MoviesApp.BL.Repositories
     public class PeopleRepository : IPeopleRepository
     {
 
-        private readonly IDbContextSqlFactory _dbContextSqlFactory;
+        private readonly IDbContextFactory _dbContextSqlFactory;
 
-        public PeopleRepository(IDbContextSqlFactory dbContextSqlFactory)
+        public PeopleRepository(IDbContextFactory dbContextSqlFactory)
         {
             this._dbContextSqlFactory = dbContextSqlFactory;
         }
 
         public IList<PersonListModel> GetAll()
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 return dbContext.People
                     .Select(e => PersonMapper.MapPersonEntityToListModel(e))
@@ -29,7 +29,7 @@ namespace MoviesApp.BL.Repositories
 
         public PersonDetailModel GetById(Guid id)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 var entity = dbContext.People.First(t => t.Id == id);
                 return PersonMapper.MapPersonEntityToDetailModel(entity);
@@ -38,7 +38,7 @@ namespace MoviesApp.BL.Repositories
 
         public PersonListModel GetByIdListModel(Guid id)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 var entity = dbContext.People.FirstOrDefault(t => t.Id == id);
                 if (entity == null) return null;
@@ -48,7 +48,7 @@ namespace MoviesApp.BL.Repositories
 
         public PersonDetailModel Create(PersonDetailModel model)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 var entity = PersonMapper.MapPersonDetailModelToEntity(model);
                 dbContext.People.Add(entity);
@@ -59,7 +59,7 @@ namespace MoviesApp.BL.Repositories
 
         public void Update(PersonDetailModel model)
         {
-            using (var dbContext =  _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext =  _dbContextSqlFactory.CreateDbContext())
             {
                 var entity = PersonMapper.MapPersonDetailModelToEntity(model);
                 dbContext.People.Update(entity);
@@ -69,7 +69,7 @@ namespace MoviesApp.BL.Repositories
 
         public void Delete(Guid id)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 var entity = dbContext.People.First(t => t.Id == id);
                 dbContext.Remove(entity);

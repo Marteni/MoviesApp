@@ -110,7 +110,7 @@ namespace MoviesApp.APP.ViewModels
         {
             var movieWrapper = MovieWrapperDetailModel;
 
-            if (movieWrapper.OriginalTitle == null)
+            if (String.IsNullOrEmpty(movieWrapper.OriginalTitle))
             {
                     _messageDialogService.Show(
                     "Error",
@@ -246,7 +246,6 @@ namespace MoviesApp.APP.ViewModels
                 if (actor != null) person.IsActorChecked = true;
             }
 
-            CollectionViewSource.GetDefaultView(ActorsEditList).Refresh();
         }
 
 
@@ -314,7 +313,6 @@ namespace MoviesApp.APP.ViewModels
                 if (director != null) person.IsDirectorChecked = true;
             }
 
-            CollectionViewSource.GetDefaultView(DirectorsEditList).Refresh();
         }
 
 

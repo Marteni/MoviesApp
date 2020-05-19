@@ -9,15 +9,15 @@ namespace MoviesApp.BL.Repositories
 {
     public class MoviePersonActorRepository : IMoviePersonActorRepository
     {
-        private readonly IDbContextSqlFactory _dbContextSqlFactory;
-        public MoviePersonActorRepository(IDbContextSqlFactory dbContextSqlFactory)
+        private readonly IDbContextFactory _dbContextSqlFactory;
+        public MoviePersonActorRepository(IDbContextFactory dbContextSqlFactory)
         {
             this._dbContextSqlFactory = dbContextSqlFactory;
         }
 
         public IList<PersonActorDetailModel> GetAll()
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 return dbContext.Actors
                     .Select(e => PersonActorMapper.MapMoviesPersonActorEntityToDetailModel(e))
@@ -27,7 +27,7 @@ namespace MoviesApp.BL.Repositories
 
         public IList<PersonActorDetailModel> GetAllMovieActorByMovieId(Guid id)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 return dbContext.Actors
                     .Where(t => t.MovieId == id)
@@ -39,7 +39,7 @@ namespace MoviesApp.BL.Repositories
 
         public IList<PersonActorDetailModel> GetAllMovieActorByActorId(Guid id)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 return dbContext.Actors
                     .Where(t => t.ActorId == id)
@@ -50,7 +50,7 @@ namespace MoviesApp.BL.Repositories
 
         public PersonActorDetailModel Create(PersonActorDetailModel model)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 var entity = PersonActorMapper.MapPersonActorDetailModelToEntity(model);
                 dbContext.Actors.Add(entity);
@@ -61,7 +61,7 @@ namespace MoviesApp.BL.Repositories
 
         public void TryDeleteActorMovieRelation(Guid movieId, Guid actorId)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 var entity = dbContext.Actors.FirstOrDefault(t => t.MovieId == movieId && t.ActorId == actorId);
 
@@ -75,7 +75,7 @@ namespace MoviesApp.BL.Repositories
 
         public void TryDeleteAllByMovieOrActorId(Guid id)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 var allActorMovieRelationships = dbContext.Actors
                     .Where(t => t.ActorId == id || t.MovieId == id)
