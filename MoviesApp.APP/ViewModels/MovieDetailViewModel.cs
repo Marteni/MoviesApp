@@ -7,6 +7,7 @@ using System.Windows.Input;
 using MoviesApp.APP.Command;
 using MoviesApp.APP.Services;
 using MoviesApp.APP.Services.MessageDialog;
+using MoviesApp.APP.Wrappers;
 using MoviesApp.BL.Extensions;
 using MoviesApp.BL.Models;
 using MoviesApp.BL.Repositories;
@@ -43,8 +44,8 @@ namespace MoviesApp.APP.ViewModels
             RatingSaveNewCommand = new RelayCommand(SaveNewRating, canExecute => true);
             RatingDiscardNewCommand = new RelayCommand(DiscardNewRating, canExecute => true);
 
-            Messenger.Default.Register<MovieDetailModel>(this, OnMovieAddNewReceived,MovieListViewModel.MovieAddToken);
-            Messenger.Default.Register<MovieDetailModel>(this, OnMovieSelectedReceived, MovieListViewModel.MovieSelectedToken);
+            Messenger.Default.Register<MovieNewWrapper>(this, OnMovieAddNewReceived);
+            Messenger.Default.Register<MovieSelectedWrapper>(this, OnMovieSelectedReceived);
         }
 
         public ICommand PersonShowDetailCommand { get; }
@@ -75,37 +76,30 @@ namespace MoviesApp.APP.ViewModels
         public Visibility ShowRatingAddForm { get; set; } = Visibility.Collapsed;
         public double AverageRating { get; set; }
 
-        public static readonly Guid SaveNewMovieToken = Guid.Parse("9e8e69dc-7c4f-46c0-8e82-bedce9d9421f");
-        public static readonly Guid DeleteMovieToken = Guid.Parse("c4ba749a-443e-4ea0-8016-e733cdba2275");
-        public static readonly Guid UpdateMovieToken = Guid.Parse("34946034-1cc4-4806-988a-60fa608714f7");
-        public static readonly Guid SelectedPersonToken = Guid.Parse("aa35fc2f-1bdb-4380-96d6-159ec24603f7");
-
 
         private void ShowPersonDetail(PersonListModel selectedPerson)
         {
-            Messenger.Default.Send(selectedPerson, SelectedPersonToken);
+            Messenger.Default.Send(selectedPerson);
         }
 
-        private void OnMovieAddNewReceived(MovieDetailModel movieDetailModel)
+        private void OnMovieAddNewReceived(MovieNewWrapper movieDetailModel)
         {
             LoadPeople();
             CanSaveFlag = true;
             CanDeleteFlag = false;
             ShowModel = null;
-            Model = movieDetailModel;
-    
-            MovieWrapperDetailModel = new MovieDetailModel()
+            MovieWrapperDetailModel = new MovieDetailModel
             {
-                Id = Model.Id
+                Id = movieDetailModel.Id
             };
         }
 
-        private void OnMovieSelectedReceived(MovieDetailModel movieWrapperDetailModel)
+        private void OnMovieSelectedReceived(MovieSelectedWrapper movieWrapper)
         {
             CanDeleteFlag = true;
             ShowModel = new MovieDetailModel();
             Model = null;
-            MovieWrapperDetailModel = movieWrapperDetailModel;
+            MovieWrapperDetailModel = WrapperMappers.ToMovieDetailModel(movieWrapper);
             RatingNewDetailModel = new RatingDetailModel();
             LoadActors();
             LoadDirectors();
@@ -129,13 +123,13 @@ namespace MoviesApp.APP.ViewModels
 
             if (CanDeleteFlag)
             {
-                Messenger.Default.Send(movieWrapper, UpdateMovieToken );
+                Messenger.Default.Send(WrapperMappers.MovieDetailToMovieEditWrapper(movieWrapper));
                 Model = null;
                 ShowModel = new MovieDetailModel();
             }
             else
             {
-                Messenger.Default.Send(movieWrapper, SaveNewMovieToken);
+                Messenger.Default.Send(WrapperMappers.MovieDetailToMovieNewFilledWrapper(movieWrapper));
                 Model = null;
             }
             
@@ -163,7 +157,7 @@ namespace MoviesApp.APP.ViewModels
 
             var id = Guid.Parse(obj.ToString());
 
-            Messenger.Default.Send(id, DeleteMovieToken);
+            Messenger.Default.Send(WrapperMappers.GuidToMovieDeleteGuidWrapper(id));
             _movieActorRepository.TryDeleteAllByMovieOrActorId(MovieWrapperDetailModel.Id);
             _movieDirectorRepository.TryDeleteAllByMovieOrDirectorId(MovieWrapperDetailModel.Id);
             Model = null; 

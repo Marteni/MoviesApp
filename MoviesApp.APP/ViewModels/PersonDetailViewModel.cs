@@ -6,6 +6,7 @@ using System.Windows.Input;
 using MoviesApp.APP.Command;
 using MoviesApp.APP.Services;
 using MoviesApp.APP.Services.MessageDialog;
+using MoviesApp.APP.Wrappers;
 using MoviesApp.BL.Extensions;
 using MoviesApp.BL.Models;
 using MoviesApp.BL.Repositories;
@@ -35,8 +36,8 @@ namespace MoviesApp.APP.ViewModels
             EditPersonViewCommand = new RelayCommand(EditPerson, (canExecute) => true);
             ShowMovieDetailCommand = new RelayCommand<MovieListModel>(ShowMovieDetail, (canExecute) => true);
 
-            Messenger.Default.Register<PersonDetailModel>(this, AddNewPerson, PersonListViewModel.AddNewPersonToken);
-            Messenger.Default.Register<PersonDetailModel>(this, DisplayPerson, PersonListViewModel.PersonSelectedToken);
+            Messenger.Default.Register<PersonNewWrapper>(this, AddNewPerson);
+            Messenger.Default.Register<PersonSelectedWrapper>(this, DisplayPerson);
         }
 
         public ObservableCollection<MovieListModel> Movies { get; } = new ObservableCollection<MovieListModel>();
@@ -52,33 +53,28 @@ namespace MoviesApp.APP.ViewModels
         public PersonDetailModel PersonDetail { get; set; }
         public PersonDetailModel PersonEditDetail { get; set; }
 
-        public static readonly Guid AddPersonToken = Guid.Parse("C2C51FFF-64B8-4EEA-9819-3F027C49BE5E");
-        public static readonly Guid UpdatePersonToken = Guid.Parse("305EBDDE-72A8-4698-801F-DF49A5313F30");
-        public static readonly Guid DeletePersonToken = Guid.Parse("26D8B1E8-033F-47B3-9A8E-36BE53406BF7");
-        public static readonly Guid SelectedMovieToken = Guid.Parse("634c8794-106e-426c-84ee-f825928a3bf5");
-
 
         private void ShowMovieDetail(MovieListModel selectedMovie)
         {
-            Messenger.Default.Send(selectedMovie, SelectedMovieToken);
+            Messenger.Default.Send(selectedMovie);
         }
 
-        private void AddNewPerson(PersonDetailModel personDetailModel)
+        private void AddNewPerson(PersonNewWrapper personNewWrapper)
         {
             LoadMovies();
             ExistingPersonFlag = false;
             PersonDetail = null;
-            PersonEditDetail = new PersonDetailModel();
+            PersonEditDetail = new PersonDetailModel
             {
-                PersonEditDetail.Id = personDetailModel.Id;
-            }
+                Id = personNewWrapper.Id
+            };
         }
 
-        private void DisplayPerson(PersonDetailModel personDetailModel)
+        private void DisplayPerson(PersonSelectedWrapper personSelectedWrapper)
         {
             ExistingPersonFlag = true;
             PersonEditDetail = null;
-            PersonDetail = personDetailModel;
+            PersonDetail = WrapperMappers.ToPersonDetailModel(personSelectedWrapper);
             LoadActedMovies();
             LoadDirectedMovies();
         }
@@ -96,7 +92,14 @@ namespace MoviesApp.APP.ViewModels
                 return;
             }
 
-            Messenger.Default.Send(PersonEditDetail, ExistingPersonFlag ? UpdatePersonToken : AddPersonToken);
+            if (ExistingPersonFlag)
+            {
+                Messenger.Default.Send(WrapperMappers.PersonDetailToPersonEditWrapper(PersonEditDetail));
+            }
+            else
+            {
+                Messenger.Default.Send(WrapperMappers.PersonDetailToPersonNewFilledWrapper(PersonEditDetail));
+            }
 
             PersonDetail = PersonEditDetail;
             PersonEditDetail = null;
@@ -128,7 +131,7 @@ namespace MoviesApp.APP.ViewModels
 
             var id = Guid.Parse(PersonEditDetail.Id.ToString());
             
-            Messenger.Default.Send(id, DeletePersonToken);
+            Messenger.Default.Send(WrapperMappers.GuidToPersonDeleteGuidWrapper(id));
 
             _moviesActorRepository.TryDeleteAllByMovieOrActorId(id);
             _moviesDirectorRepository.TryDeleteAllByMovieOrDirectorId(id);
@@ -222,8 +225,7 @@ namespace MoviesApp.APP.ViewModels
                 if (directedMovie != null) MoviesDirected.Add(directedMovie);
             }
         }
-
-
+        
         private void CreateAndReloadMovieDirectors()
         {
             foreach (var movie in Movies)

@@ -69,6 +69,7 @@ namespace MoviesApp.APP.Services
         /// <param name="context"></param>
         public void Register<T>(object recipient, Action<T> action, object context)
         {
+            context ??= typeof(T);
             var key = new MessengerKey(recipient, context);
             Dictionary.TryAdd(key, action);
         }
@@ -117,6 +118,8 @@ namespace MoviesApp.APP.Services
         public void Send<T>(T message, object context)
         {
             IEnumerable<KeyValuePair<MessengerKey, object>> result;
+
+            context ??= typeof(T);
 
             if (context == null)
             {

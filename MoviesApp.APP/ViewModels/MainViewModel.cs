@@ -31,7 +31,7 @@ namespace MoviesApp.App.ViewModels
             CloseSearchViewRatingsCommand = new RelayCommand<RatingDetailModel>(OnCloseSearchRatingsView, (canExecute) => true);
             CloseSearchViewCommand = new RelayCommand(OnClose, (canExecute) => true);
             
-            Messenger.Default.Register<int>(this, OnTabReceived,ChangeTabToken);
+            Messenger.Default.Register<int>(this, OnTabReceived);
         }
 
         public IList<MovieDetailModel> FoundMovies { get; set; } = new List<MovieDetailModel>();
@@ -68,7 +68,7 @@ namespace MoviesApp.App.ViewModels
                 Id = ratingDetail.RatedMovieId
             };
 
-            Messenger.Default.Send(listModel, PersonDetailViewModel.SelectedMovieToken);
+            Messenger.Default.Send(listModel);
 
             ToggleSearchView = false;
             ToggleTabView = true;
@@ -89,7 +89,7 @@ namespace MoviesApp.App.ViewModels
             {
                 Id = selectedItem.Id
             };
-            Messenger.Default.Send(listModel, PersonDetailViewModel.SelectedMovieToken);
+            Messenger.Default.Send(listModel);
             
             ToggleSearchView = false;
             ToggleTabView = true;
@@ -98,7 +98,7 @@ namespace MoviesApp.App.ViewModels
         private void OnCloseSearchPeopleView(object selectedItem)
         {
            
-            Messenger.Default.Send((PersonListModel)selectedItem, MovieDetailViewModel.SelectedPersonToken);
+            Messenger.Default.Send((PersonListModel)selectedItem);
             ToggleSearchView = false;
             ToggleTabView = true;
             SearchQuery = null;
