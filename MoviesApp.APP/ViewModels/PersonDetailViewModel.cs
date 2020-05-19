@@ -102,11 +102,12 @@ namespace MoviesApp.APP.ViewModels
             }
 
             PersonDetail = PersonEditDetail;
-            PersonEditDetail = null;
-            ExistingPersonFlag = false;
-
             CreateAndReloadMovieActors();
             CreateAndReloadMovieDirectors();
+
+            
+            PersonEditDetail = null;
+            ExistingPersonFlag = false;
         }
 
         private void EditPerson(object x = null)

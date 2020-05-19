@@ -57,9 +57,8 @@ namespace MoviesApp.APP.ViewModels
         public ICommand RatingSaveNewCommand { get; }
         public ICommand RatingDiscardNewCommand { get; }
 
-        public MovieDetailModel Model { get; set; }
-        public MovieDetailModel ShowModel { get; set; }
-        public MovieDetailModel MovieWrapperDetailModel { get; set; }
+        public MovieDetailModel DisplayDetailModel { get; set; }
+        public MovieDetailModel EditDetailModel { get; set; }
         public RatingDetailModel RatingNewDetailModel { get; set; }
 
         public ObservableCollection<PersonListModel> ActorsEditList { get; } = new ObservableCollection<PersonListModel>();
@@ -87,8 +86,8 @@ namespace MoviesApp.APP.ViewModels
             LoadPeople();
             CanSaveFlag = true;
             CanDeleteFlag = false;
-            ShowModel = null;
-            MovieWrapperDetailModel = new MovieDetailModel
+            DisplayDetailModel = null;
+            EditDetailModel = new MovieDetailModel
             {
                 Id = movieDetailModel.Id
             };
@@ -97,9 +96,8 @@ namespace MoviesApp.APP.ViewModels
         private void OnMovieSelectedReceived(MovieSelectedWrapper movieWrapper)
         {
             CanDeleteFlag = true;
-            ShowModel = new MovieDetailModel();
-            Model = null;
-            MovieWrapperDetailModel = WrapperMappers.ToMovieDetailModel(movieWrapper);
+            DisplayDetailModel = WrapperMappers.ToMovieDetailModel(movieWrapper);
+            EditDetailModel = null;
             RatingNewDetailModel = new RatingDetailModel();
             LoadActors();
             LoadDirectors();
@@ -108,7 +106,7 @@ namespace MoviesApp.APP.ViewModels
 
         private void SaveNewMovie(object x = null)
         {
-            var movieWrapper = MovieWrapperDetailModel;
+            var movieWrapper = EditDetailModel;
 
             if (String.IsNullOrEmpty(movieWrapper.OriginalTitle))
             {
@@ -124,24 +122,28 @@ namespace MoviesApp.APP.ViewModels
             if (CanDeleteFlag)
             {
                 Messenger.Default.Send(WrapperMappers.MovieDetailToMovieEditWrapper(movieWrapper));
-                Model = null;
-                ShowModel = new MovieDetailModel();
             }
             else
             {
                 Messenger.Default.Send(WrapperMappers.MovieDetailToMovieNewFilledWrapper(movieWrapper));
-                Model = null;
             }
-            
+
+            DisplayDetailModel = EditDetailModel;
             CreateAndReloadMovieActors();
             CreateAndReloadMovieDirectors();
+
+           
+            EditDetailModel = null;
+            CanDeleteFlag = false;
         }
 
         private void EditMovieDetail(object x = null)
         {
             LoadPeople();
-            ShowModel = null;
-            Model = new MovieDetailModel();
+            CanDeleteFlag = true;
+            EditDetailModel = DisplayDetailModel;
+            DisplayDetailModel = null;
+            
             UpdatePeopleListWithActors();
             UpdateDirectorListWithDirectors();
         }
@@ -150,7 +152,7 @@ namespace MoviesApp.APP.ViewModels
         {
             var delete = _messageDialogService.Show(
                 "Delete",
-                $"Do you want to delete {MovieWrapperDetailModel?.OriginalTitle}?",
+                $"Do you want to delete {EditDetailModel?.OriginalTitle}?",
                 MessageDialogButtonConfiguration.YesNo,
                 MessageDialogResult.No);
             if (delete == MessageDialogResult.No) return;
@@ -158,16 +160,16 @@ namespace MoviesApp.APP.ViewModels
             var id = Guid.Parse(obj.ToString());
 
             Messenger.Default.Send(WrapperMappers.GuidToMovieDeleteGuidWrapper(id));
-            _movieActorRepository.TryDeleteAllByMovieOrActorId(MovieWrapperDetailModel.Id);
-            _movieDirectorRepository.TryDeleteAllByMovieOrDirectorId(MovieWrapperDetailModel.Id);
-            Model = null; 
+            _movieActorRepository.TryDeleteAllByMovieOrActorId(EditDetailModel.Id);
+            _movieDirectorRepository.TryDeleteAllByMovieOrDirectorId(EditDetailModel.Id);
+            EditDetailModel = null; 
         }
 
         private void CloseMovieDetailView(object x = null)
         {
             CanDeleteFlag = false;
-            Model = null;
-            MovieWrapperDetailModel = null;
+            DisplayDetailModel = null;
+            EditDetailModel = null;
         }
 
 
@@ -185,7 +187,7 @@ namespace MoviesApp.APP.ViewModels
         private void LoadActors()
         {
             Actors.Clear();
-            var actors = _movieActorRepository.GetAllMovieActorByMovieId(MovieWrapperDetailModel.Id);
+            var actors = _movieActorRepository.GetAllMovieActorByMovieId(DisplayDetailModel.Id);
             foreach (var actor in actors)
             {
                 var personInCurrentMovie =_personRepository.GetByIdListModel(actor.ActorId);
@@ -205,7 +207,7 @@ namespace MoviesApp.APP.ViewModels
                         var movieActor = new PersonActorDetailModel()
                         {
                             Id = Guid.NewGuid(),
-                            MovieId = MovieWrapperDetailModel.Id,
+                            MovieId = EditDetailModel.Id,
                             ActorId = person.Id
                         };
 
@@ -218,7 +220,7 @@ namespace MoviesApp.APP.ViewModels
                     var actor = Actors.FirstOrDefault(x => x.Id == person.Id);
                     if (actor != null)
                     {
-                        _movieActorRepository.TryDeleteActorMovieRelation(MovieWrapperDetailModel.Id, person.Id);
+                        _movieActorRepository.TryDeleteActorMovieRelation(EditDetailModel.Id, person.Id);
                         DeleteActorInActorListById(person.Id);
                     }
                 }
@@ -252,7 +254,7 @@ namespace MoviesApp.APP.ViewModels
         private void LoadDirectors()
         {
             Directors.Clear();
-            var directors = _movieDirectorRepository.GetAllMovieDirectorByMovieId(MovieWrapperDetailModel.Id);
+            var directors = _movieDirectorRepository.GetAllMovieDirectorByMovieId(DisplayDetailModel.Id);
             foreach (var director in directors)
             {
                 var personInCurrentMovie =_personRepository.GetByIdListModel(director.DirectorId);
@@ -272,7 +274,7 @@ namespace MoviesApp.APP.ViewModels
                         var movieDirector = new PersonDirectorDetailModel()
                         {
                             Id = Guid.NewGuid(),
-                            MovieId = MovieWrapperDetailModel.Id,
+                            MovieId = EditDetailModel.Id,
                             DirectorId = person.Id
                         };
 
@@ -285,7 +287,7 @@ namespace MoviesApp.APP.ViewModels
                     var director = Directors.FirstOrDefault(x => x.Id == person.Id);
                     if (director != null)
                     {
-                        _movieDirectorRepository.TryDeleteDirectorMovieRelation(MovieWrapperDetailModel.Id, person.Id);
+                        _movieDirectorRepository.TryDeleteDirectorMovieRelation(EditDetailModel.Id, person.Id);
                         DeleteDirectorInDirectorListById(person.Id);
                     }
                 }
@@ -322,7 +324,7 @@ namespace MoviesApp.APP.ViewModels
             var ratingValues = 0;
 
             Ratings.Clear();
-            var allRatings = _ratingRepository.GetAllByMovieId(MovieWrapperDetailModel.Id);
+            var allRatings = _ratingRepository.GetAllByMovieId(DisplayDetailModel.Id);
             foreach (var rating in allRatings)
             {
                 if (rating != null)
@@ -365,7 +367,7 @@ namespace MoviesApp.APP.ViewModels
 
                 return;
             }
-            RatingNewDetailModel.RatedMovieId = MovieWrapperDetailModel.Id;
+            RatingNewDetailModel.RatedMovieId = EditDetailModel.Id;
 
             _ratingRepository.Create(RatingNewDetailModel);
             LoadRatings();

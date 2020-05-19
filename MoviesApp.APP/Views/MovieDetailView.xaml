@@ -11,7 +11,7 @@
              d:DesignHeight="1439.043" d:DesignWidth="700"
              d:DataContext="{d:DesignInstance viewModels:MovieDetailViewModel}"
              DataContext="{Binding Source={StaticResource mainViewModelLocator}, Path=MovieDetailViewModel}">
-    <ScrollViewer Visibility="{Binding ShowModel, Converter={StaticResource NullToVisibilityConverter}}">
+    <ScrollViewer Visibility="{Binding DisplayDetailModel, Converter={StaticResource NullToVisibilityConverter}}">
         <Grid>
 
             <Grid.RowDefinitions>
@@ -41,18 +41,18 @@
                         <ColumnDefinition Width="160"/>
                         <ColumnDefinition Width="100*"/>
                     </Grid.ColumnDefinitions>
-                    <Image Source="{Binding MovieWrapperDetailModel.PosterImageUrl}" 
+                    <Image Source="{Binding DisplayDetailModel.PosterImageUrl}" 
                            Height="150" Width="150"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Margin="10 10"/>
                     <StackPanel Grid.Column="1">
-                        <TextBlock Text="{Binding MovieWrapperDetailModel.OriginalTitle}"
+                        <TextBlock Text="{Binding DisplayDetailModel.OriginalTitle}"
                                    FontSize="15"
                                    FontWeight="Bold"
                                    Margin="10 10"
                                    HorizontalAlignment="Left"/>
-                        <TextBlock Text="{Binding MovieWrapperDetailModel.CzechTitle}"
+                        <TextBlock Text="{Binding DisplayDetailModel.CzechTitle}"
                                    Margin="10"
                                    HorizontalAlignment="Left"/>
                     </StackPanel>
@@ -90,18 +90,18 @@
                     <StackPanel Grid.Column="1" 
                                 Grid.Row="0" 
                                 VerticalAlignment="Top">
-                        <Label Content="{Binding MovieWrapperDetailModel.Genre}" 
+                        <Label Content="{Binding DisplayDetailModel.Genre}" 
                                Height="25" 
                                Margin="0,0,5,0"/>
-                        <Label Content="{Binding MovieWrapperDetailModel.CountryOfOrigin}" 
+                        <Label Content="{Binding DisplayDetailModel.CountryOfOrigin}" 
                                Height="25"
                                Margin="0,0,5,0"/>
-                        <Label Content="{Binding MovieWrapperDetailModel.Length}" 
+                        <Label Content="{Binding DisplayDetailModel.Length}" 
                                Height="25" 
                                Margin="0,0,5,0"/>
                     </StackPanel>
 
-                    <TextBox Text="{Binding MovieWrapperDetailModel.Description}"
+                    <TextBox Text="{Binding DisplayDetailModel.Description}"
                              Height="100"
                              Grid.Row="1"
                              Grid.Column="0"
