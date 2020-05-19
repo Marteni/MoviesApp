@@ -48,6 +48,5 @@ namespace MoviesApp.DAL.Entities
         }
 
         public static IEqualityComparer<MovieEntity> MovieComparer { get; } = new MovieEntityEqualityComparer();
-        public static IEqualityComparer<MovieEntity> MovieWithoutCollectionsComparer { get; } = new MovieEntityEqualityComparer();
     }
 }

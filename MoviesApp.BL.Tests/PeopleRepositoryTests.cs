@@ -1,75 +1,87 @@
-﻿using MoviesApp.BL.Mappers;
+﻿using System;
+using MoviesApp.BL.Mappers;
 using MoviesApp.BL.Models;
+using MoviesApp.BL.Repositories;
 using Xunit;
 
 namespace MoviesApp.BL.Tests
 {
-    public class PeopleRepositoryTests : IClassFixture<PeopleRepositoryTestFixture>
+    public class PeopleRepositoryTests : IClassFixture<PeopleRepositoryTestFixture>, IDisposable
     {
         private readonly PeopleRepositoryTestFixture _peopleRepositoryTestFixture;
-
+        private PeopleRepository RepositorySUT => _peopleRepositoryTestFixture.Repository;
         //Constructor
         public PeopleRepositoryTests(PeopleRepositoryTestFixture peopleRepositoryTestFixture)
         {
-            this._peopleRepositoryTestFixture = peopleRepositoryTestFixture;
-
+            _peopleRepositoryTestFixture = peopleRepositoryTestFixture;
+            _peopleRepositoryTestFixture.PrepareDatabase();
         }
 
         [Fact]
         public void Create_WithNonExistingItem_DoesNotThrow()
         {
-            var detailModel = PersonMapper.MapPersonEntityToDetailModel(DAL.Seed.MarkHamill);
-            var returnedModel = _peopleRepositoryTestFixture.Repository.Create(detailModel);
+            var detailModel = new PersonDetailModel()
+            {
+                Id = Guid.Parse("31385101-8e91-4f81-ab5b-9726bfca022e"),
+                Name = "Michal",
+                Surname = "Novak"
+            };
+            var returnedModel = RepositorySUT.Create(detailModel);
 
             Assert.NotNull(returnedModel);
 
             Assert.Equal(detailModel, returnedModel, PersonDetailModel.PersonDetailModelComparer);
 
-            _peopleRepositoryTestFixture.Repository.Delete(returnedModel.Id);
         }
 
         [Fact]
         public void GetById_FromSeeded_DoesNotThrowAndEqualsSeeded()
         {
-            var detailModel = PersonMapper.MapPersonEntityToDetailModel(DAL.Seed.MarkHamill);
-            _peopleRepositoryTestFixture.Repository.Create(detailModel);
+            var detailModel = PersonMapper.MapPersonEntityToDetailModel(DAL.Seed.GeorgeLucas);
 
-            var returnedModel = _peopleRepositoryTestFixture.Repository.GetById(DAL.Seed.MarkHamill.Id);
+            var returnedModel = RepositorySUT.GetById(DAL.Seed.GeorgeLucas.Id);
 
             Assert.Equal(detailModel, returnedModel, PersonDetailModel.PersonDetailModelComparer);
-            _peopleRepositoryTestFixture.Repository.Delete(returnedModel.Id);
+            
+        }
+
+        [Fact]
+        public void Update_Name_FromSeeded_DoesNotThrow()
+        {
+            var detailModel = PersonMapper.MapPersonEntityToDetailModel(DAL.Seed.MarkHamill);
+            detailModel.Name = "This is (not) gonna leave a mark";
+           
+
+           RepositorySUT.Update(detailModel);
+       
         }
 
         [Fact]
         public void Update_Name_FromSeeded_CheckUpdated()
         {
+            //Arrange
             var detailModel = PersonMapper.MapPersonEntityToDetailModel(DAL.Seed.MarkHamill);
-            _peopleRepositoryTestFixture.Repository.Create(detailModel);
+            detailModel.Name = "Changed recipe name 1";
 
-            detailModel.Name = "This is (not) gonna leave a mark";
-            _peopleRepositoryTestFixture.Repository.Update(detailModel);
+            //Act
+            RepositorySUT.Update(detailModel);
 
-            var returnedModel = _peopleRepositoryTestFixture.Repository.GetById(detailModel.Id);
+            //Assert
+            var returnedModel = RepositorySUT.GetById(detailModel.Id);
             Assert.Equal(detailModel, returnedModel, PersonDetailModel.PersonDetailModelComparer);
-            _peopleRepositoryTestFixture.Repository.Delete(returnedModel.Id);
         }
 
         [Fact]
         public void DeleteById_FromSeeded_DoesNotThrow()
         {
-            var detailModel = PersonMapper.MapPersonEntityToDetailModel(DAL.Seed.MarkHamill);
-            _peopleRepositoryTestFixture.Repository.Create(detailModel);
+            var detailModel = PersonMapper.MapPersonEntityToDetailModel(DAL.Seed.CarrieFisher);
 
-            var returnedModel = _peopleRepositoryTestFixture.Repository.GetById(DAL.Seed.MarkHamill.Id);
-            Assert.NotNull(returnedModel);
+            RepositorySUT.Delete(detailModel.Id);
+        }
 
-            _peopleRepositoryTestFixture.Repository.Delete(returnedModel.Id);
-
-            try 
-            {
-                var newModel = _peopleRepositoryTestFixture.Repository.GetById(returnedModel.Id);
-            }
-            catch (System.InvalidOperationException){}
+        public void Dispose()
+        {
+            _peopleRepositoryTestFixture.TearDownDatabase();
         }
     }
 }

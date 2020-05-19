@@ -10,8 +10,8 @@ using MoviesApp.DAL;
 namespace MoviesApp.DAL.Migrations
 {
     [DbContext(typeof(MoviesAppDbContext))]
-    [Migration("20200514094131_AddMoreData")]
-    partial class AddMoreData
+    [Migration("20200519125139_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -75,45 +75,18 @@ namespace MoviesApp.DAL.Migrations
                     b.Property<Guid>("ActorId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("MovieEntityId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("MovieId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("PersonEntityId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MovieEntityId");
-
-                    b.HasIndex("PersonEntityId");
-
                     b.ToTable("Actors");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("12e1ce4d-2c8c-4bce-b610-129a784eb03b"),
-                            ActorId = new Guid("ed74ba50-f208-49ca-a71a-7bfdca3e1469"),
-                            MovieId = new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129")
-                        },
-                        new
-                        {
-                            Id = new Guid("7648ebfa-9e58-4835-a237-e9e7b6387262"),
-                            ActorId = new Guid("cab2ca13-0f8b-4839-a10d-bbedeab84565"),
-                            MovieId = new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129")
-                        });
                 });
 
             modelBuilder.Entity("MoviesApp.DAL.Entities.MoviesPersonDirectorEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("DirectedMovieId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("DirectorId")
@@ -124,19 +97,7 @@ namespace MoviesApp.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DirectedMovieId");
-
-                    b.HasIndex("DirectorId");
-
                     b.ToTable("Directors");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("19e3745e-9259-471a-890b-f6db55d48f24"),
-                            DirectorId = new Guid("14858480-c954-4424-a549-16e2b0302397"),
-                            MovieId = new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129")
-                        });
                 });
 
             modelBuilder.Entity("MoviesApp.DAL.Entities.PersonEntity", b =>
@@ -168,7 +129,7 @@ namespace MoviesApp.DAL.Migrations
                             Age = 75,
                             Name = "George",
                             PictureUrl = "https://img.csfd.cz/files/images/creator/photos/000/269/269670_1f4cd0.jpg?w100h132crop",
-                            Surname = "George"
+                            Surname = "Lucas"
                         },
                         new
                         {
@@ -208,8 +169,6 @@ namespace MoviesApp.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RatedMovieId");
-
                     b.ToTable("Ratings");
 
                     b.HasData(
@@ -221,40 +180,6 @@ namespace MoviesApp.DAL.Migrations
                             RatedMovieId = new Guid("0302a349-ffc2-429f-bc1c-8ad64fb77129"),
                             Review = "Twas AMAZING!"
                         });
-                });
-
-            modelBuilder.Entity("MoviesApp.DAL.Entities.MoviesPersonActorEntity", b =>
-                {
-                    b.HasOne("MoviesApp.DAL.Entities.MovieEntity", null)
-                        .WithMany("Actors")
-                        .HasForeignKey("MovieEntityId");
-
-                    b.HasOne("MoviesApp.DAL.Entities.PersonEntity", null)
-                        .WithMany("ActedInMovies")
-                        .HasForeignKey("PersonEntityId");
-                });
-
-            modelBuilder.Entity("MoviesApp.DAL.Entities.MoviesPersonDirectorEntity", b =>
-                {
-                    b.HasOne("MoviesApp.DAL.Entities.MovieEntity", "DirectedMovie")
-                        .WithMany("Directors")
-                        .HasForeignKey("DirectedMovieId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MoviesApp.DAL.Entities.PersonEntity", "Director")
-                        .WithMany("DirectedMovies")
-                        .HasForeignKey("DirectorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MoviesApp.DAL.Entities.RatingEntity", b =>
-                {
-                    b.HasOne("MoviesApp.DAL.Entities.MovieEntity", "RatedMovie")
-                        .WithMany("Ratings")
-                        .HasForeignKey("RatedMovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

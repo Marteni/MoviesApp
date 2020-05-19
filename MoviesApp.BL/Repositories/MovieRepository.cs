@@ -10,16 +10,16 @@ namespace MoviesApp.BL.Repositories
     public class MovieRepository : IMovieRepository
     {
 
-        private readonly IDbContextSqlFactory _dbContextSqlFactory;
+        private readonly IDbContextFactory _dbContextSqlFactory;
 
-        public MovieRepository(IDbContextSqlFactory dbContextSqlFactory)
+        public MovieRepository(IDbContextFactory dbContextSqlFactory)
         {
             this._dbContextSqlFactory = dbContextSqlFactory;
         }
 
         public IList<MovieListModel> GetAll()
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 return dbContext.Movies
                     .Select(e => MovieMapper.MapMovieEntityToListModel(e))
@@ -29,7 +29,7 @@ namespace MoviesApp.BL.Repositories
 
         public IList<MovieDetailModel> GetAllDetails()
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 return dbContext.Movies
                     .Select(e => MovieMapper.MapMovieEntityToDetailModel(e))
@@ -39,7 +39,7 @@ namespace MoviesApp.BL.Repositories
 
         public MovieDetailModel GetById(Guid id)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 var entity = dbContext.Movies.First(t => t.Id == id);
                 return MovieMapper.MapMovieEntityToDetailModel(entity);
@@ -48,7 +48,7 @@ namespace MoviesApp.BL.Repositories
 
         public MovieListModel GetByIdListModel(Guid id)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 var entity = dbContext.Movies.FirstOrDefault(t => t.Id == id);
                 if (entity == null) return null;
@@ -58,7 +58,7 @@ namespace MoviesApp.BL.Repositories
 
         public MovieDetailModel Create(MovieDetailModel model)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 var entity = MovieMapper.MapMovieDetailModelToEntity(model);
                 dbContext.Movies.Add(entity);
@@ -69,7 +69,7 @@ namespace MoviesApp.BL.Repositories
 
         public void Update(MovieDetailModel model)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 var entity = MovieMapper.MapMovieDetailModelToEntity(model);
                 dbContext.Movies.Update(entity);
@@ -79,7 +79,7 @@ namespace MoviesApp.BL.Repositories
 
         public void Delete(Guid id)
         {
-            using (var dbContext = _dbContextSqlFactory.CreateAppDbContext())
+            using (var dbContext = _dbContextSqlFactory.CreateDbContext())
             {
                 var entity = dbContext.Movies.First(t => t.Id == id);
                 dbContext.Remove(entity);

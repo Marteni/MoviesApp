@@ -1,16 +1,19 @@
 ﻿using MoviesApp.BL.Repositories;
+using MoviesApp.DAL;
+using MoviesApp.DAL.Tests;
 
 namespace MoviesApp.BL.Tests
 {
-    public class PeopleRepositoryTestFixture
+    public class PeopleRepositoryTestFixture : MoviesAppDbContextSetupFixture
     {
-        private readonly IPeopleRepository repository;
+        
 
-        public PeopleRepositoryTestFixture()
+        public PeopleRepositoryTestFixture() : base(nameof(PeopleRepositoryTestFixture))
         {
-            repository = new PeopleRepository(new InMemoryDbContextFactory());
+            Repository = new PeopleRepository(DbContextFactory);
         }
+        public PeopleRepository Repository { get; }
 
-        public IPeopleRepository Repository => repository;
+
     }
 }

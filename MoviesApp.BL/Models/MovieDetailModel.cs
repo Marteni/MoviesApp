@@ -47,6 +47,6 @@ namespace MoviesApp.BL.Models
         }
 
         public static IEqualityComparer<MovieDetailModel> MovieDetailModelComparer { get; } = new MovieDetailModelEqualityComparer();
-        public static IEqualityComparer<MovieDetailModel> MovieDetailModelWithoutCollectionsComparer { get; } = new MovieDetailModelEqualityComparer();
+      
     }
 }
