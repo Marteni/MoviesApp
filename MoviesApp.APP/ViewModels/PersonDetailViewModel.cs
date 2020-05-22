@@ -68,6 +68,8 @@ namespace MoviesApp.APP.ViewModels
             {
                 Id = personNewWrapper.Id
             };
+            MoviesActed.Clear();
+            MoviesDirected.Clear();
         }
 
         private void DisplayPerson(PersonSelectedWrapper personSelectedWrapper)
@@ -188,8 +190,6 @@ namespace MoviesApp.APP.ViewModels
                         DeleteMovieInActedMovieListById(movie.Id);
                     }
                 }
-
-                LoadActedMovies();
             }
         }
 
@@ -255,8 +255,6 @@ namespace MoviesApp.APP.ViewModels
                         DeleteMovieInDirectedMovieListById(movie.Id);
                     }
                 }
-
-                LoadDirectedMovies();
             }
         }
 

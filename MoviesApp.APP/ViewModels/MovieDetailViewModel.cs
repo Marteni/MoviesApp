@@ -91,6 +91,9 @@ namespace MoviesApp.APP.ViewModels
             {
                 Id = movieDetailModel.Id
             };
+            Actors.Clear();
+            Directors.Clear();
+            Ratings.Clear();
         }
 
         private void OnMovieSelectedReceived(MovieSelectedWrapper movieWrapper)
@@ -184,6 +187,7 @@ namespace MoviesApp.APP.ViewModels
             DirectorsEditList.AddRange(people);
         }
 
+
         private void LoadActors()
         {
             Actors.Clear();
@@ -224,8 +228,6 @@ namespace MoviesApp.APP.ViewModels
                         DeleteActorInActorListById(person.Id);
                     }
                 }
-
-                LoadActors();
             }
         }
 
@@ -247,7 +249,6 @@ namespace MoviesApp.APP.ViewModels
                 var actor = Actors.FirstOrDefault(x => x.Id == person.Id);
                 if (actor != null) person.IsActorChecked = true;
             }
-
         }
 
 
@@ -291,8 +292,6 @@ namespace MoviesApp.APP.ViewModels
                         DeleteDirectorInDirectorListById(person.Id);
                     }
                 }
-
-                LoadDirectors();
             }
         }
 
@@ -314,7 +313,6 @@ namespace MoviesApp.APP.ViewModels
                 var director = Directors.FirstOrDefault(x => x.Id == person.Id);
                 if (director != null) person.IsDirectorChecked = true;
             }
-
         }
 
 
@@ -367,10 +365,17 @@ namespace MoviesApp.APP.ViewModels
 
                 return;
             }
-            RatingNewDetailModel.RatedMovieId = EditDetailModel.Id;
+            RatingNewDetailModel.RatedMovieId = DisplayDetailModel.Id;
 
             _ratingRepository.Create(RatingNewDetailModel);
-            LoadRatings();
+            Ratings.Add(RatingNewDetailModel);
+
+            AverageRating = (AverageRating == 0.0)
+                ? RatingNewDetailModel.NumericEvaluation
+                : (AverageRating + RatingNewDetailModel.NumericEvaluation) / 2;
+            HasRatings = Visibility.Visible;
+            DoesntHaveRatings = Visibility.Collapsed;
+
             DiscardNewRating();
         }
 
