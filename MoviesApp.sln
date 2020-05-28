@@ -13,9 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0956C25D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoviesApp.BL.Tests", "MoviesApp.BL.Tests\MoviesApp.BL.Tests.csproj", "{76D9DBBA-8E42-439A-BB38-1A2EE486AD0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviesApp.APP", "MoviesApp.APP\MoviesApp.APP.csproj", "{49E9E8FC-3182-4C93-9A10-4AF5749C3748}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviesApp.APP.Tests", "MoviesApp.APP.Tests\MoviesApp.APP.Tests.csproj", "{38EB4A5B-D889-4100-950E-1221C9A063FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoviesApp.APP", "MoviesApp.APP\MoviesApp.APP.csproj", "{49E9E8FC-3182-4C93-9A10-4AF5749C3748}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +41,6 @@ Global
 		{49E9E8FC-3182-4C93-9A10-4AF5749C3748}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49E9E8FC-3182-4C93-9A10-4AF5749C3748}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49E9E8FC-3182-4C93-9A10-4AF5749C3748}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38EB4A5B-D889-4100-950E-1221C9A063FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38EB4A5B-D889-4100-950E-1221C9A063FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38EB4A5B-D889-4100-950E-1221C9A063FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38EB4A5B-D889-4100-950E-1221C9A063FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,7 +48,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D5433AED-E981-449E-B8CC-EC62A71777C1} = {0956C25D-F40F-48C6-B8EB-2D611523408D}
 		{76D9DBBA-8E42-439A-BB38-1A2EE486AD0D} = {0956C25D-F40F-48C6-B8EB-2D611523408D}
-		{38EB4A5B-D889-4100-950E-1221C9A063FC} = {0956C25D-F40F-48C6-B8EB-2D611523408D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0E3C55D2-BF50-43B2-83A7-B2E9F3E70357}
